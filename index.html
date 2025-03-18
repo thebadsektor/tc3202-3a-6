@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Auth WebApp</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container" id="loginContainer" style="display: none;">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <a href="#" onclick="showSignup()">Signup</a></p>
+    </div>
+
+    <div class="container" id="signupContainer">
+        <h2>Signup</h2>
+        <input type="text" id="firstName" placeholder="First Name *">
+        <input type="text" id="middleName" placeholder="Middle Name (Optional)">
+        <input type="text" id="lastName" placeholder="Last Name *">
+        <input type="text" id="shopName" placeholder="Shop Name *">
+        <input type="text" id="address" placeholder="Address *">
+        <input type="email" id="email" placeholder="Email">
+        <button id="sendOtpBtn" onclick="sendOtp()">Send Verification Code</button>
+        <p id="otpTimer"></p>
+        <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" maxlength="6">
+        <button id="verifyOtpBtn" onclick="verifyOtp()">Verify Code</button>
+        <p id="otpStatus"></p>
+        <input type="password" id="password" placeholder="Password">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password *">
+        <button id="signupBtn">Signup</button>
+        <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

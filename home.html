@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - TechForecast</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <nav>
+        <button onclick="showSection('home')">Home</button>
+        <button onclick="showSection('about')">About Us</button>
+        <button onclick="showSection('contact')">Contact Us</button>
+        <button onclick="logoutUser()">Logout</button>
+    </nav>
+
+    <div id="home" class="section">
+        <h2>Welcome to TechForecast</h2>
+        <p>This is the home page.</p>
+    </div>
+
+    <div id="about" class="section" style="display: none;">
+        <h2>About Us</h2>
+        <p>TechForecast helps businesses predict trending items and stock levels.</p>
+    </div>
+
+    <div id="contact" class="section" style="display: none;">
+        <h2>Contact Us</h2>
+        <p>Email: support@techforecast.com</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
