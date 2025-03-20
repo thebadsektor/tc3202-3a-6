@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TechForecast</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="start_style.css">
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="header-container">
+                <div class="header-left">
+                    <a href="start.html">
+                        <img src="img_svg/logo_text.svg" alt="TechForecast Logo">
+                    </a>
+                    <div class="divider hide-mobile"></div>
+                    <a href="#" class="home">HOME</a>
+                </div>
+
+                <nav>  
+                    <a href="#" class="menu-open">
+                        <img src="img_svg/menu.svg" alt="Open Menu">
+                    </a>
+                    <ul> 
+                        <li class="menu">
+                            <a href="#" class="menu-close">
+                                <img src="img_svg/close.svg" alt="Close Menu">
+                            </a>
+                        </li>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Sign Up</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>  
+            <h1>WELCOME TO <img src="img_svg/logo_text.svg" alt="TechForecast Logo"></h1>
+            <p class="subhead"> 
+                TechForecast is a platform that provides you with the latest smartphones, reviews, and updates. We are here to help you stay updated with the latest trends in technology!
+            </p>
+            <a href="index.html" class="primary-cta">Sign Up Now!</a>
+        </main>
+
+        <div class="logo-container">   
+            <div class="logo">
+                <img src="img_svg/logo_first.svg" alt="Logo of Tech Forecast"> 
+                <div class="inner-circle"></div>
+                <div class="outer-circle"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menu = document.querySelector('nav ul');
+        const menuBtn = document.querySelector('.menu-open');
+        const closeBtn = document.querySelector('.menu-close');
+
+        menuBtn.addEventListener('click', () => {
+            menu.classList.add('open');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            menu.classList.remove('open');
+        });
+    </script>
+</body>
+</html>
