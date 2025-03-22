@@ -37,7 +37,13 @@ window.sendOtp = async function () {
     const otpTimer = document.getElementById("otpTimer");
 
     if (!email) {
-        alert("Please enter your email.");
+        Swal.fire({
+            title: "Please enter your email.",
+            text: "No email provided.",
+            icon: "warnning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
 
@@ -54,16 +60,37 @@ window.sendOtp = async function () {
         if (response.ok) {
             localStorage.setItem("otp", data.otp);
             localStorage.setItem("otpExpires", Date.now() + 5 * 60 * 1000); // 5-minute expiration
-            alert("OTP sent successfully! Check your email.");
+            //alert("OTP sent successfully! Check your email.");
+
+            // Show a disappearing alert
+            Swal.fire({
+                title: "OTP Sent Successfully!",
+                text: "Check your email.",
+                icon: "success",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
 
             // Start countdown
             startOtpCountdown(180);
         } else {
-            alert("Error: " + data.error);
+            Swal.fire({
+                title: "Error sending OTP!",
+                text: "Please try again.",
+                icon: "error",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
             sendOtpBtn.disabled = false; 
         }
     } catch (error) {
-        alert("Failed to send OTP. Check your server connection.");
+         Swal.fire({
+                title: "Error sending OTP!",
+                text: "Please try again.",
+                icon: "error",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
         sendOtpBtn.disabled = false;
     }
 };
@@ -100,7 +127,13 @@ window.verifyOtp = async function () {
     const otpStatus = document.getElementById("otpStatus");
 
     if (!enteredOtp) {
-        alert("Please enter the OTP.");
+        Swal.fire({
+            title: "Please enter the OTP.",
+            text: "No OTP provided.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
 
@@ -124,7 +157,13 @@ window.verifyOtp = async function () {
             otpStatus.style.color = "red";
         }
     } catch (error) {
-        alert("OTP verification failed. Check your server connection.");
+        Swal.fire({
+            title: "Error verifying OTP!",
+            text: "Please try again.",
+            icon: "error",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
     }
 };
 
@@ -166,13 +205,14 @@ async function signupUser() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (otpStatus !== "✅ OTP Verified! You can now sign up.") {
-        alert("Please verify your OTP before signing up.");
-        return;
-    }
-
     if (!firstName || !lastName || !shopName || !address || !email || !password || ! confirmPassword) {
-        alert("Please fill in all fields.");
+        Swal.fire({
+            title: "Please fill all fields.",
+            text: "All fields are required.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
 
@@ -181,31 +221,83 @@ async function signupUser() {
     const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$/; // 8 chars, 1 number, 1 special char
 
     if (!nameRegex.test(firstName) || firstName.length < 2) {
-        alert("First name must be at least 2 characters and contain no special characters.");
+        Swal.fire({
+            title: "Invalid First Name",
+            text: "First name must be at least 2 characters and contain no special characters.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (middleName && !nameRegex.test(middleName)) {
-        alert("Middle name must contain only letters and at most one space.");
+        Swal.fire({
+            title: "Invalid Middle Name",
+            text: "Middle name must contain only letters.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (!nameRegex.test(lastName) || lastName.length < 2) {
-        alert("Last name must be at least 2 characters and contain no special characters.");
+        Swal.fire({
+            title: "Invalid Last Name",
+            text: "Last name must be at least 2 characters and contain no special characters.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (!shopRegex.test(shopName)) {
-        alert("Shop name must be at least 4 characters long.");
+        Swal.fire({
+            title: "Invalid Shop Name",
+            text: "Shop name must be at least 4 characters and contain only letters and numbers.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (!address) {
-        alert("Please enter your address.");
+        Swal.fire({
+            title: "Invalid Address",
+            text: "Address is required.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
+        return;
+    }
+    if (otpStatus !== "✅ OTP Verified! You can now sign up.") {
+        Swal.fire({
+            title: "Please verify your email.",
+            text: "You must verify your email with OTP.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (!passwordRegex.test(password)) {
-        alert("Password must be at least 8 characters and include 1 special character and 1 number.");
+        Swal.fire({
+            title: "Invalid Password",
+            text: "Password must be at least 8 characters and contain a number and special character.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
     if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+        Swal.fire({
+            title: "Passwords do not match",
+            text: "Please re-enter your password.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
 
@@ -223,10 +315,22 @@ async function signupUser() {
             createdAt: new Date()
         });
 
-        alert("User registered successfully!");
+        Swal.fire({
+            title: "Signup Successful!",
+            text: "You can now login.",
+            icon: "success",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         showLogin(); // Show login form
     } catch (error) {
-        alert("Signup Error: " + error.message);
+        Swal.fire({
+            title: "Signup Error",
+            text: error.message,
+            icon: "error",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
     }
 }
 
@@ -236,25 +340,49 @@ async function loginUser() {
     const password = document.getElementById("loginPassword").value;
 
     if (!email || !password) {
-        alert("Please enter both email and password.");
+        Swal.fire({
+            title: "Please fill all fields.",
+            text: "Email and password are required.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         return;
     }
 
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert("Login successful!");
+        Swal.fire({
+            title: "Login Successful!",
+            text: "Redirecting to home page.",
+            icon: "success",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
         window.location.href = "home.html"; // Redirect to home page
     } catch (error) {
-        alert("Login Error: " + error.message);
+        Swal.fire({
+            title: "Login Error",
+            text: "Please check your email and password.",
+            icon: "error",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
     }
 }
 
 window.logoutUser = async function () {
     try {
         await signOut(auth);
-        alert("Logged out successfully!");
+        alert("You have been logged out.");
         window.location.href = "index.html"; // Redirect to login page
     } catch (error) {
-        alert("Logout Error: " + error.message);
+        Swal.fire({
+            title: "Logout Error",
+            text: "An error occurred while logging out.",
+            icon: "error",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
     }
 };
