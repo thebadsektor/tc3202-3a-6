@@ -55,7 +55,20 @@ window.sendOtp = async function () {
         return;
     }
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        Swal.fire({
+            title: "Invalid Email",
+            text: "Please enter a valid email address.",
+            icon: "warning",
+            timer: 3000,
+            showConfirmButton: false
+        });
+        return;
+    }
+
     sendOtpBtn.disabled = true;
+    
 
     try {
         const response = await fetch("http://127.0.0.1:5000/send-otp", {
@@ -79,7 +92,7 @@ window.sendOtp = async function () {
             });
 
             // Start countdown
-            startOtpCountdown(180);
+            startOtpCountdown(120);
         } else {
             Swal.fire({
                 title: "Error sending OTP!",
@@ -174,7 +187,6 @@ window.verifyOtp = async function () {
     }
 };
 
-
 // ✅ Toggle Signup/Login Forms
 document.addEventListener("DOMContentLoaded", () => {
     const loginContainer = document.getElementById("loginContainer");
@@ -199,6 +211,15 @@ document.addEventListener("DOMContentLoaded", () => {
         signupBtn.addEventListener("click", signupUser);
     }
 });
+
+function checkEmailExists(email) {
+    return auth.fetchSignInMethodsForEmail(email)
+        .then(signInMethods => {
+            if (signInMethods.length > 0) {
+                throw new Error("Email is already in use.");
+            }
+        });
+}
 
 // ✅ Signup Function
 async function signupUser() {

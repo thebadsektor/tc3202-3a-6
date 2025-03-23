@@ -15,6 +15,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
 // Signup API
 app.post('/signup', async (req, res) => {
     try {
