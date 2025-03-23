@@ -16,6 +16,14 @@
         <input type="password" id="loginPassword" placeholder="Password">
         <button id="loginBtn">Login</button>
         <p>Don't have an account? <a href="#" onclick="showSignup()">Signup</a></p>
+        <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
+    </div>
+
+    <div class="container" id="forgotPasswordContainer" style="display: none;">
+        <h2>Reset Password</h2>
+        <input type="email" id="resetEmail" placeholder="Enter your email">
+        <button onclick="resetPassword()">Send Reset Link</button>
+        <p><a href="#" onclick="showLogin()">Back to Login</a></p>
     </div>
 
     <div class="container" id="signupContainer">

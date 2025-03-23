@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -21,12 +21,20 @@ const db = getFirestore(app);
 window.showLogin = function () {
     document.getElementById("signupContainer").style.display = "none";
     document.getElementById("loginContainer").style.display = "block";
+    document.getElementById("forgotPasswordContainer").style.display = "none";
+    localStorage.setItem("lastPage", "login");
+};
+
+window.showForgotPassword = function () {
+    document.getElementById("loginContainer").style.display = "none";
+    document.getElementById("forgotPasswordContainer").style.display = "block";
     localStorage.setItem("lastPage", "login");
 };
 
 window.showSignup = function () {
     document.getElementById("signupContainer").style.display = "block";
     document.getElementById("loginContainer").style.display = "none";
+    document.getElementById("forgotPasswordContainer").style.display = "none";
     localStorage.setItem("lastPage", "signup");
 };
 
@@ -40,7 +48,7 @@ window.sendOtp = async function () {
         Swal.fire({
             title: "Please enter your email.",
             text: "No email provided.",
-            icon: "warnning",
+            icon: "warning",
             timer: 3000, // Auto-close after 3 seconds
             showConfirmButton: false
         });
@@ -60,7 +68,6 @@ window.sendOtp = async function () {
         if (response.ok) {
             localStorage.setItem("otp", data.otp);
             localStorage.setItem("otpExpires", Date.now() + 5 * 60 * 1000); // 5-minute expiration
-            //alert("OTP sent successfully! Check your email.");
 
             // Show a disappearing alert
             Swal.fire({
@@ -351,7 +358,13 @@ async function loginUser() {
     }
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Print UID to console
+        console.log("User UID:", user.uid);
+        localStorage.setItem("uid", user.uid);
+
         Swal.fire({
             title: "Login Successful!",
             text: "Redirecting to home page.",
@@ -359,7 +372,9 @@ async function loginUser() {
             timer: 3000, // Auto-close after 3 seconds
             showConfirmButton: false
         });
-        window.location.href = "home.html"; // Redirect to home page
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 3000);
     } catch (error) {
         Swal.fire({
             title: "Login Error",
@@ -371,18 +386,73 @@ async function loginUser() {
     }
 }
 
-window.logoutUser = async function () {
+// ✅ Reset Password Function
+window.resetPassword = async function () {
+    const email = document.getElementById("resetEmail").value.trim();
+
+    if (!email) {
+        Swal.fire({
+            title: "Please enter your email.",
+            text: "Email field cannot be empty.",
+            icon: "warning",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
+        return;
+    }
+
     try {
-        await signOut(auth);
-        alert("You have been logged out.");
-        window.location.href = "index.html"; // Redirect to login page
+        await sendPasswordResetEmail(auth, email);
+        Swal.fire({
+            title: "Password Reset Email Sent!",
+            text: "Check your inbox to reset your password.",
+            icon: "success",
+            timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
     } catch (error) {
         Swal.fire({
-            title: "Logout Error",
-            text: "An error occurred while logging out.",
+            title: "Error Resetting Password",
+            text: error.message,
             icon: "error",
             timer: 3000, // Auto-close after 3 seconds
             showConfirmButton: false
         });
+    }
+};
+
+
+window.logoutUser = async function () {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to log out?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, log out",
+        cancelButtonText: "No, stay",
+        reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await signOut(auth);
+            Swal.fire({
+                title: "Logged Out",
+                text: "You have been logged out successfully.",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "index.html"; // Redirect to login page
+            });
+        } catch (error) {
+            Swal.fire({
+                title: "Logout Error",
+                text: "An error occurred while logging out.",
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
     }
 };

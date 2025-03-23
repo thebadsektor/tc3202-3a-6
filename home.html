@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - TechForecast</title>
@@ -8,9 +9,12 @@
 </head>
 <body>
     <nav>
+        <label id="userUidLabel"></label> 
+        
         <button onclick="showSection('home')">Home</button>
         <button onclick="showSection('about')">About Us</button>
         <button onclick="showSection('contact')">Contact Us</button>
+        <button onclick="window.location.href='edit-profile.html'">Edit Profile</button>
         <button onclick="logoutUser()">Logout</button>
     </nav>
 
