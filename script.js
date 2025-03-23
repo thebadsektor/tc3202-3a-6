@@ -19,11 +19,26 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 window.showLogin = function () {
-    document.getElementById("signupContainer").style.display = "none";
-    document.getElementById("loginContainer").style.display = "block";
-    document.getElementById("forgotPasswordContainer").style.display = "none";
+    const signupContainer = document.getElementById("signupContainer");
+    const loginContainer = document.getElementById("loginContainer");
+    const forgotPasswordContainer = document.getElementById("forgotPasswordContainer");
+
+    // Check if each element exists before modifying it
+    if (signupContainer) {
+        signupContainer.style.display = "none";
+    }
+
+    if (loginContainer) {
+        loginContainer.style.display = "block";
+    }
+
+    if (forgotPasswordContainer) {
+        forgotPasswordContainer.style.display = "none";
+    }
+    // Store the last visited page in localStorage
     localStorage.setItem("lastPage", "login");
 };
+
 
 window.showForgotPassword = function () {
     document.getElementById("loginContainer").style.display = "none";
@@ -35,7 +50,7 @@ window.showSignup = function () {
     document.getElementById("signupContainer").style.display = "block";
     document.getElementById("loginContainer").style.display = "none";
     document.getElementById("forgotPasswordContainer").style.display = "none";
-    localStorage.setItem("lastPage", "signup");
+    localStorage.setItem("lastPage", "login");
 };
 
 // OTP Generation and Verification
@@ -68,7 +83,7 @@ window.sendOtp = async function () {
     }
 
     sendOtpBtn.disabled = true;
-    
+    showLoadingSpinner();
 
     try {
         const response = await fetch("http://127.0.0.1:5000/send-otp", {
@@ -78,6 +93,21 @@ window.sendOtp = async function () {
         });
 
         const data = await response.json();
+        hideLoadingSpinner();
+
+        if (response.status === 400 && data.error === "Email is already registered") {
+            // 🚨 Show alert if email is already registered
+            Swal.fire({
+                title: "Email Already Registered!",
+                text: "Please use a different email.",
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false
+            });
+            sendOtpBtn.disabled = false;
+            return;
+        }
+
         if (response.ok) {
             localStorage.setItem("otp", data.otp);
             localStorage.setItem("otpExpires", Date.now() + 5 * 60 * 1000); // 5-minute expiration
@@ -115,6 +145,24 @@ window.sendOtp = async function () {
     }
 };
 
+// ✅ Show Loading Spinner
+function showLoadingSpinner() {
+    Swal.fire({
+        title: "Sending OTP...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+// ✅ Hide Loading Spinner
+function hideLoadingSpinner() {
+    Swal.close(); // Closes the loading alert before showing a new one
+}
+
 function startOtpCountdown(durationInSeconds) {
     let sendOtpBtn = document.getElementById("sendOtpBtn");
     let otpTimer = document.getElementById("otpTimer");
@@ -145,6 +193,7 @@ window.verifyOtp = async function () {
     const email = document.getElementById("email").value.trim();
     const enteredOtp = document.getElementById("otpCode").value.trim();
     const otpStatus = document.getElementById("otpStatus");
+    const otpInput = document.getElementById("otpCode");
 
     if (!enteredOtp) {
         Swal.fire({
@@ -172,9 +221,19 @@ window.verifyOtp = async function () {
             otpStatus.innerText = "✅ OTP Verified! You can now sign up.";
             otpStatus.style.color = "green";
             localStorage.setItem("otpVerified", "true");
+            if (otpInput) {
+                otpInput.disabled = true;
+            }
         } else {
             otpStatus.innerText = "❌ Incorrect OTP. Try again.";
             otpStatus.style.color = "red";
+            Swal.fire({
+                title: "Verification code incorrect!",
+                text: "Please try again..",
+                icon: "error",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         Swal.fire({
@@ -410,6 +469,7 @@ async function loginUser() {
 // ✅ Reset Password Function
 window.resetPassword = async function () {
     const email = document.getElementById("resetEmail").value.trim();
+    const resetBtn = document.getElementById("resetBtn");
 
     if (!email) {
         Swal.fire({
@@ -422,16 +482,81 @@ window.resetPassword = async function () {
         return;
     }
 
-    try {
-        await sendPasswordResetEmail(auth, email);
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
         Swal.fire({
-            title: "Password Reset Email Sent!",
-            text: "Check your inbox to reset your password.",
-            icon: "success",
-            timer: 3000, // Auto-close after 3 seconds
+            title: "Invalid Email",
+            text: "Please enter a valid email address.",
+            icon: "warning",
+            timer: 3000,
             showConfirmButton: false
         });
+        return;
+    }
+
+    resetBtn.disabled = true; // Disable button while processing
+    showLoadingSpinner();
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/check-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email })
+        });
+
+        const data = await response.json();
+
+        if (response.status === 404 || data.error === "Email not found") {
+            hideLoadingSpinner();
+            Swal.fire({
+                title: "Email Not Found!",
+                text: "The provided email is not registered in our system.",
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false
+            });
+            resetBtn.disabled = false;
+            return;
+        }
+
+        if(response.ok && data.exists){
+            if (typeof auth === "undefined") {
+                hideLoadingSpinner();
+                Swal.fire({
+                    title: "Firebase Auth Not Initialized",
+                    text: "There was an issue with Firebase authentication setup.",
+                    icon: "error",
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                resetBtn.disabled = false;
+                return;
+            }
+
+            await sendPasswordResetEmail(auth, email);
+
+            hideLoadingSpinner();
+            Swal.fire({
+                title: "Password Reset Email Sent!",
+                text: "Check your inbox to reset your password.",
+                icon: "success",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = "index.html"; // Redirect after alert closes
+            });
+        }else {
+            hideLoadingSpinner();
+            Swal.fire({
+                title: "Error Resetting Password",
+                text: "Email didn't found.",
+                icon: "error",
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
     } catch (error) {
+        hideLoadingSpinner();
         Swal.fire({
             title: "Error Resetting Password",
             text: error.message,
@@ -440,6 +565,7 @@ window.resetPassword = async function () {
             showConfirmButton: false
         });
     }
+    resetBtn.disabled = false;
 };
 
 

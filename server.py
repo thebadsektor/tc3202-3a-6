@@ -7,12 +7,18 @@ import smtplib
 from flask_mail import Mail, Message
 from flask_cors import CORS
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import auth, credentials
 
 # ✅ Load environment variables
 load_dotenv()
 
+cred = credentials.Certificate("firebase-service-account.json")  # Your Firebase credentials JSON file
+firebase_admin.initialize_app(cred)
+
 # ✅ Initialize Flask App
 app = Flask(__name__)
+CORS(app)
 
 otp_store = {} 
 
@@ -41,6 +47,15 @@ def send_otp():
 
     if not email:
         return jsonify({"error": "Email is required"}), 400
+    
+    try:
+        # ✅ Check if the email is already registered in Firebase
+        user = auth.get_user_by_email(email)
+        return jsonify({"error": "Email is already registered"}), 400  # Stop here if the email exists
+
+    except firebase_admin.auth.UserNotFoundError:
+        # If user is not found, continue sending OTP
+        pass  
 
     # Generate a random 6-digit OTP
     otp = str(random.randint(100000, 999999))
@@ -86,6 +101,31 @@ def verify_otp():
 
     del otp_storage[email]  # Remove OTP after successful verification
     return jsonify({"message": "OTP verified successfully!"})
+
+# ✅ Route to Check if Email Exists in Firebase
+@app.route("/check-email", methods=["POST", "OPTIONS"])
+def check_email():
+    if request.method == 'OPTIONS':
+        return _corsify_actual_response(jsonify({}))  # Handle preflight request
+
+    try:
+        data = request.json
+        email = data.get("email")
+
+        user = auth.get_user_by_email(email)
+        return _corsify_actual_response(jsonify({"exists": True}))
+
+    except firebase_admin.auth.UserNotFoundError:
+        return _corsify_actual_response(jsonify({"exists": False}))
+
+    except Exception as e:
+        return _corsify_actual_response(jsonify({"error": str(e)})), 500
+    
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE")
+    return response
 
 # ✅ Run Flask App
 if __name__ == "__main__":
