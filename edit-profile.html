@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - TechForecast</title>
@@ -14,13 +15,13 @@
     <h2>Edit Profile</h2>
     <form id="editProfileForm">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
+        <input type="text" id="firstName" name="firstName">
 
         <label for="middleName">Middle Name:</label>
         <input type="text" id="middleName" name="middleName">
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required>
+        <input type="text" id="lastName" name="lastName">
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" disabled> <!-- Email is not editable -->
@@ -33,7 +34,7 @@
 
         <button type="submit" id="saveButton" disabled>Save Changes</button>
     </form>
-
+    
     <!-- Firebase -->
     <script type="module" src="edit-profile.js"></script>
 </body>

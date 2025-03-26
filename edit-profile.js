@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ✅ Check if user is logged in
     onAuthStateChanged(auth, async (user) => {
         if (user) {
+            showLoadingSpinner();
+
             emailInput.value = user.email; // Set email (non-editable)
             const userDocRef = doc(db, "users", user.uid);
 
@@ -46,12 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     addressInput.value = originalData.address || "";
                     shopNameInput.value = originalData.shopName || "";
 
-                    saveButton.disabled = true; // Disable save button initially
+                    saveButton.disabled = false; // Disable save button initially
                 } else {
                     console.log("No user data found.");
                 }
             } catch (error) {
                 console.error("🔥 Error fetching user data:", error);
+            } finally {
+                hideLoadingSpinner(); // ✅ Hide spinner after fetching data
             }
         } else {
             console.log("🔴 No user detected. Redirecting to login...");
@@ -59,16 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // ✅ Function to check if changes are made
+    /// ✅ Function to check if actual changes are made
     function checkForChanges() {
-        const hasChanges =
-            firstNameInput.value !== (originalData.firstName || "") ||
-            middleNameInput.value !== (originalData.middleName || "") ||
-            lastNameInput.value !== (originalData.lastName || "") ||
-            addressInput.value !== (originalData.address || "") ||
-            shopNameInput.value !== (originalData.shopName || "");
+        const currentData = {
+            firstName: firstNameInput.value.trim(),
+            middleName: middleNameInput.value.trim(),
+            lastName: lastNameInput.value.trim(),
+            address: addressInput.value.trim(),
+            shopName: shopNameInput.value.trim()
+        };
 
-        saveButton.disabled = !hasChanges; // Enable button only if changes exist
+        // Compare if current form state is different from originalData
+        const hasChanges = JSON.stringify(currentData) !== JSON.stringify(originalData);
+
+        saveButton.disabled = !hasChanges; // Enable button only if actual changes exist
     }
 
     // ✅ Listen for input changes dynamically
@@ -77,6 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ✅ Save changes to Firestore
     editProfileForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        saveButton.disabled = false;
         const user = auth.currentUser;
 
         if (!user) {
@@ -84,11 +94,98 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Check again before updating
-        if (saveButton.disabled) {
-            alert("No changes detected. Please modify fields before saving.");
+        // ✅ Trim inputs to remove accidental spaces
+        const firstName = firstNameInput.value.trim();
+        const middleName = middleNameInput.value.trim();
+        const lastName = lastNameInput.value.trim();
+        const address = addressInput.value.trim();
+        const shopName = shopNameInput.value.trim();
+
+        // ✅ Check for empty fields (excluding optional middle name)
+        if (!firstName || !lastName || !shopName || !address) {
+            Swal.fire({
+                title: "Missing Fields",
+                text: "Please fill in all required fields.",
+                icon: "warning",
+                timer: 3000, 
+                showConfirmButton: false
+            });
             return;
         }
+
+        const nameRegex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)?$/; // Only letters, one space allowed
+        const shopRegex = /^[a-zA-Z0-9\s]{4,}$/; // Min 4 characters, letters & numbers
+
+        if (!nameRegex.test(firstName) || firstName.length < 2) {
+            Swal.fire({
+                title: "Invalid First Name",
+                text: "First name must be at least 2 characters and contain no special characters.",
+                icon: "warning",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (middleName && !nameRegex.test(middleName)) {
+            Swal.fire({
+                title: "Invalid Middle Name",
+                text: "Middle name must contain only letters.",
+                icon: "warning",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!nameRegex.test(lastName) || lastName.length < 2) {
+            Swal.fire({
+                title: "Invalid Last Name",
+                text: "Last name must be at least 2 characters and contain no special characters.",
+                icon: "warning",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!shopRegex.test(shopName)) {
+            Swal.fire({
+                title: "Invalid Shop Name",
+                text: "Shop name must be at least 4 characters and contain only letters and numbers.",
+                icon: "warning",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!address) {
+            Swal.fire({
+                title: "Invalid Address",
+                text: "Address is required.",
+                icon: "warning",
+                timer: 3000, // Auto-close after 3 seconds
+                showConfirmButton: false
+            });
+            return;
+        }
+
+        const hasChanges =
+            firstNameInput.value !== (originalData.firstName || "") ||
+            middleNameInput.value !== (originalData.middleName || "") ||
+            lastNameInput.value !== (originalData.lastName || "") ||
+            addressInput.value !== (originalData.address || "") ||
+            shopNameInput.value !== (originalData.shopName || "");
+
+        if (!hasChanges) {
+            Swal.fire({
+                title: "No Changes Detected",
+                text: "You haven't made any changes. Please modify fields before saving.",
+                icon: "warning",
+                timer: 3000,
+                showConfirmButton: false
+            });
+            return;
+        }
+
+        savingLoadingSpinner();
 
         const userDocRef = doc(db, "users", user.uid);
         try {
@@ -100,8 +197,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 shopName: shopNameInput.value
             });
 
-            alert("✅ Profile updated successfully!");
-            saveButton.disabled = true; // Re-disable after saving
+            hideLoadingSpinner();
+
+            Swal.fire({
+                title: "✅ Success!",
+                text: "Profile updated successfully!",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                // Redirect to home.html after the user clicks OK
+                window.location.href = "home.html";
+            });
+            
             originalData = { // Update local data to match saved values
                 firstName: firstNameInput.value,
                 middleName: middleNameInput.value,
@@ -114,3 +221,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// ✅ Show Loading Spinner
+function showLoadingSpinner() {
+    Swal.fire({
+        title: "Loading data...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+function savingLoadingSpinner() {
+    Swal.fire({
+        title: "Saving changes...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+// ✅ Hide Loading Spinner
+function hideLoadingSpinner() {
+    Swal.close(); // Closes the loading alert before showing a new one
+}

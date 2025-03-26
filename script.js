@@ -163,6 +163,18 @@ function hideLoadingSpinner() {
     Swal.close(); // Closes the loading alert before showing a new one
 }
 
+function showloginLoadingSpinner() {
+    Swal.fire({
+        title: "Logging in...",
+        text: "Please wait...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
 function startOtpCountdown(durationInSeconds) {
     let sendOtpBtn = document.getElementById("sendOtpBtn");
     let otpTimer = document.getElementById("otpTimer");
@@ -292,7 +304,7 @@ async function signupUser() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (!firstName || !lastName || !shopName || !address || !email || !password || ! confirmPassword) {
+    if (!firstName || !lastName || !shopName || !address || !email || !password || !confirmPassword) {
         Swal.fire({
             title: "Please fill all fields.",
             text: "All fields are required.",
@@ -437,6 +449,8 @@ async function loginUser() {
         return;
     }
 
+    showloginLoadingSpinner();
+
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -444,6 +458,8 @@ async function loginUser() {
         // ✅ Print UID to console
         console.log("User UID:", user.uid);
         localStorage.setItem("uid", user.uid);
+
+        hideLoadingSpinner();
 
         Swal.fire({
             title: "Login Successful!",
