@@ -1,4 +1,8 @@
 /* Modern Variables */
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
 :root {
     --primary-color: #0e54eb;
     --secondary-color: #e3eaf1;
@@ -26,6 +30,9 @@
   header {
     background-color: var(--white);
     border-radius: var(--border-radius);
+    font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
     box-shadow: var(--shadow);
     padding: 1rem 2rem;
     position: sticky;
@@ -98,22 +105,23 @@
   
   /* Main Content */
   main {
-    margin-top: 4rem;
+    margin-top: 1.5rem;
     text-align: center;
+    
   }
   
   main h1 {
     font-size: 2.5rem;
-    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    
   }
   
   main h1 img {
-    height: 350px;
-    width: auto;
+    height: 200px;
+    width: 300px;
   }
   
   .subhead {
@@ -122,6 +130,9 @@
     max-width: 700px;
     margin: 0 auto 2.5rem;
     color: #555;
+    font-family: "Winky Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
   }
   
   .primary-cta {
@@ -158,7 +169,7 @@
   }
   
   .logo img {
-    width: 100%;
+    width: 150%;
     z-index: 2;
   }
   
@@ -248,6 +259,7 @@
     main h1 {
       font-size: 1.75rem;
       flex-direction: column;
+      margin-bottom: 0%;
     }
   
     .subhead {

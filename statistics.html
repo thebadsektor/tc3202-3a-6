@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Statistics - TechForecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js -->
+    <link rel="stylesheet" href="statistics.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <div id="statistics" class="section">
+        <h2>Sales Statistics</h2>
+        <div class="filters">
+            <div class="filter-item">
+                <label for="year-select">Year:</label>
+                <select id="year-select">
+                    <option value="all">All</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="brand-select">Brand:</label>
+                <select id="brand-select">
+                    <option value="all">All Brands</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Sony">Sony</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="HP">HP</option>
+                    <option value="Other Brands">Other Brands</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="product-select">Product:</label>
+                <select id="product-select">
+                    <option value="all">All Products</option>
+                    <option value="Headphones">Headphones</option>
+                    <option value="Laptops">Laptops</option>
+                    <option value="Smartphones">Smartphones</option>
+                    <option value="Smart Watches">Smart Watches</option>
+                    <option value="Tablets">Tablets</option>
+                </select>
+            </div>
+
+            <!-- Show Graph Button -->
+            <div class="button-container">
+                <button id="showGraphBtn">Show Graph</button>
+            </div>
+        </div>
+
+        <!-- Placeholder for Line Graph -->
+        <canvas id="salesChart"></canvas>
+        <canvas id="totalSalesChart"></canvas> <!-- Add this line for the second chart -->
+    </div>
+
+    <!-- Include script.js at the end -->
+    <script type="module" src="statistics.js"></script>  <!-- Ensure this is at the end of the body -->
+</body>
+</html>

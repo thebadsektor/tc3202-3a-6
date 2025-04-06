@@ -5,36 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - TechForecast</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="profile.css">
+
 </head>
 <body>
-    <nav>
-        <button onclick="window.location.href='home.html'">Back to Home</button>
-    </nav>
+    <div class="container">
+        <header class="header">
+            <div class="welcome-text">Edit Profile</div>
+            <div class="date">Update Your Personal Information</div>
+        </header>
 
-    <h2>Edit Profile</h2>
-    <form id="editProfileForm">
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName">
+        <section class="profile-section">
+            <img src="img_svg/default_profile.svg" alt="Profile" class="profile-image">
+            <div class="profile-info">
+                <h1>Welcome, Seller!</h1>
+                <p>User Profile</p>
+            </div>
+        </section>
 
-        <label for="middleName">Middle Name:</label>
-        <input type="text" id="middleName" name="middleName">
+        <form id="editProfileForm" class="form-container">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input type="text" id="middleName" name="middleName">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
 
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName">
+            <div class="two-column">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="shopName">Shop Name</label>
+                    <input type="text" id="shopName" name="shopName">
+                </div>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" disabled> <!-- Email is not editable -->
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address">
+            </div>
 
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address">
+            <button type="submit" class="save-changes-btn" id="saveButton" disabled>Save Changes</button>
+        </form>
+    </div>
 
-        <label for="shopName">Shop Name:</label>
-        <input type="text" id="shopName" name="shopName">
-
-        <button type="submit" id="saveButton" disabled>Save Changes</button>
-    </form>
-    
     <!-- Firebase -->
     <script type="module" src="edit-profile.js"></script>
 </body>

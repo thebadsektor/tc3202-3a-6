@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 confirmButtonText: "OK"
             }).then(() => {
                 // Redirect to home.html after the user clicks OK
-                window.location.href = "home.html";
+                window.location.replace("home.html");
             });
             
             originalData = { // Update local data to match saved values

@@ -1,3 +1,4 @@
+
 import os
 import time
 import random
@@ -18,10 +19,6 @@ firebase_admin.initialize_app(cred)
 
 # ✅ Initialize Flask App
 app = Flask(__name__)
-CORS(app)
-
-otp_store = {} 
-
 CORS(app)
 
 # ✅ Configure Flask-Mail for Gmail
