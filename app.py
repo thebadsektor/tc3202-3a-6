@@ -40,11 +40,6 @@ if not firebase_admin._apps:
     cred = credentials.Certificate("firebase-service-account.json")
     firebase_admin.initialize_app(cred)
 
-# Load the trained models
-sales_model = joblib.load('models/sales_projection_model.pkl')
-restock_model = joblib.load('models/restock_prediction_model.pkl')
-price_model = joblib.load('models/price_forecasting_model.pkl')
-
 # ✅ Configure Logging
 logging.basicConfig(level=logging.INFO)
 
@@ -136,57 +131,6 @@ def _corsify_actual_response(response):
     response.headers.add("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE")
     return response
 
-# Predict Sales Endpoint
-@app.route('/predict_sales', methods=['POST'])
-def predict_sales():
-    data = request.json
-    features = data['features']
-
-    # List of columns used during training
-    expected_columns = [
-        'channel', 'category', 'price', 'stock', 'sales_last_month', 'sales_last_year', 
-        'discount', 'marketing_spend', 'website_traffic', 'competitor_pricing', 
-        'stock_availability', 'customer_sentiment', 'promotion_type', 'location', 'region', 
-        'delivery_time', 'product_rating', 'store_type'
-    ]
-    
-    # Ensure the provided features match the expected columns
-    if len(features) != len(expected_columns):
-        return jsonify({"error": f"Expected {len(expected_columns)} features, but got {len(features)}"}), 400
-
-    # Create DataFrame from the features list
-    features_df = pd.DataFrame([features], columns=expected_columns)
-    
-    # Apply One-Hot Encoding for categorical features (e.g., 'channel', 'category', etc.)
-    features_encoded = pd.get_dummies(features_df, columns=['channel', 'category', 'promotion_type', 'location', 'region', 'store_type'], drop_first=True)
-    
-    # Ensure the number of features is exactly 18 (after encoding)
-    if features_encoded.shape[1] != 18:
-        return jsonify({"error": f"Expected 18 features, but got {features_encoded.shape[1]}"}), 400
-    
-    # Convert the DataFrame to a numpy array
-    features_array = np.array(features_encoded).reshape(1, -1)
-    
-    # Make prediction
-    prediction = sales_model.predict(features_array)
-    
-    return jsonify({'prediction': prediction.tolist()})
-
-# Predict Restock Endpoint
-@app.route('/predict_restock', methods=['POST'])
-def predict_restock():
-    data = request.json
-    features = np.array(data['features']).reshape(1, -1)
-    prediction = restock_model.predict(features)
-    return jsonify({'prediction': prediction.tolist()})
-
-# Predict Price Endpoint
-@app.route('/predict_price', methods=['POST'])
-def predict_price():
-    data = request.json
-    features = np.array(data['features']).reshape(1, -1)
-    prediction = price_model.predict(features)
-    return jsonify({'prediction': prediction.tolist()})
-
-if __name__ == '__main__':
+# ✅ Run Flask App
+if __name__ == "__main__":
     app.run(debug=True)
