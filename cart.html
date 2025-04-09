@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .product {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+    .product img {
+      width: 120px;
+      height: auto;
+    }
+    .details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stars {
+      color: gold;
+      font-size: 18px;
+    }
+    .stock-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stock-control button {
+      width: 25px;
+      height: 25px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <script type="module" src="cart.js" defer></script>
+</head>
+<body>
+  <h2>My Product</h2>
+  <div id="cart-container"></div>
+</body>
+</html>

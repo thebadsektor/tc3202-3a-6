@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .form-container {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input[readonly] {
+      background-color: #f0f0f0;
+    }
+    input, textarea {
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+  <script type="module" src="product.js" defer></script>
+</head>
+<body>
+
+  <div class="form-container">
+    <img src="image.png" alt="Phone Illustration" width="200">
+
+    <div class="form-section">
+      <label>Brand:
+        <input type="text" id="brand" readonly />
+      </label>
+
+      <label>Product Category:
+        <input type="text" id="category" readonly />
+      </label>
+
+      <p>
+        <strong>Rating:</strong>
+        <span id="rating-stars"></span>
+        (<span id="rating-number"></span>)
+      </p>
+
+      <label>Description:
+        <textarea id="description" rows="3" placeholder="Enter product description"></textarea>
+      </label>
+
+      <label>Price:
+        <input type="number" id="price" placeholder="Enter your price" />
+      </label>
+
+      <button id="predict-btn">Show Predicted Price</button>
+      <div class="output" id="predicted-price"></div>
+
+      <label>Discount (Optional):
+        <input type="text" id="discount" placeholder="Enter discount if any" />
+      </label>
+
+      <label>Specs:
+        <textarea id="specs" rows="2" placeholder="Enter technical specs"></textarea>
+      </label>
+
+      <label>Feature:
+        <textarea id="feature" rows="2" placeholder="Enter product features"></textarea>
+      </label>
+
+      <button id="add-product-btn">Add Product to Cart</button>
+    </div>
+  </div>
+
+</body>
+</html>
