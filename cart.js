@@ -6,7 +6,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
   getFirestore,
-  collectionGroup,
+  collection,
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
@@ -26,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Render stars
 function renderStars(rating) {
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 >= 0.5;
@@ -35,56 +36,72 @@ function renderStars(rating) {
   return stars;
 }
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    await signInAnonymously(auth);
+// Load cart items by looping brands
+async function loadCartItems(userId) {
+  const brands = ["Apple", "Samsung", "Sony", "HP", "Other Brands"]; // Add more as needed
+  const cartContainer = document.getElementById("cart-container");
+  cartContainer.innerHTML = "<p>Loading your cart...</p>";
+
+  const items = [];
+
+  for (const brand of brands) {
+    const brandRef = collection(db, "cart", userId, brand);
+    const snapshot = await getDocs(brandRef);
+
+    snapshot.forEach(doc => {
+      items.push({
+        id: doc.id,
+        brand,
+        ...doc.data()
+      });
+    });
+  }
+
+  if (items.length === 0) {
+    cartContainer.innerHTML = "<p>Your cart is empty.</p>";
     return;
   }
 
-  const userId = user.uid;
-  const cartContainer = document.getElementById("cart-container");
+  // Render items
   cartContainer.innerHTML = "";
+  for (const item of items) {
+    const {
+      id: product,
+      brand,
+      rating = 3.5,
+      price = 0,
+      description = "No description.",
+      stock = 1
+    } = item;
 
-  try {
-    const brandGroups = await getDocs(collectionGroup(db, userId));
+    const productElement = document.createElement("div");
+    productElement.classList.add("product");
 
-    if (brandGroups.empty) {
-      cartContainer.innerHTML = "<p>No products in cart.</p>";
-      return;
-    }
-
-    for (const brandDoc of brandGroups.docs) {
-      const data = brandDoc.data();
-      const brand = brandDoc.ref.parent.parent.id;
-      const product = brandDoc.id;
-      const rating = data.rating || "3.5";
-      const price = data.price || 0;
-      const description = data.description || "No description.";
-      const stock = data.stock || 1;
-
-      const productElement = document.createElement("div");
-      productElement.classList.add("product");
-
-      productElement.innerHTML = `
-        <img src="image.png" alt="${product}">
-        <div class="details">
-          <strong>${brand}</strong>
-          <span>${product}</span>
-          <div class="stars">${renderStars(parseFloat(rating))}</div>
-          <div>₱${price.toLocaleString()}</div>
-          <div>Description: ${description}</div>
-          <div class="stock-control">
-            <button>-</button>
-            <span>${stock}</span>
-            <button>+</button>
-          </div>
+    productElement.innerHTML = `
+      <img src="image.png" alt="${product}">
+      <div class="details">
+        <strong>${brand}</strong>
+        <span>${product}</span>
+        <div class="stars">${renderStars(parseFloat(rating))}</div>
+        <div>₱${price.toLocaleString()}</div>
+        <div>Description: ${description}</div>
+        <div class="stock-control">
+          <button>-</button>
+          <span>${stock}</span>
+          <button>+</button>
         </div>
-      `;
+      </div>
+    `;
 
-      cartContainer.appendChild(productElement);
-    }
-  } catch (err) {
-    console.error("Error loading cart:", err);
-    cartContainer.innerHTML = "<p>Error loading cart.</p>";
+    cartContainer.appendChild(productElement);
+  }
+}
+
+// Authenticate and display cart
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    await signInAnonymously(auth);
+  } else {
+    loadCartItems(user.uid);
   }
 });
