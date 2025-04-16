@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - TechForecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search..." class="search-input">
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="dynamic-content">
+        <div class="nav-right">
+            <button onclick="window.location.href='home1.html'">Home</button>
+            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+            <button onclick="showSection('about')">About Us</button>
+            <button onclick="showSection('contact')">Contact Us</button>
+            <button onclick="window.location.href='cart.html'">My Cart</button>
+            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='profile.html'">Profile</button>
+            <button class="logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+        <div id="home" class="section">
+          <div class="dashboard-container">
+            <header class="dashboard-header">
+              <h1>Dashboard</h1>
+              <div class="user-info"><span id="userName">Loading...</span> <span class="user-icon">👤</span></div>
+            </header>
+        
+            <section class="stats-cards">
+                <div class="card total-products">
+                    <p>Total Products</p>
+                    <h2 id="totalProducts">---</h2>
+                  </div>
+                  <div class="card total-orders">
+                    <p>Total Orders</p>
+                    <h2 id="totalOrders">---</h2>
+                  </div>
+                  <div class="card total-sales">
+                    <p>Total Sales</p>
+                    <h2 id="totalSales">---</h2>
+                  </div>      
+                <div class="card"><p>Store Rating</p><h2>4.8 ⭐⭐⭐⭐☆</h2></div>
+            </section>
+        
+            <div class="sales-summary">
+                <div class="sales-summary-header">
+                  <h2>Sales Summary for the Last 
+                    <select id="timeFilter">
+                      <option value="week">Week</option>
+                      <option value="month">Month</option>
+                      <option value="3months">3 Months</option>
+                      <option value="6months">6 Months</option>
+                      <option value="year">Year</option>
+                      <option value="5years">5 Years</option>
+                    </select>
+                  </h2>
+                </div>
+                <canvas id="salesChart" height="100"></canvas>
+              </div>      
+        
+            <section class="bottom-panels">
+              <div class="predicted-sales">
+                <h2>Predicted future Sales</h2>
+                <table id="sales-table">
+                    <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Product</th>
+                            <th>Predicted Sales</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-body">
+                        <!-- Dynamic rows go here -->
+                    </tbody>
+                </table>
+              </div>
+        
+              <div class="top-products">
+                <h2>Top Rated Products</h2>
+                <table>
+                  <thead>
+                    <tr><th>Product</th><th>Average Rating</th></tr>
+                  </thead>
+                  <tbody id="top-rated-body">
+                    <!-- JavaScript will populate this -->
+                  </tbody>
+                </table>
+              </div>      
+            </section>
+          </div>
+        </div>
+
+        <div id="about" class="section" style="display: none;">
+          <div>
+              <h2>About Us</h2>
+              <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
+          
+                  We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
+                  
+                  Our mission is simple: to transform future trends into today's opportunities.
+                  
+                  With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
+                  
+                  We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
+          </div>
+        </div>
+
+        <div id="contact" class="section" style="display: none;">
+          <h2>Contact Us</h2>
+          <p>Email: support@techforecast.com</p>
+          <p>Phone: +1 (555) 123-4567</p>
+          <p>Address: Sta. Cruz, Laguna
+          </p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            } else {
+                console.error(`Section with ID ${sectionId} not found`);
+            }
+        }
+
+        function loadpage(page) {
+            fetch(page) // Load the statistics HTML file
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('home').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading statistics:', error));
+        }
+    </script>
+
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>

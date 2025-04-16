@@ -1,60 +1,144 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home1</title>
+    <title>Home - TechForecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="home1.css">
-    <script src="home1.js" defer></script>
 </head>
 <body>
-    <div id="main-content">
-        <h1>Brand Name</h1>
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search..." class="search-input">
+            </div>
+        </div>
+    </nav>
 
-        <h2>Apple</h2>
-        <div class="brand-section">
-            <div class="product" data-brand="Apple" data-product="Smartphone"><img src="" alt=""><div class="product-name">Smartphone</div></div>
-            <div class="product" data-brand="Apple" data-product="Laptop"><img src="" alt=""><div class="product-name">Laptop</div></div>
-            <div class="product" data-brand="Apple" data-product="Headphones"><img src="" alt=""><div class="product-name">Headphones</div></div>
-            <div class="product" data-brand="Apple" data-product="Tablet"><img src="" alt=""><div class="product-name">Tablet</div></div>
-            <div class="product" data-brand="Apple" data-product="Smart Watch"><img src="" alt=""><div class="product-name">Smart Watch</div></div>
+    <div class="content-wrapper" id="dynamic-content">
+        <div class="nav-right">
+            <button onclick="window.location.href='home1.html'">Home</button>
+            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+            <button onclick="showSection('about')">About Us</button>
+            <button onclick="showSection('contact')">Contact Us</button>
+            <button onclick="window.location.href='cart.html'">My Cart</button>
+            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='profile.html'">Profile</button>
+            <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
 
-        <h2>Samsung</h2>
-        <div class="brand-section">
-            <div class="product" data-brand="Samsung" data-product="Smartphone"><img src="" alt=""><div class="product-name">Smartphone</div></div>
-            <div class="product" data-brand="Samsung" data-product="Laptop"><img src="" alt=""><div class="product-name">Laptop</div></div>
-            <div class="product" data-brand="Samsung" data-product="Headphones"><img src="" alt=""><div class="product-name">Headphones</div></div>
-            <div class="product" data-brand="Samsung" data-product="Tablet"><img src="" alt=""><div class="product-name">Tablet</div></div>
-            <div class="product" data-brand="Samsung" data-product="Smart Watch"><img src="" alt=""><div class="product-name">Smart Watch</div></div>
+        <div id="home" class="section">
+            <div id="main-content">
+                <h1>Brand Name</h1>
+        
+                <section id="trending-section">
+                    <h2>Predicted Trending Products</h2>
+                    <div id="trending-products" class="trending-products">
+                        
+                    </div>
+                </section>
+        
+                <h2>Apple</h2>
+                <div class="brand-section">
+                    <div class="product" data-brand="Apple" data-product="Smartphone"><img src="images/apple-smartphones.jpg" alt=""><div class="product-name">Smartphone</div></div>
+                    <div class="product" data-brand="Apple" data-product="Laptop"><img src="images/apple-laptops.jpg" alt=""><div class="product-name">Laptop</div></div>
+                    <div class="product" data-brand="Apple" data-product="Headphones"><img src="images/apple-headphones.jpg" alt=""><div class="product-name">Headphones</div></div>
+                    <div class="product" data-brand="Apple" data-product="Tablet"><img src="images/apple-laptops.jpg" alt=""><div class="product-name">Tablet</div></div>
+                    <div class="product" data-brand="Apple" data-product="Smart Watch"><img src="images/apple-tablets.jpg" alt=""><div class="product-name">Smart Watch</div></div>
+                </div>
+        
+                <h2>Samsung</h2>
+                <div class="brand-section">
+                    <div class="product" data-brand="Samsung" data-product="Smartphone"><img src="images/samsung-smart_watches.jpg" alt=""><div class="product-name">Smartphone</div></div>
+                    <div class="product" data-brand="Samsung" data-product="Laptop"><img src="images/samsung-laptops.jpg" alt=""><div class="product-name">Laptop</div></div>
+                    <div class="product" data-brand="Samsung" data-product="Headphones"><img src="images/samsung-headphones.jpg" alt=""><div class="product-name">Headphones</div></div>
+                    <div class="product" data-brand="Samsung" data-product="Tablet"><img src="images/samsung-tablets.jpg" alt=""><div class="product-name">Tablet</div></div>
+                    <div class="product" data-brand="Samsung" data-product="Smart Watch"><img src="images/samsung-smart_watches.jpg" alt=""><div class="product-name">Smart Watch</div></div>
+                </div>
+        
+                <h2>Sony</h2>
+                <div class="brand-section">
+                    <div class="product" data-brand="Sony" data-product="Smartphone"><img src="images/sony-smartphones.jpg" alt=""><div class="product-name">Smartphone</div></div>
+                    <div class="product" data-brand="Sony" data-product="Laptop"><img src="images/sony-laptops.jpg" alt=""><div class="product-name">Laptop</div></div>
+                    <div class="product" data-brand="Sony" data-product="Headphones"><img src="images/sony-headphones.jpg" alt=""><div class="product-name">Headphones</div></div>
+                    <div class="product" data-brand="Sony" data-product="Tablet"><img src="images/sony-tablets.jpg" alt=""><div class="product-name">Tablet</div></div>
+                    <div class="product" data-brand="Sony" data-product="Smart Watch"><img src="images/sony-smart_watches.jpg" alt=""><div class="product-name">Smart Watch</div></div>
+                </div>
+        
+                <h2>HP</h2>
+                <div class="brand-section">
+                    <div class="product" data-brand="HP" data-product="Smartphone"><img src="images/hp_smartphones.jpg" alt=""><div class="product-name">Smartphone</div></div>
+                    <div class="product" data-brand="HP" data-product="Laptop"><img src="images/hp-laptops.jpg" alt=""><div class="product-name">Laptop</div></div>
+                    <div class="product" data-brand="HP" data-product="Headphones"><img src="images/hp-headphones.jpg" alt=""><div class="product-name">Headphones</div></div>
+                    <div class="product" data-brand="HP" data-product="Tablet"><img src="images/hp-tablets.jpg" alt=""><div class="product-name">Tablet</div></div>
+                    <div class="product" data-brand="HP" data-product="Smart Watch"><img src="images/hp-smart_watches.jpg" alt=""><div class="product-name">Smart Watch</div></div>
+                </div>
+        
+                <h2>Other Brands</h2>
+                <div class="brand-section">
+                    <div class="product" data-brand="Other Brands" data-product="Smartphone"><img src="images/other_brands-smartphones.jpg" alt=""><div class="product-name">Smartphone</div></div>
+                    <div class="product" data-brand="Other Brands" data-product="Laptop"><img src="images/other_brands-laptops.jpg" alt=""><div class="product-name">Laptop</div></div>
+                    <div class="product" data-brand="Other Brands" data-product="Headphones"><img src="images/other_brands-headphones.jpg" alt=""><div class="product-name">Headphones</div></div>
+                    <div class="product" data-brand="Other Brands" data-product="Tablet"><img src="images/other_brands-tablets.jpg" alt=""><div class="product-name">Tablet</div></div>
+                    <div class="product" data-brand="Other Brands" data-product="Smart Watch"><img src="images/other_brand-smart_watches.jpg" alt=""><div class="product-name">Smart Watch</div></div>
+                </div>
+            </div>
         </div>
 
-        <h2>Sony</h2>
-        <div class="brand-section">
-            <div class="product" data-brand="Sony" data-product="Smartphone"><img src="" alt=""><div class="product-name">Smartphone</div></div>
-            <div class="product" data-brand="Sony" data-product="Laptop"><img src="" alt=""><div class="product-name">Laptop</div></div>
-            <div class="product" data-brand="Sony" data-product="Headphones"><img src="" alt=""><div class="product-name">Headphones</div></div>
-            <div class="product" data-brand="Sony" data-product="Tablet"><img src="" alt=""><div class="product-name">Tablet</div></div>
-            <div class="product" data-brand="Sony" data-product="Smart Watch"><img src="" alt=""><div class="product-name">Smart Watch</div></div>
+        <div id="about" class="section" style="display: none;">
+            <div>
+                <h2>About Us</h2>
+                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
+            
+                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
+                    
+                    Our mission is simple: to transform future trends into today's opportunities.
+                    
+                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
+                    
+                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
+            </div>
         </div>
 
-        <h2>HP</h2>
-        <div class="brand-section">
-            <div class="product" data-brand="HP" data-product="Smartphone"><img src="" alt=""><div class="product-name">Smartphone</div></div>
-            <div class="product" data-brand="HP" data-product="Laptop"><img src="" alt=""><div class="product-name">Laptop</div></div>
-            <div class="product" data-brand="HP" data-product="Headphones"><img src="" alt=""><div class="product-name">Headphones</div></div>
-            <div class="product" data-brand="HP" data-product="Tablet"><img src="" alt=""><div class="product-name">Tablet</div></div>
-            <div class="product" data-brand="HP" data-product="Smart Watch"><img src="" alt=""><div class="product-name">Smart Watch</div></div>
-        </div>
-
-        <h2>Other Brands</h2>
-        <div class="brand-section">
-            <div class="product" data-brand="Other Brands" data-product="Smartphone"><img src="" alt=""><div class="product-name">Smartphone</div></div>
-            <div class="product" data-brand="Other Brands" data-product="Laptop"><img src="" alt=""><div class="product-name">Laptop</div></div>
-            <div class="product" data-brand="Other Brands" data-product="Headphones"><img src="" alt=""><div class="product-name">Headphones</div></div>
-            <div class="product" data-brand="Other Brands" data-product="Tablet"><img src="" alt=""><div class="product-name">Tablet</div></div>
-            <div class="product" data-brand="Other Brands" data-product="Smart Watch"><img src="" alt=""><div class="product-name">Smart Watch</div></div>
+        <div id="contact" class="section" style="display: none;">
+            <h2>Contact Us</h2>
+            <p>Email: support@techforecast.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: Sta. Cruz, Laguna
+            </p>
         </div>
     </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            } else {
+                console.error(`Section with ID ${sectionId} not found`);
+            }
+        }
+
+        function loadpage(page) {
+            fetch(page) // Load the statistics HTML file
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('home').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading statistics:', error));
+        }
+    </script>
+
+    <script type="module" src="home1.js"></script>
 </body>
 </html>

@@ -1,104 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Home - TechForecast</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="profile.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div>
-                <div class="welcome-text">Welcome, Amanda</div>
-                <div class="date">Fri, 07 June 2024</div>
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search..." class="search-input">
             </div>
-            <div class="search-icons">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255,255,255,0.2);"></div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper" id="dynamic-content">
+        <div class="nav-right">
+            <button onclick="window.location.href='home1.html'">Home</button>
+            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+            <button onclick="showSection('about')">About Us</button>
+            <button onclick="showSection('contact')">Contact Us</button>
+            <button onclick="window.location.href='cart.html'">My Cart</button>
+            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='profile.html'">Profile</button>
+            <button class="logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+        <div id="home" class="section">
+            <div class="container">
+                <div class="header">
+                    <div>
+                        <div class="welcome-text">Profile</div>
+                    </div>
+                    <div class="search-icons">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(255,255,255,0.2);"></div>
+                    </div>
+                </div>
+        
+                <div class="form-container">
+                    <div class="profile-section">
+                        <img src="img_svg/default_profile.svg" alt="Profile Picture" class="profile-image">
+                        <div class="profile-info">
+                            <h1>Loading...</h1>
+                            <p>Loading...</p>
+                            <button onclick="window.location.href='edit-profile.html';" class="edit-profile-btn">Edit Profile</button> </button>
+                        </div>
+                    </div>
+        
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" name="first-name" value="Loading..." readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="middle-name">Middle Name</label>
+                                <input type="text" id="middle-name" name="middle-name" value="Loading..." readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" name="last-name" value="Loading..." readonly>
+                            </div>
+                        </div>
+        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div class="gender-options">
+                                    <label>
+                                        <input type="radio" name="gender" value="Female" checked readonly>
+                                        Female
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="gender" value="Male" readonly>
+                                        Male
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="gender" value="Other" readonly>
+                                        Other
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="shop-name">Shop Name</label>
+                                <input type="text" id="shop-name" value="Loading..." readonly>
+                            </div>
+                        </div>
+        
+                        <div class="two-column">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" value="Loading..." readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="email-address">Email Address</label>
+                                <input type="email" id="email-address" name="email-address" disabled>
+                            </div>
+                        
+                        <div class="two-column">
+                            <div class="form-group">
+                                <label for="phone-number">Phone Number</label>
+                                <input type="text" id="phone-number" name="phone-number" value="Loading..." readonly>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <div class="form-container">
-            <div class="profile-section">
-                <img src="img_svg/default_profile.svg" alt="Profile Picture" class="profile-image">
-                <div class="profile-info">
-                    <h1>Alexa Rawles</h1>
-                    <p>alexarowles@gmail.com</p>
-                    <button onclick="window.location.href='edit-profile.html';" class="edit-profile-btn">Edit Profile</button> </button>
-                </div>
+        <div id="about" class="section" style="display: none;">
+            <div>
+                <h2>About Us</h2>
+                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
+            
+                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
+                    
+                    Our mission is simple: to transform future trends into today's opportunities.
+                    
+                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
+                    
+                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
             </div>
+        </div>
 
-            <form>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="first-name">First Name</label>
-                        <input type="text" id="first-name" name="first-name" value="Alexandria">
-                    </div>
-                    <div class="form-group">
-                        <label for="middle-name">Middle Name</label>
-                        <input type="text" id="middle-name" name="middle-name" value="Mercado">
-                    </div>
-                    <div class="form-group">
-                        <label for="last-name">Last Name</label>
-                        <input type="text" id="last-name" name="last-name" value="Reyes">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <div class="gender-options">
-                            <label>
-                                <input type="radio" name="gender" value="Female" checked>
-                                Female
-                            </label>
-                            <label>
-                                <input type="radio" name="gender" value="Male">
-                                Male
-                            </label>
-                            <label>
-                                <input type="radio" name="gender" value="Other">
-                                Other
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="shop-name">Shop Name</label>
-                        <input type="text" id="shop-name" name="shop-name">
-                    </div>
-                </div>
-
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" id="address" name="address">
-                    </div>
-                    <div class="form-group">
-                        <label for="email-address">Email Address</label>
-                        <input type="email" id="email-address" name="email-address" disabled>
-                    </div>
-                
-                <div class="two-column">
-                    <div class="form-group">
-                        <label for="phone-number">Phone Number</label>
-                        <input type="text" id="phone-number" name="phone-number">
-                    </div>
-                </div>
-                </div>
-            </form>
+        <div id="contact" class="section" style="display: none;">
+            <h2>Contact Us</h2>
+            <p>Email: support@techforecast.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: Sta. Cruz, Laguna
+            </p>
         </div>
     </div>
 
-    <!-- Firebase -->
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            } else {
+                console.error(`Section with ID ${sectionId} not found`);
+            }
+        }
+
+        function loadpage(page) {
+            fetch(page) // Load the statistics HTML file
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('home').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading statistics:', error));
+        }
+    </script>
+
     <script type="module" src="profile.js"></script>
 </body>
 </html>

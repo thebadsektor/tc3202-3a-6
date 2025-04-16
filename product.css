@@ -1,55 +1,297 @@
-/* Reset basic styles */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
+/* Color Palette */
+:root {
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  --secondary-color: #5737e9;
+  --accent-color: #3767eb;
+  --background-color: #f4f6f9;
+  --text-color: #2b2d42;
+  --text-light: #6b7280;
+  --white: #ffffff;
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Navigation Bar */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 5%;
+  background-color: var(--white);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  width: 200px;
+}
+
+/* Logo */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Navigation Buttons */
+button {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+  position: relative;
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal; 
+  font-style: normal;
+  width: 100%;  /* Make buttons full width */
+}
+
+button:hover {
+  background-color: rgba(67, 97, 238, 0.05);
+  color: var(--primary-color);
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-color);
+  transition: var(--transition);
+}
+
+button:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Logout Button */
+.logout-btn {
+  background-color: var(--accent-color);
+  color: var(--white) !important;
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+}
+
+.logout-btn:hover {
+  background-color: #3767eb;
+}
+
+.content-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  background-color: var(--background-color);
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  width: 220px;
+  background-color: var(--white); 
+  height: calc(90vh - 80px); 
+  position: sticky;  
+  top: 80px;         
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Match .section shadow */
+  border-radius: var(--border-radius);         /* Match .section radius */
+  margin: 20px 0 20px 20px;                    /* Add margin like .section */
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.section {
+  flex: 1;
+  padding: 40px 5%;
+  background-color: var(--white);
+  margin: 20px;
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section h2 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.section p {
+  color: var(--text-light);
+  font-family: "Winky Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  body {
-    background-color: #f4f4f4;
-    color: #333;
-    padding: 30px;
+
+  .nav-left, .nav-right {
+    width: 100%;
+    justify-content: center;
   }
-  
-  .container {
-    max-width: 600px;
-    margin: auto;
-    background-color: #fff;
-    padding: 25px 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  .search-input {
+    width: 100%;
   }
-  
-  h2 {
-    font-size: 28px;
-    color: #1a1a1a;
-    margin-bottom: 10px;
-  }
-  
-  h3 {
-    font-size: 22px;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    line-height: 1.6;
-    font-size: 16px;
-  }
-  
-  .back-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-  }
-  
-  .back-button:hover {
-    background-color: #0056b3;
-  }
-  
+}
+
+/* Additional Utilities */
+.text-center {
+  text-align: center;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+   
+
+body {
+
+}
+
+.form-container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+}
+
+select,
+input,
+textarea {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+#predict-btn
+{
+  background-color: #3767eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+#predict-stock-btn
+{
+  background-color: #f1c120;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+#add-product-btn {
+  background-color: #3da733;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#predict-btn:hover
+{
+  background-color:#3767eba2;
+  color: white;
+}
+#predict-stock-btn:hover
+{
+  background-color:#f1c020d7;
+  color: white;
+}
+#add-product-btn:hover {
+  background-color:#3da733d0;
+  color: white;
+}
+
+.output {
+  margin-top: 10px;
+  font-weight: bold;
+  color: green;
+}

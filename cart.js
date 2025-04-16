@@ -2,12 +2,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import {
   getAuth,
   onAuthStateChanged,
-  signInAnonymously
+  signInAnonymously,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
   getFirestore,
   collection,
-  getDocs
+  getDocs,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Firebase config
@@ -38,7 +41,7 @@ function renderStars(rating) {
 
 // Load cart items by looping brands
 async function loadCartItems(userId) {
-  const brands = ["Apple", "Samsung", "Sony", "HP", "Other Brands"]; // Add more as needed
+  const brands = ["Apple", "Samsung", "Sony", "HP", "Other Brands"];
   const cartContainer = document.getElementById("cart-container");
   cartContainer.innerHTML = "<p>Loading your cart...</p>";
 
@@ -62,7 +65,6 @@ async function loadCartItems(userId) {
     return;
   }
 
-  // Render items
   cartContainer.innerHTML = "";
   for (const item of items) {
     const {
@@ -97,11 +99,55 @@ async function loadCartItems(userId) {
   }
 }
 
-// Authenticate and display cart
+// Auth and user info display
 onAuthStateChanged(auth, async (user) => {
+  const userNameEl = document.getElementById("userName");
+
   if (!user) {
     await signInAnonymously(auth);
-  } else {
-    loadCartItems(user.uid);
+    return;
   }
+
+  // Load cart
+  loadCartItems(user.uid);
+  // Load user name
+  const userDocRef = doc(db, "users", user.uid);
+
 });
+
+// Logout handler
+window.logoutUser = async function () {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to log out?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, log out",
+    cancelButtonText: "No, stay",
+    reverseButtons: true
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await signOut(auth);
+      Swal.fire({
+        title: "Logged Out",
+        text: "You have been logged out successfully.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
+      }).then(() => {
+        window.location.href = "index.html";
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      Swal.fire({
+        title: "Logout Error",
+        text: "An error occurred while logging out.",
+        icon: "error",
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+  }
+};

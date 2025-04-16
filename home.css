@@ -123,15 +123,31 @@ button:hover::after {
   background-color: #3767eb;
 }
 
-/* Content Sections */
 .content-wrapper {
   display: flex;
   width: 100%;
+  min-height: calc(100vh - 80px);
+  background-color: var(--background-color);
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  width: 220px;
+  background-color: var(--white); 
+  height: calc(90vh - 80px); 
+  position: sticky;  
+  top: 80px;         
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Match .section shadow */
+  border-radius: var(--border-radius);         /* Match .section radius */
+  margin: 20px 0 20px 20px;                    /* Add margin like .section */
   font-family: "Winky Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  min-height: calc(100vh - 80px);
 }
 
 .section {
@@ -146,6 +162,7 @@ button:hover::after {
   border-radius: var(--border-radius);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   animation: fadeIn 0.5s ease;
+  overflow-y: auto;
 }
 
 @keyframes fadeIn {

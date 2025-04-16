@@ -583,39 +583,3 @@ window.resetPassword = async function () {
     }
     resetBtn.disabled = false;
 };
-
-
-window.logoutUser = async function () {
-    const result = await Swal.fire({
-        title: "Are you sure?",
-        text: "Do you really want to log out?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, log out",
-        cancelButtonText: "No, stay",
-        reverseButtons: true
-    });
-
-    if (result.isConfirmed) {
-        try {
-            await signOut(auth);
-            Swal.fire({
-                title: "Logged Out",
-                text: "You have been logged out successfully.",
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = "index.html"; // Redirect to login page
-            });
-        } catch (error) {
-            Swal.fire({
-                title: "Logout Error",
-                text: "An error occurred while logging out.",
-                icon: "error",
-                timer: 3000,
-                showConfirmButton: false
-            });
-        }
-    }
-};
