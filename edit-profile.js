@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -251,3 +251,39 @@ function savingLoadingSpinner() {
 function hideLoadingSpinner() {
     Swal.close(); // Closes the loading alert before showing a new one
 }
+
+// Logout handler
+window.logoutUser = async function () {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you really want to log out?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, log out",
+    cancelButtonText: "No, stay",
+    reverseButtons: true
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await Swal.fire({
+        title: "Logged Out",
+        text: "You have been logged out successfully.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        });      
+        await signOut(auth);
+        window.location.href = "index.html";
+    } catch (error) {
+      console.error("Logout error:", error);
+      Swal.fire({
+        title: "Logout Error",
+        text: "An error occurred while logging out.",
+        icon: "error",
+        timer: 3000,
+        showConfirmButton: false
+      });
+    }
+  }
+};

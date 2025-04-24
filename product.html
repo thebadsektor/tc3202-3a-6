@@ -11,6 +11,45 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="product.css">
+    <style>
+      #confirm-modal {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 1000;
+          justify-content: center;
+          align-items: center;
+      }
+
+      #modal-content {
+          background: white;
+          padding: 20px;
+          max-width: 500px;
+          max-height: 80vh;
+          overflow-y: auto;
+          border-radius: 12px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          position: relative;
+      }
+
+      #modal-content button {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          background: #007bff;
+          color: white;
+          cursor: pointer;
+      }
+
+      #modal-content button#edit-btn {
+          background: gray;
+      }
+
+      #modal-content button:hover {
+          opacity: 0.9;
+      }
+  </style>
 </head>
 <body>
     <nav>
@@ -36,7 +75,17 @@
         </div>
         <div id="home" class="section">
           <div class="form-container">
-            <img src="image.png" alt="Phone Illustration" width="200" />
+            <div style="text-align: center; margin-bottom: 1rem;">
+              <img id="product-image" src="img_svg/upload-photo.jpg" alt="Upload Product" width="200" style="border: 1px solid #ccc; border-radius: 8px;" />
+              <br />
+              <input type="file" id="image-upload" accept="image/*" style="display: none;" />
+              <button onclick="document.getElementById('image-upload').click()" style="margin-top: 10px; padding: 6px 12px; border: none; background-color: #007bff; color: white; border-radius: 6px; cursor: pointer;">
+                Upload Product Photo
+              </button>
+              <button id="show-suggested-photo-btn" style="margin-top: 10px; padding: 6px 12px; border: none; background-color: #007bff; color: white; border-radius: 6px; cursor: pointer;">
+                Show suggested pproduct photo
+              </button>
+            </div>            
         
             <div class="form-section">
               <label>Brand:
@@ -100,8 +149,10 @@
               <button id="add-product-btn">Add Product to Cart</button>
             </div>
         
-            <div id="confirm-modal" style="display:none; position:fixed; top:20%; left:30%; width:40%; background:white; border:1px solid #ccc; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:1000;">
-              <div id="modal-content"></div>
+            <div id="confirm-modal">
+              <div id="modal-content">
+                <!-- JS will inject content here -->
+              </div>
             </div>
             
           </div>

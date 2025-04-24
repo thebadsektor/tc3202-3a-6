@@ -4,62 +4,135 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - TechForecast</title>
+    <title>Home - Castronics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="profile.css">
-
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="welcome-text">Edit Profile</div>
-            <div class="date">Update Your Personal Information</div>
-        </header>
-
-        <section class="profile-section">
-            <img src="img_svg/default_profile.svg" alt="Profile" class="profile-image">
-            <div class="profile-info">
-                <h1>Welcome, Seller!</h1>
-                <p>User Profile</p>
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Search..." class="search-input">
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <form id="editProfileForm" class="form-container">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required>
-                </div>
-                <div class="form-group">
-                    <label for="middleName">Middle Name</label>
-                    <input type="text" id="middleName" name="middleName">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required>
-                </div>
+    <div class="content-wrapper" id="dynamic-content">
+        <div class="nav-right">
+            <button onclick="window.location.href='home1.html'">Home</button>
+            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+            <button onclick="showSection('about')">About Us</button>
+            <button onclick="showSection('contact')">Contact Us</button>
+            <button onclick="window.location.href='cart.html'">My Cart</button>
+            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='profile.html'">Profile</button>
+            <button class="logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+
+        <div id="home" class="section">
+            <div class="container">
+                <header class="header">
+                    <div class="welcome-text">Edit Profile</div>
+                    <div class="date">Update Your Personal Information</div>
+                </header>
+        
+                <section class="profile-section">
+                    <img src="img_svg/default_profile.svg" alt="Profile" class="profile-image">
+                    <div class="profile-info">
+                        <h1>Welcome, Seller!</h1>
+                        <p>User Profile</p>
+                    </div>
+                </section>
+        
+                <form id="editProfileForm" class="form-container">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="middleName">Middle Name</label>
+                            <input type="text" id="middleName" name="middleName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+        
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="shopName">Shop Name</label>
+                            <input type="text" id="shopName" name="shopName">
+                        </div>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+        
+                    <button type="submit" class="save-changes-btn" id="saveButton" disabled>Save Changes</button>
+                </form>
             </div>
+        </div>
 
-            <div class="two-column">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="shopName">Shop Name</label>
-                    <input type="text" id="shopName" name="shopName">
-                </div>
+        <div id="about" class="section" style="display: none;">
+            <div>
+                <h2>About Us</h2>
+                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
+            
+                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
+                    
+                    Our mission is simple: to transform future trends into today's opportunities.
+                    
+                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
+                    
+                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address">
-            </div>
-
-            <button type="submit" class="save-changes-btn" id="saveButton" disabled>Save Changes</button>
-        </form>
+        <div id="contact" class="section" style="display: none;">
+            <h2>Contact Us</h2>
+            <p>Email: support@techforecast.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: Sta. Cruz, Laguna
+            </p>
+        </div>
+    </div>
     </div>
 
-    <!-- Firebase -->
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            } else {
+                console.error(`Section with ID ${sectionId} not found`);
+            }
+        }
+
+        function loadpage(page) {
+            fetch(page) // Load the statistics HTML file
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('home').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading statistics:', error));
+        }
+    </script>
+
     <script type="module" src="edit-profile.js"></script>
 </body>
 </html>

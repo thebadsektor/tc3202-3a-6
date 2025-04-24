@@ -44,6 +44,46 @@
             });
           </script>
           <div id="cart-container"></div>
+
+          <!-- Modal for editing product -->
+            <div id="edit-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                <div id="modal-product-info">
+                    <img id="modal-product-image" src="" alt="Product Image" style="max-width: 200px;">
+                    <div>
+                    <label>Brand:
+                        <select id="brand">
+                        <option value="Apple">Apple</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Sony">Sony</option>
+                        <option value="HP">HP</option>
+                        <option value="Other Brands">Other Brands</option>
+                        </select>
+                    </label>
+                    <label>Product Category:
+                        <select id="category">
+                        <option value="Smartphones">Smartphones</option>
+                        <option value="Laptops">Laptops</option>
+                        <option value="Headphones">Headphones</option>
+                        <option value="Tablets">Tablets</option>
+                        <option value="Smart Watches">Smart Watches</option>
+                        </select>
+                    </label>
+                    <label>Description: <input type="text" id="description" /></label>
+                    <label>Price: <input type="number" id="price" /></label>
+                    <label>Discount: <input type="number" id="discount" /></label>
+                    <label>Specs: <textarea id="specs"></textarea></label>
+                    <label>Features: <textarea id="features"></textarea></label>
+                    <label>Stock: <input type="number" id="stock" /></label>
+                    <div>
+                        <button id="save-btn">Save</button>
+                        <button id="exit-btn">Exit</button>
+                    </div>                    
+                    </div>
+                </div>
+                </div>
+            </div>
+  
         </div>
 
         <div id="about" class="section" style="display: none;">
@@ -93,4 +133,4 @@
 
     <script type="module" src="cart.js"></script>
 </body>
-</html>
+</html> 

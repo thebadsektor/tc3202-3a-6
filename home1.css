@@ -56,15 +56,6 @@ nav {
   gap: 15px;
 }
 
-.nav-right {
-  display: flex;
-  flex-direction: column; 
-  align-items: flex-start;
-  gap: 10px;
-  padding: 20px;
-  width: 200px;
-}
-
 /* Logo */
 .logo {
   font-size: 1.5rem;
@@ -130,6 +121,7 @@ button:hover::after {
   width: 100%;
   min-height: calc(100vh - 80px);
   background-color: var(--background-color);
+  align-items: flex-start;
 }
 
 .nav-right {
@@ -142,7 +134,7 @@ button:hover::after {
   background-color: var(--white); 
   height: calc(90vh - 80px); 
   position: sticky;  
-  top: 80px;         
+  top: 100px;         
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Match .section shadow */
   border-radius: var(--border-radius);         /* Match .section radius */
   margin: 20px 0 20px 20px;                    /* Add margin like .section */
@@ -154,9 +146,9 @@ button:hover::after {
 
 .section {
   flex: 1;
-  padding: 40px 5%;
+  padding: 20px 5%;
   background-color: var(--white);
-  margin: 20px;
+  margin: 20px 0 20px 20px;
   font-family: "Winky Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: normal;
@@ -165,6 +157,7 @@ button:hover::after {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   animation: fadeIn 0.5s ease;
   overflow-y: auto;
+  position: relative;
 }
 
 @keyframes fadeIn {
@@ -236,7 +229,7 @@ h2 {
 .brand-section {
     display: flex;
     overflow-x: auto;
-    padding: 15px 10px;
+    padding: 15px 10px 10px 15px;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);

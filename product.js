@@ -68,6 +68,55 @@ function getPrediction(brand, product) {
   return predictedData[`${brand} ${product}`] || { price: null, stock: null };
 }
 
+function updateProductImage() {
+  const brand = document.getElementById("brand").value;
+  const product = document.getElementById("category").value;
+  const imageElement = document.getElementById("product-image");
+
+  if (brand === "Select Brand" || product === "Select Product" || !brand || !product) {
+    imageElement.style.display = "none";
+    return;
+  }
+
+  const format = str => str.toLowerCase().replace(/\s+/g, '_');
+  const imageName = `${format(brand)}-${format(product)}.jpg`;
+  const imagePath = `images/${imageName}`;
+  imageElement.src = imagePath;
+  imageElement.style.display = "block";
+}
+
+document.getElementById("image-upload").addEventListener("change", function () {
+  const file = this.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = document.getElementById("product-image");
+      img.src = e.target.result;
+      img.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById("show-suggested-photo-btn").addEventListener("click", () => {
+  const brand = document.getElementById("brand").value;
+  const product = document.getElementById("category").value;
+
+  if (brand === "" || product === "") {
+    Swal.fire({
+      title: "Error loading image",
+      text: "Please select Brand and Product",
+      icon: "error",
+      timer: 2000,
+      showConfirmButton: false
+    });
+    return;
+  }
+
+  updateProductImage();
+});
+
+
 window.addEventListener('DOMContentLoaded', () => {
   const brandSelect = document.getElementById("brand");
   const productSelect = document.getElementById("category");
@@ -125,6 +174,9 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const imageElement = document.getElementById("product-image");
+      const imageSrc = imageElement.style.display === "block" ? imageElement.src : null;
+
       const productData = {
         rating: window.generatedRating || 3.5,
         price,
@@ -133,6 +185,7 @@ window.addEventListener('DOMContentLoaded', () => {
         discount: discount || null,
         specs,
         feature,
+        image: imageSrc || null,
         createdAt: new Date()
       };
 
@@ -145,6 +198,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <p><strong>Specs:</strong> ${specs}</p>
         <p><strong>Feature:</strong> ${feature}</p>
         <p><strong>Rating:</strong> ${productData.rating} ${renderStars(productData.rating)}</p>
+        ${imageSrc ? `<img src="${imageSrc}" alt="Product Image" style="max-width: 100%; margin-top: 10px;" />` : ''}
         <div style="margin-top: 15px;">
           <button id="confirm-add-btn">Confirm</button>
           <button id="edit-btn" style="margin-left: 10px;">Edit</button>

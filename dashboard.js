@@ -11,12 +11,28 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Check if user is signed in
 firebase.auth().onAuthStateChanged((user) => {
   const userNameEl = document.getElementById("userName");
 
   if (user) {
     const userId = user.uid;
+
+    // Fetch user data from Firestore
+    firebase.firestore().collection("users").doc(userId).get()
+      .then((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          const fullName = `${data.firstName} ${data.lastName}`;
+          userNameEl.textContent = fullName;
+        } else {
+          userNameEl.textContent = "User data not found";
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        userNameEl.textContent = "Error loading name";
+      });
+
   } else {
     userNameEl.textContent = "Not signed in";
   }

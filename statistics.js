@@ -1999,30 +1999,14 @@ const db = firebase.firestore();
 
 // Check if user is signed in
 firebase.auth().onAuthStateChanged((user) => {
-  const userNameEl = document.getElementById("userName");
-
-  if (user) {
-    const userId = user.uid;
-
-    db.collection("users").doc(userId).get()
-      .then((doc) => {
-        if (doc.exists) {
-          const data = doc.data();
-          const fullName = `${data.firstName} ${data.middleName} ${data.lastName}`;
-          userNameEl.textContent = fullName;
-        } else {
-          userNameEl.textContent = "User not found";
-        }
-      })
-      .catch((error) => {
-        console.error("Error loading user:", error);
-        userNameEl.textContent = "Error loading name";
-      });
-
-  } else {
-    userNameEl.textContent = "Not signed in";
-  }
-});
+    const userNameEl = document.getElementById("userName");
+  
+    if (user) {
+      const userId = user.uid;
+    } else {
+      userNameEl.textContent = "Not signed in";
+    }
+  });
 
 window.logoutUser = async function () {
     const result = await Swal.fire({
