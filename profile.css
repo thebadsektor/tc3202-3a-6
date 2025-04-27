@@ -443,3 +443,20 @@ input[type="text"]:focus, input[type="email"]:focus {
         width: 100%;
     }
 }
+
+.upload-btn {
+  width: 250px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #45a049;
+}

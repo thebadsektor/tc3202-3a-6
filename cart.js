@@ -72,8 +72,11 @@ async function loadCartItems(userId) {
     const {
       id: product,
       brand,
+      modelname,
       rating = 3.5,
       price = 0,
+      finalPrice = price,
+      discount = 0,
       description = "No description.",
       stock = 1,
       image: imageUrl = "default.png"
@@ -82,18 +85,26 @@ async function loadCartItems(userId) {
     const productElement = document.createElement("div");
     productElement.classList.add("product");
 
+    const priceSection = discount === 0
+    ? `<div>Price : ₱${price.toLocaleString()}</div>`
+    : `
+      <div>
+        <span style="text-decoration: line-through; color: red;">₱${price.toLocaleString()}</span> 
+        <span style="color: black; font-weight: bold;">₱${finalPrice.toLocaleString()}</span>
+        <span style="color: green;">(${discount}% off)</span>
+      </div>
+    `;
+
     productElement.innerHTML = `
       <img src="${imageUrl}" alt="${product}" style="max-width:200px;">
       <div class="details">
-        <strong>${brand}</strong>
-        <span>${product}</span>
+        <strong>${brand} - ${product}</strong>
+        <span>Model Name : ${modelname}</span>
         <div class="stars">${renderStars(parseFloat(rating))}</div>
-        <div>₱${price.toLocaleString()}</div>
+        ${priceSection}
         <div>Description: ${description}</div>
         <div class="stock-control">
-          <button>-</button>
-          <span>${stock}</span>
-          <button>+</button>
+          <span>Stock : ${stock}</span>
         </div>
         <div class="action-buttons">
           <button class="edit-btn" data-id="${product}" data-brand="${brand}">Edit</button>
@@ -131,11 +142,12 @@ async function handleEditProduct(event) {
     originalProductData = {
       brand,
       productId,
+      modelname : productData.modelname || "",
       description: productData.description || "",
       price: parseFloat(productData.price || 0),
       discount: parseFloat(productData.discount || 0),
       specs: productData.specs || "",
-      features: productData.feature || "",
+      feature: productData.feature || "",
       stock: parseInt(productData.stock || 1),
     };
     
@@ -143,6 +155,7 @@ async function handleEditProduct(event) {
     document.getElementById("modal-product-image").src = productData.image || "default.png";
     document.getElementById("brand").value = brand; // <- FIXED: Set brand from outside
     document.getElementById("category").value = productId || ""; // <- FIXED: fallback to empty if missing
+    document.getElementById("modelname").value = productData.modelname || "";
     document.getElementById("description").value = productData.description || "";
     document.getElementById("price").value = productData.price || 0;
     document.getElementById("discount").value = productData.discount || 0;
@@ -169,20 +182,25 @@ function closeEditModal() {
 async function saveProduct() {
   const productId = document.getElementById("category").value; // Get product ID from hidden input or data attribute
   const brand = document.getElementById("brand").value;
+  const modelname = document.getElementById("modelname").value;
   const description = document.getElementById("description").value;
   const price = parseFloat(document.getElementById("price").value);
   const discount = parseFloat(document.getElementById("discount").value);
   const specs = document.getElementById("specs").value;
-  const features = document.getElementById("features").value;
+  const feature = document.getElementById("features").value;
   const stock = parseInt(document.getElementById("stock").value);
 
+  const productRef = doc(db, "cart", currentUser.uid, brand, productId);
+
+  const finalPrice = Math.round(price - (price * discount / 100));
   // 🔍 Check if any changes were made
   const hasChanges =
+    modelname !== originalProductData.modelname ||
     description !== originalProductData.description ||
     price !== originalProductData.price ||
     discount !== originalProductData.discount ||
     specs !== originalProductData.specs ||
-    features !== originalProductData.features ||
+    feature !== originalProductData.feature ||
     stock !== originalProductData.stock;
 
   if (!hasChanges) {
@@ -196,18 +214,40 @@ async function saveProduct() {
     return;
   }
 
+  if(!modelname || !description ||!price || !specs || !feature || !stock){
+    Swal.fire({
+      icon: 'error',
+      title: 'Missing Information',
+      text: 'Please fill out all of the informations.'
+    });
+    return;
+  }
+
+  if (discount > 50) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid Discount',
+      text: 'Discount cannot be greater than 50%.'
+    });
+    return;
+  }
+
   try {
     showsavingspinner();
     // Update the product data in Firestore
-    const productRef = doc(db, "cart", currentUser.uid, brand, productId);
-    await updateDoc(productRef, {
-      description,
-      price,
-      discount,
-      specs,
-      features,
-      stock
-    });
+    const docSnap = await getDoc(productRef)
+    if (docSnap.exists()) {
+      await updateDoc(productRef, {
+        modelname,
+        description,
+        price,
+        discount,
+        finalPrice,
+        finalPrice,
+        specs,
+        feature,
+        stock
+      });
     
     hideLoadingSpinner();
     Swal.fire({
@@ -220,6 +260,16 @@ async function saveProduct() {
       closeEditModal();
       loadCartItems(currentUser.uid); // Reload the cart to reflect changes
     });
+  }else {
+    hideLoadingSpinner();
+    Swal.fire({
+      title: "Error",
+      text: "Product not found. Cannot update a non-existing item.",
+      icon: "error",
+      timer: 3000,
+      showConfirmButton: false
+    });
+  }
   } catch (error) {
     hideLoadingSpinner();
     console.error("Error updating product:", error);
@@ -387,6 +437,18 @@ function showloginLoadingSpinner() {
 function showsavingspinner() {
   Swal.fire({
       title: "Saving Changes...",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      willOpen: () => {
+          Swal.showLoading();
+      }
+  });
+}
+
+function showedirspinner() {
+  Swal.fire({
+      title: "Loading...",
       text: "Please wait...",
       allowOutsideClick: false,
       showConfirmButton: false,

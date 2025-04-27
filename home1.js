@@ -1,22 +1,13 @@
-
-
 document.addEventListener("DOMContentLoaded", function () {
-    const products = document.querySelectorAll(".product");
+    const trendingContainer = document.querySelector(".trending-products");
 
-    // Static product click listener
-    products.forEach(product => {
-        product.addEventListener("click", () => {
-            const brand = product.getAttribute("data-brand");
-            const productName = product.getAttribute("data-product");
-
-            //window.location.href = `product.html?brand=${encodeURIComponent(brand)}&product=${encodeURIComponent(productName)}`;
-        });
-    });
+    showLoadingSpinner();
 
     fetch("http://127.0.0.1:5000/predict-top-trending")
     .then(response => response.json())
     .then(data => {
-        const trendingContainer = document.querySelector(".trending-products");
+
+        hideLoadingSpinner();
         if (!trendingContainer || !data.top_25_trending_products) return;
 
         const top7 = data.top_25_trending_products.slice(0, 7);
@@ -58,17 +49,28 @@ document.addEventListener("DOMContentLoaded", function () {
             productDiv.appendChild(img);
             productDiv.appendChild(nameDiv);
             trendingContainer.appendChild(productDiv);
-
-            /*productDiv.addEventListener("click", () => {
-                window.location.href = `product.html?brand=${encodeURIComponent(brand)}&product=${encodeURIComponent(productName)}`;
-            });*/
         });
     })
     .catch(error => {
+        hideLoadingSpinner();
         console.error("Error fetching top trending products:", error);
     });
 });
 
+// 🛠 Move the click event listener outside, for all products (dynamic + static)
+document.addEventListener("click", (event) => {
+    const product = event.target.closest(".product");
+    if (product) {
+        const brand = product.getAttribute("data-brand");
+        const productName = product.getAttribute("data-product");
+
+        if (brand && productName) {
+            window.location.href = `clicked-product.html?brand=${encodeURIComponent(brand)}&product=${encodeURIComponent(productName)}`;
+        }
+    }
+});
+
+// 🛡 Firebase config and logout functionality
 const firebaseConfig = {
     apiKey: "AIzaSyBf4xDYf1i5UDAc9jpB33Cein_sgATriyw",
     authDomain: "techforecastinitial.firebaseapp.com",
@@ -84,13 +86,12 @@ const db = firebase.firestore();
 
 // Check if user is signed in
 firebase.auth().onAuthStateChanged((user) => {
-  const userNameEl = document.getElementById("userName");
-
-  if (user) {
-    const userId = user.uid;
-  } else {
-    userNameEl.textContent = "Not signed in";
-  }
+    const userNameEl = document.getElementById("userName");
+    if (user) {
+        const userId = user.uid;
+    } else {
+        userNameEl.textContent = "Not signed in";
+    }
 });
 
 window.logoutUser = async function () {
@@ -106,10 +107,7 @@ window.logoutUser = async function () {
   
     if (result.isConfirmed) {
         try {
-            // Correct sign-out method
             await firebase.auth().signOut();
-            
-            // Show success message
             Swal.fire({
                 title: "Logged Out",
                 text: "You have been logged out successfully.",
@@ -117,10 +115,9 @@ window.logoutUser = async function () {
                 timer: 2000,
                 showConfirmButton: false
             }).then(() => {
-                window.location.href = "index.html"; // Redirect to login page
+                window.location.href = "index.html";
             });
         } catch (error) {
-            // Show error message
             Swal.fire({
                 title: "Logout Error",
                 text: "An error occurred while logging out.",
@@ -130,5 +127,20 @@ window.logoutUser = async function () {
             });
         }
     }
-  };
-  
+};
+
+function showLoadingSpinner() {
+    Swal.fire({
+        title: "Loading...",
+        text: "Please Wait...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+function hideLoadingSpinner() {
+    Swal.close();
+}

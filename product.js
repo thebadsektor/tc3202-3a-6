@@ -136,7 +136,14 @@ window.addEventListener('DOMContentLoaded', () => {
     if (prediction.price !== null) {
       document.getElementById("price").value = prediction.price;
     } else {
-      alert("Please select brand and product.");
+      Swal.fire({
+        title: "Error Predicting Price",
+        text: "Please select Brand and Product",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false
+      });
+      return;
     }
   });
 
@@ -147,7 +154,14 @@ window.addEventListener('DOMContentLoaded', () => {
     if (prediction.stock !== null) {
       document.getElementById("stock").value = prediction.stock;
     } else {
-      alert("Please select brand and product.");
+      Swal.fire({
+        title: "Error Predicting Stocks",
+        text: "Please select Brand and Product",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false
+      });
+      return;
     }
   });
 
@@ -163,26 +177,43 @@ window.addEventListener('DOMContentLoaded', () => {
       const brand = brandSelect.value;
       const product = productSelect.value;
       const description = document.getElementById("description").value.trim();
+      const modelname = document.getElementById("modelname").value.trim();
       const price = parseFloat(document.getElementById("price").value);
       const discount = document.getElementById("discount").value.trim();
       const specs = document.getElementById("specs").value.trim();
       const feature = document.getElementById("feature").value.trim();
       const stock = parseInt(document.getElementById("stock").value);
 
-      if (!brand || !product || !description || isNaN(price)) {
-        alert("Please fill out brand, product, description, and price.");
+      if (!brand || !product || !description || !modelname || isNaN(price) || !specs || !feature || isNaN(stock)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Missing Information',
+          text: 'Please fill out all of the informations.'
+        });
+        return;
+      }
+    
+      if (discount > 50) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid Discount',
+          text: 'Discount cannot be greater than 50%.'
+        });
         return;
       }
 
       const imageElement = document.getElementById("product-image");
       const imageSrc = imageElement.style.display === "block" ? imageElement.src : null;
+      const finalprice = Math.round(price - (price * discount / 100));
 
       const productData = {
         rating: window.generatedRating || 3.5,
         price,
         stock: isNaN(stock) ? null : stock,
         description,
-        discount: discount || null,
+        modelname : modelname,
+        discount: discount ? parseFloat(discount) : 0,
+        finalPrice: finalprice,
         specs,
         feature,
         image: imageSrc || null,
@@ -192,8 +223,11 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById("modal-content").innerHTML = `
         <p><strong>Brand:</strong> ${brand}</p>
         <p><strong>Product:</strong> ${product}</p>
+        <p><strong>Model Name:</strong> ${modelname}</p>
         <p><strong>Description:</strong> ${description}</p>
         <p><strong>Price:</strong> ₱${price}</p>
+        <p><strong>Discount:</strong> ${discount}</p>
+        <p><strong>Final Price:</strong> ₱${finalprice}</p>
         <p><strong>Stock:</strong> ${stock}</p>
         <p><strong>Specs:</strong> ${specs}</p>
         <p><strong>Feature:</strong> ${feature}</p>
@@ -207,15 +241,32 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById("confirm-modal").style.display = "block";
 
       document.getElementById("confirm-add-btn").onclick = async () => {
+
+        showLoadingSpinner();
+
         try {
           const cartRef = doc(db, "cart", userId, brand, product);
           await setDoc(cartRef, productData);
+          hideLoadingSpinner();
           document.getElementById("confirm-modal").style.display = "none";
-          alert(`Product "${product}" from "${brand}" added to your cart!`);
-          window.location.href = "home.html";
+          await Swal.fire({
+            title: "Success!",
+            text: `Product "${product}" from "${brand}" added to your cart!`,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+        });
+          window.location.href = "cart.html";
         } catch (err) {
+          hideLoadingSpinner();  // Also hide spinner if there is an error
           console.error("Firestore error:", err);
-          alert("Failed to add product.");
+          await Swal.fire({
+              title: "Error!",
+              text: "Failed to add product.",
+              icon: "error",
+              timer: 3000,
+              showConfirmButton: false
+          });
         }
       };
 
@@ -261,3 +312,19 @@ window.logoutUser = async function () {
     }
   }
 };
+
+function showLoadingSpinner() {
+  Swal.fire({
+      title: "Saving...",
+      text: "Please Wait...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      willOpen: () => {
+          Swal.showLoading();
+      }
+  });
+}
+
+function hideLoadingSpinner() {
+  Swal.close();
+}

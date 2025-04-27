@@ -31,6 +31,13 @@
         <input type="text" id="firstName" placeholder="First Name *">
         <input type="text" id="middleName" placeholder="Middle Name (Optional)">
         <input type="text" id="lastName" placeholder="Last Name *">
+        <!-- Gender Selection -->
+        <label>Gender:</label><br>
+        <div style="display: flex; gap: 20px; margin: 10px 0;">
+            <label><input type="radio" id="male" name="gender" value="Male"> Male</label>
+            <label><input type="radio" id="female" name="gender" value="Female"> Female</label>
+            <label><input type="radio" id="preferNot" name="gender" value="Prefer not to say"> Prefer not to say</label>
+        </div>
         <input type="text" id="shopName" placeholder="Shop Name *">
         <input type="text" id="address" placeholder="Address *">
         <input type="email" id="email" placeholder="Email">
@@ -39,6 +46,7 @@
         <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" maxlength="6">
         <button id="verifyOtpBtn" onclick="verifyOtp()">Verify Code</button>
         <p id="otpStatus"></p>
+        <input type="tel" id="phone" placeholder="Phone Number *" pattern="[0-9]{10}" maxlength="11">
         <input type="password" id="password" placeholder="Password">
         <input type="password" id="confirmPassword" placeholder="Confirm Password *">
         <button id="signupBtn">Signup</button>

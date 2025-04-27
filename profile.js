@@ -45,13 +45,29 @@ document.addEventListener("DOMContentLoaded", () => {
             if (userDocSnap.exists()) {
                 const userData = userDocSnap.data();
 
-                // Fill form
                 firstNameInput.value = userData.firstName || "";
                 middleNameInput.value = userData.middleName || "";
                 lastNameInput.value = userData.lastName || "";
                 addressInput.value = userData.address || "";
                 shopNameInput.value = userData.shopName || "";
-                phoneNumberInput.value = userData.phoneNumber || "";
+                phoneNumberInput.value = userData.phone || "";
+
+                if (userData.gender) {
+                  const genderRadio = document.querySelector(`input[name="gender"][value="${userData.gender}"]`);
+                  if (genderRadio) genderRadio.checked = true;
+                }
+                
+                const profileImgElement = document.getElementById("profile-img");
+
+                if (profileImgElement) {
+                    if (userData.profileImage) {
+                        profileImgElement.src = userData.profileImage;
+                    } else {
+                        profileImgElement.src = "img_svg/default_profile.svg";
+                    }
+                } else {
+                    console.warn("Profile image element not found");
+                }
 
                 const fullName = `${userData.firstName || ""} ${userData.middleName || ""} ${userData.lastName || ""}`.trim();
                 document.querySelector(".profile-info h1").textContent = fullName || "Unnamed User";

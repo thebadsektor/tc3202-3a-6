@@ -307,4 +307,14 @@ body {
   z-index: -1; /* Behind the modal */
 }
 
-  
+ /* Style disabled input/select fields */
+input:disabled, select:disabled {
+  background-color: transparent; /* No background color change */
+  color: black; /* Black font color */
+  border: 1px solid #ccc; /* Optional border style to make it look normal */
+  cursor: not-allowed; /* Optional: show not-allowed cursor */
+}
+
+input:disabled::placeholder, select:disabled {
+  color: black; /* Ensure placeholder text color is also black */
+} 

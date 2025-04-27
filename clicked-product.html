@@ -4,13 +4,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - TechForecast</title>
+    <title>Home - Castronics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="clicked-product.css">
 </head>
 <body>
     <nav>
@@ -34,57 +34,61 @@
             <button onclick="window.location.href='profile.html'">Profile</button>
             <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
+
         <div id="home" class="section">
-          <h2>My Product</h2>
-
-          <button id="add-product">Add Product</button>
-          <script>
-            document.getElementById("add-product").addEventListener("click", () => {
-              window.location.href = "product.html";
-            });
-          </script>
-          <div id="cart-container"></div>
-
-          <!-- Modal for editing product -->
-            <div id="edit-modal" class="modal" style="display: none;">
-                <div class="modal-content">
-                <div id="modal-product-info">
-                    <img id="modal-product-image" src="" alt="Product Image" style="max-width: 200px;">
-                    <div>
-                    <label>Brand:
-                        <select id="brand" disabled>
-                        <option value="Apple">Apple</option>
-                        <option value="Samsung">Samsung</option>
-                        <option value="Sony">Sony</option>
-                        <option value="HP">HP</option>
-                        <option value="Other Brands">Other Brands</option>
-                        </select>
-                    </label>
-                    <label>Product Category:
-                        <select id="category" disabled>
-                        <option value="Smartphones">Smartphones</option>
-                        <option value="Laptops">Laptops</option>
-                        <option value="Headphones">Headphones</option>
-                        <option value="Tablets">Tablets</option>
-                        <option value="Smart Watches">Smart Watches</option>
-                        </select>
-                    </label>
-                    <label>Model Name: <input type="text" id="modelname" /></label>
-                    <label>Description: <input type="text" id="description" /></label>
-                    <label>Price: <input type="number" id="price" /></label>
-                    <label>Discount: <input type="number" id="discount" /></label>
-                    <label>Specs: <textarea id="specs"></textarea></label>
-                    <label>Features: <textarea id="features"></textarea></label>
-                    <label>Stock: <input type="number" id="stock" /></label>
-                    <div>
-                        <button id="save-btn">Save</button>
-                        <button id="exit-btn">Exit</button>
-                    </div>                    
+            <!-- Product Detail Page -->
+            <div class="product-detail-container">
+                <div class="product-main">
+                    <div class="product-image">
+                        <img id="main-product-image" src="" alt="Product Image">
+                    </div>
+                    <div class="product-info">
+                        <h1 id="product-title">Brand Name - Product Name</h1>
+                        <a href="#" id="product-rating" class="rating-link">Ratings</a>
+                        <ul class="product-details-list">
+                            <li>Description</li>
+                        </ul>
                     </div>
                 </div>
+
+                <div class="product-main">
+                    <div class="product-info">
+                        <ul class="product-details-list" id="specs">
+                        </ul>
+                        <ul class="product-details-list" id="features-list">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Related Products Section -->
+                <div class="related-products">
+                    <h2>Related Products</h2>
+                    <div class="related-products-list">
+                        <!-- Each related product -->
+                        <div class="related-product-card">
+                            <img src="related-product1.jpg" alt="Related Product 1">
+                            <p>Related Product 1</p>
+                        </div>
+                        <div class="related-product-card">
+                            <img src="related-product2.jpg" alt="Related Product 2">
+                            <p>Related Product 2</p>
+                        </div>
+                        <div class="related-product-card">
+                            <img src="related-product3.jpg" alt="Related Product 3">
+                            <p>Related Product 3</p>
+                        </div>
+                        <div class="related-product-card">
+                            <img src="related-product4.jpg" alt="Related Product 4">
+                            <p>Related Product 4</p>
+                        </div>
+                        <div class="related-product-card">
+                            <img src="related-product5.jpg" alt="Related Product 5">
+                            <p>Related Product 5</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-  
+
         </div>
 
         <div id="about" class="section" style="display: none;">
@@ -110,6 +114,7 @@
             </p>
         </div>
     </div>
+    </div>
 
     <script>
         function showSection(sectionId) {
@@ -132,6 +137,6 @@
         }
     </script>
 
-    <script type="module" src="cart.js"></script>
+    <script type="module" src="clicked-product.js"></script>
 </body>
-</html> 
+</html>

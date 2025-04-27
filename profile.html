@@ -55,7 +55,7 @@
         
                 <div class="form-container">
                     <div class="profile-section">
-                        <img src="img_svg/default_profile.svg" alt="Profile Picture" class="profile-image">
+                        <img  id="profile-img" src="" alt="Profile Picture" class="profile-image">
                         <div class="profile-info">
                             <h1>Loading...</h1>
                             <p>Loading...</p>
@@ -84,15 +84,15 @@
                                 <label>Gender</label>
                                 <div class="gender-options">
                                     <label>
-                                        <input type="radio" name="gender" value="Female" checked readonly>
+                                        <input type="radio" name="gender" value="Female" disabled>
                                         Female
                                     </label>
                                     <label>
-                                        <input type="radio" name="gender" value="Male" readonly>
+                                        <input type="radio" name="gender" value="Male" disabled>
                                         Male
                                     </label>
                                     <label>
-                                        <input type="radio" name="gender" value="Other" readonly>
+                                        <input type="radio" name="gender" value="Other" disabled>
                                         Other
                                     </label>
                                 </div>
@@ -111,14 +111,14 @@
                             <div class="form-group">
                                 <label for="email-address">Email Address</label>
                                 <input type="email" id="email-address" name="email-address" disabled>
-                            </div>
+                            </div>                 
+                        </div>
                         
                         <div class="two-column">
                             <div class="form-group">
                                 <label for="phone-number">Phone Number</label>
                                 <input type="text" id="phone-number" name="phone-number" value="Loading..." readonly>
                             </div>
-                        </div>
                         </div>
                     </form>
                 </div>

@@ -292,6 +292,12 @@ function checkEmailExists(email) {
         });
 }
 
+const phoneInput = document.getElementById("phone");
+phoneInput.addEventListener("input", function (e) {
+    // Remove any non-numeric character immediately
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
 // ✅ Signup Function
 async function signupUser() {
     const firstName = document.getElementById("firstName").value.trim();
@@ -303,8 +309,17 @@ async function signupUser() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
+    const phone = document.getElementById("phone").value.trim();
 
-    if (!firstName || !lastName || !shopName || !address || !email || !password || !confirmPassword) {
+    const genderRadios = document.getElementsByName("gender");
+    let selectedGender = "";
+    genderRadios.forEach(radio => {
+        if (radio.checked) {
+            selectedGender = radio.value;
+        }
+    });
+
+    if (!firstName || !lastName || !shopName || !address || !email || !password || !confirmPassword || !phone) {
         Swal.fire({
             title: "Please fill all fields.",
             text: "All fields are required.",
@@ -349,6 +364,16 @@ async function signupUser() {
         });
         return;
     }
+    if (!selectedGender) {
+        Swal.fire({
+            title: "Invalid Gender",
+            text: "Please select your gender.",
+            icon: "warning",
+            timer: 3000,
+            showConfirmButton: false
+        });
+        return;
+    }
     if (!shopRegex.test(shopName)) {
         Swal.fire({
             title: "Invalid Shop Name",
@@ -365,6 +390,16 @@ async function signupUser() {
             text: "Address is required.",
             icon: "warning",
             timer: 3000, // Auto-close after 3 seconds
+            showConfirmButton: false
+        });
+        return;
+    }
+    if (phone.length !== 11 || !phone.startsWith("09")) {
+        Swal.fire({
+            title: "Invalid Phone Number",
+            text: "Phone number must be exactly 11 digits.",
+            icon: "warning",
+            timer: 3000,
             showConfirmButton: false
         });
         return;
@@ -408,9 +443,12 @@ async function signupUser() {
             firstName: firstName,
             middleName: middleName,
             lastName: lastName,
+            gender: selectedGender,
             shopName: shopName,
             address: address,
             email: email,
+            phone : phone,
+            profileImage: "img_svg/default-profile.jpg", 
             createdAt: new Date()
         });
 
@@ -564,7 +602,7 @@ window.resetPassword = async function () {
         }else {
             hideLoadingSpinner();
             Swal.fire({
-                title: "Error Resetting Password",
+                title: "Error Sending Email",
                 text: "Email didn't found.",
                 icon: "error",
                 timer: 3000,

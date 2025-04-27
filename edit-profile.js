@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -18,6 +19,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
+const imageInput = document.getElementById("imageUpload");
+const profileImg = document.getElementById("profile-img");
+
 document.addEventListener("DOMContentLoaded", () => {
     const firstNameInput = document.getElementById("firstName");
     const middleNameInput = document.getElementById("middleName");
@@ -25,10 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailInput = document.getElementById("email");
     const addressInput = document.getElementById("address");
     const shopNameInput = document.getElementById("shopName");
+    const phoneNumberInput = document.getElementById("phone-number");
     const saveButton = document.getElementById("saveButton");
     const editProfileForm = document.getElementById("editProfileForm");
+    const imageInput = document.getElementById("imageUpload");
+    const profileImg = document.getElementById("profile-img");
 
     let originalData = {}; // Store original data for comparison
+    let selectedProfileImageFile = null;
 
     // ✅ Check if user is logged in
     onAuthStateChanged(auth, async (user) => {
@@ -47,6 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     lastNameInput.value = originalData.lastName || "";
                     addressInput.value = originalData.address || "";
                     shopNameInput.value = originalData.shopName || "";
+                    phoneNumberInput.value = originalData.phone || "";
+
+                    if (originalData.gender) {
+                        const genderRadio = document.querySelector(`input[name="gender"][value="${originalData.gender}"]`);
+                        if (genderRadio) genderRadio.checked = true;
+                    }
+                      
+                    if (profileImg) {
+                        profileImg.src = originalData.profileImage || "img_svg/default_profile.svg";
+                    }
 
                     saveButton.disabled = false; // Disable save button initially
                 } else {
@@ -65,22 +83,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /// ✅ Function to check if actual changes are made
     function checkForChanges() {
+        const genderRadio = document.querySelector('input[name="gender"]:checked');
+    
         const currentData = {
             firstName: firstNameInput.value.trim(),
             middleName: middleNameInput.value.trim(),
             lastName: lastNameInput.value.trim(),
             address: addressInput.value.trim(),
-            shopName: shopNameInput.value.trim()
+            shopName: shopNameInput.value.trim(),
+            phone: phoneNumberInput.value.trim(),
+            gender: genderRadio ? genderRadio.value : "",
         };
-
+    
         // Compare if current form state is different from originalData
         const hasChanges = JSON.stringify(currentData) !== JSON.stringify(originalData);
-
+    
         saveButton.disabled = !hasChanges; // Enable button only if actual changes exist
-    }
+    }    
 
     // ✅ Listen for input changes dynamically
     editProfileForm.addEventListener("input", checkForChanges);
+
+    imageInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            selectedProfileImageFile = file;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                profileImg.src = event.target.result; // Preview the new image
+            };
+            reader.readAsDataURL(file);
+            checkForChanges(); // Enable save button if something changed
+        } else {
+            Swal.fire("Invalid File", "Please select a valid image file.", "warning");
+        }
+    });
 
     // ✅ Save changes to Firestore
     editProfileForm.addEventListener("submit", async (e) => {
@@ -100,9 +138,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const lastName = lastNameInput.value.trim();
         const address = addressInput.value.trim();
         const shopName = shopNameInput.value.trim();
+        const phone = phoneNumberInput.value.trim();
+        const genderRadio = document.querySelector('input[name="gender"]:checked');
+        const gender = genderRadio ? genderRadio.value : "";
 
         // ✅ Check for empty fields (excluding optional middle name)
-        if (!firstName || !lastName || !shopName || !address) {
+        if (!firstName || !lastName || !shopName || !address || !phone || !gender) {
             Swal.fire({
                 title: "Missing Fields",
                 text: "Please fill in all required fields.",
@@ -156,6 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             return;
         }
+        if (phone.length !== 11 || !phone.startsWith("09")) {
+            Swal.fire({ title: "Invalid Phone", text: "Enter a valid 11-digit phone number.", icon: "warning", timer: 3000, showConfirmButton: false }); return;
+        }
         if (!address) {
             Swal.fire({
                 title: "Invalid Address",
@@ -172,7 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
             middleNameInput.value !== (originalData.middleName || "") ||
             lastNameInput.value !== (originalData.lastName || "") ||
             addressInput.value !== (originalData.address || "") ||
-            shopNameInput.value !== (originalData.shopName || "");
+            shopNameInput.value !== (originalData.shopName || "") ||
+            phone !== (originalData.phone || "") ||
+            gender !== (originalData.gender || "") ||
+            profileImg.src !== (originalData.profileImage || "");
 
         if (!hasChanges) {
             Swal.fire({
@@ -189,12 +236,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const userDocRef = doc(db, "users", user.uid);
         try {
+
+            let profileImageUrl = originalData.profileImage; // Keep the old image if no new image is selected
+            if (selectedProfileImageFile) {
+                const storage = getStorage();
+                const imageRef = storageRef(storage, `profileImages/${user.uid}`);
+
+                try {
+                    const snapshot = await uploadBytes(imageRef, selectedProfileImageFile);
+                    profileImageUrl = await getDownloadURL(snapshot.ref); // Get the new image URL
+                } catch (error) {
+                    console.error("🔥 Error uploading image:", error);
+                    Swal.fire({
+                        title: "Image Upload Error",
+                        text: "There was an error uploading the profile image.",
+                        icon: "error",
+                        timer: 3000, 
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+            }
+
             await updateDoc(userDocRef, {
                 firstName: firstNameInput.value,
                 middleName: middleNameInput.value,
                 lastName: lastNameInput.value,
                 address: addressInput.value,
-                shopName: shopNameInput.value
+                shopName: shopNameInput.value,
+                phone : phoneNumberInput.value,
+                gender: gender,
+                profileImage: profileImageUrl
             });
 
             hideLoadingSpinner();
@@ -214,12 +286,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 middleName: middleNameInput.value,
                 lastName: lastNameInput.value,
                 address: addressInput.value,
-                shopName: shopNameInput.value
+                shopName: shopNameInput.value,
+                phone: phoneNumberInput.value,
+                gender: gender,
+                profileImage: profileImageUrl
             };
         } catch (error) {
             console.error("🔥 Error updating profile:", error);
         }
     });
+});
+
+const phoneInput = document.getElementById("phone-number");
+phoneInput.addEventListener("input", function (e) {
+    // Remove any non-numeric character immediately
+    this.value = this.value.replace(/[^0-9]/g, '');
 });
 
 // ✅ Show Loading Spinner
