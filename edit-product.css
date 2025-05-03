@@ -264,3 +264,51 @@ button:hover::after {
   color: #999;
   font-style: italic;
 }
+
+
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+h2 {
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.product-image {
+  display: block;
+  margin: 10px auto;
+  max-width: 200px;
+}
+
+#save-changes {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}

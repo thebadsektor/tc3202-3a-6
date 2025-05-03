@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - TechForecast</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="statistics.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - TechForecast</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="edit-product.css" />
 </head>
 <body>
     <nav>
@@ -34,6 +34,7 @@
               </div>
             </div>
         </div>
+
     </nav>
 
     <div class="content-wrapper" id="dynamic-content">
@@ -49,55 +50,23 @@
         </div>
 
         <div id="home" class="section">
-            <div class="statistics-content">
-                <h2>Sales Statistics</h2>
-                <div class="filters">
-                    <div class="filter-item">
-                        <label for="year-select">Year:</label>
-                        <select id="year-select">
-                            <option value="all">All</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    </div>
+          <div class="container">
+            <h2>Edit Product</h2>
+            <img id="modal-product-image" alt="Product Image" class="product-image" />
         
-                    <div class="filter-item">
-                        <label for="brand-select">Brand:</label>
-                        <select id="brand-select">
-                            <option value="all">All Brands</option>
-                            <option value="Apple">Apple</option>
-                            <option value="Sony">Sony</option>
-                            <option value="Samsung">Samsung</option>
-                            <option value="HP">HP</option>
-                            <option value="Other Brands">Other Brands</option>
-                        </select>
-                    </div>
-        
-                    <div class="filter-item">
-                        <label for="product-select">Product:</label>
-                        <select id="product-select">
-                            <option value="all">All Products</option>
-                            <option value="Headphones">Headphones</option>
-                            <option value="Laptops">Laptops</option>
-                            <option value="Smartphones">Smartphones</option>
-                            <option value="Smart Watches">Smart Watches</option>
-                            <option value="Tablets">Tablets</option>
-                        </select>
-                    </div>
-        
-                    <!-- Show Graph Button -->
-                    <div class="button-container">
-                        <button id="showGraphBtn">Show Graph</button>
-                    </div>
-                </div>
-        
-                <!-- Placeholder for Line Graph -->
-                <canvas id="salesChart"></canvas>
-                <canvas id="totalSalesChart"></canvas> <!-- Add this line for the second chart -->
-            </div>
+            <form id="edit-form">
+              <label>Brand: <input type="text" id="brand" readonly /></label>
+              <label>Category: <input type="text" id="category" readonly /></label>
+              <label>Model Name: <input type="text" id="modelname" /></label>
+              <label>Description: <textarea id="description"></textarea></label>
+              <label>Price: <input id="price" /></label>
+              <label>Discount (%): <input type="number" id="discount" /></label>
+              <label>Specs: <textarea id="specs"></textarea></label>
+              <label>Features: <textarea id="features"></textarea></label>
+              <label>Stock: <input type="number" id="stock" /></label>
+              <button id ="save-changes" type="submit">Save Changes</button>
+            </form>
+          </div>
         </div>
 
         <div id="about" class="section" style="display: none;">
@@ -123,6 +92,7 @@
             </p>
         </div>
     </div>
+    </div>
 
     <script>
         function showSection(sectionId) {
@@ -145,6 +115,6 @@
         }
     </script>
 
-    <script type="module" src="statistics.js"></script>
+  <script type="module" src="edit-product.js"></script>
 </body>
 </html>

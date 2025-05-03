@@ -7,8 +7,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import {
   getFirestore,
+  collection,
+  getDocs,
   doc,
-  setDoc
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Firebase config
@@ -173,7 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const userId = user.uid;
 
-    document.getElementById("add-product-btn").addEventListener("click", () => {
+    document.getElementById("add-product-btn").addEventListener("click", async () => {
       const brand = brandSelect.value;
       const product = productSelect.value;
       const description = document.getElementById("description").value.trim();
@@ -183,12 +185,12 @@ window.addEventListener('DOMContentLoaded', () => {
       const specs = document.getElementById("specs").value.trim();
       const feature = document.getElementById("feature").value.trim();
       const stock = parseInt(document.getElementById("stock").value);
-
+    
       if (!brand || !product || !description || !modelname || isNaN(price) || !specs || !feature || isNaN(stock)) {
         Swal.fire({
           icon: 'error',
           title: 'Missing Information',
-          text: 'Please fill out all of the informations.'
+          text: 'Please fill out all of the information.'
         });
         return;
       }
@@ -201,17 +203,27 @@ window.addEventListener('DOMContentLoaded', () => {
         });
         return;
       }
-
+    
       const imageElement = document.getElementById("product-image");
       const imageSrc = imageElement.style.display === "block" ? imageElement.src : null;
       const finalprice = Math.round(price - (price * discount / 100));
 
+      if (!imageSrc || imageSrc.includes("upload-photo.jpg")) {
+        hideLoadingSpinner();
+        Swal.fire({
+          icon: 'error',
+          title: 'Missing Product Image',
+          text: 'Please upload a product image before submitting.'
+        });
+        return;
+      }
+    
       const productData = {
         rating: window.generatedRating || 3.5,
         price,
         stock: isNaN(stock) ? null : stock,
         description,
-        modelname : modelname,
+        modelname: modelname,
         discount: discount ? parseFloat(discount) : 0,
         finalPrice: finalprice,
         specs,
@@ -219,61 +231,45 @@ window.addEventListener('DOMContentLoaded', () => {
         image: imageSrc || null,
         createdAt: new Date()
       };
+    
+      showLoadingSpinner();
+    
+      try {
+        const cartRef = doc(db, "cart", userId, brand, product);
+        await setDoc(cartRef, productData);
 
-      document.getElementById("modal-content").innerHTML = `
-        <p><strong>Brand:</strong> ${brand}</p>
-        <p><strong>Product:</strong> ${product}</p>
-        <p><strong>Model Name:</strong> ${modelname}</p>
-        <p><strong>Description:</strong> ${description}</p>
-        <p><strong>Price:</strong> ₱${price}</p>
-        <p><strong>Discount:</strong> ${discount}</p>
-        <p><strong>Final Price:</strong> ₱${finalprice}</p>
-        <p><strong>Stock:</strong> ${stock}</p>
-        <p><strong>Specs:</strong> ${specs}</p>
-        <p><strong>Feature:</strong> ${feature}</p>
-        <p><strong>Rating:</strong> ${productData.rating} ${renderStars(productData.rating)}</p>
-        ${imageSrc ? `<img src="${imageSrc}" alt="Product Image" style="max-width: 100%; margin-top: 10px;" />` : ''}
-        <div style="margin-top: 15px;">
-          <button id="confirm-add-btn">Confirm</button>
-          <button id="edit-btn" style="margin-left: 10px;">Edit</button>
-        </div>
-      `;
-      document.getElementById("confirm-modal").style.display = "block";
+        const notificationMessage = `✅ "${brand} ${modelname}" was added to your cart for ₱${finalprice} with stocks of ${stock}.`;
 
-      document.getElementById("confirm-add-btn").onclick = async () => {
-
-        showLoadingSpinner();
-
-        try {
-          const cartRef = doc(db, "cart", userId, brand, product);
-          await setDoc(cartRef, productData);
-          hideLoadingSpinner();
-          document.getElementById("confirm-modal").style.display = "none";
-          await Swal.fire({
-            title: "Success!",
-            text: `Product "${product}" from "${brand}" added to your cart!`,
-            icon: "success",
-            timer: 2000,
-            showConfirmButton: false
+        // Add the notification to the user's notification logs sub-collection
+        const notificationRef = doc(db, "notifications", userId, "logs", new Date().toISOString());  // Unique ID for notification
+        await setDoc(notificationRef, {
+          message: notificationMessage,
+          timestamp: new Date(),
+          read: "no"
         });
-          window.location.href = "cart.html";
-        } catch (err) {
-          hideLoadingSpinner();  // Also hide spinner if there is an error
-          console.error("Firestore error:", err);
-          await Swal.fire({
-              title: "Error!",
-              text: "Failed to add product.",
-              icon: "error",
-              timer: 3000,
-              showConfirmButton: false
-          });
-        }
-      };
+        
+        hideLoadingSpinner();
+        await Swal.fire({
+          title: "Success!",
+          text: `Product "${product}" from "${brand}" added to your cart!`,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+        });
 
-      document.getElementById("edit-btn").onclick = () => {
-        document.getElementById("confirm-modal").style.display = "none";
-      };
-    });
+        window.location.href = "cart.html";
+      } catch (err) {
+        hideLoadingSpinner();
+        console.error("Firestore error:", err);
+        await Swal.fire({
+          title: "Error!",
+          text: "Failed to add product.",
+          icon: "error",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      }
+    });    
   });
 });
 
@@ -328,3 +324,144 @@ function showLoadingSpinner() {
 function hideLoadingSpinner() {
   Swal.close();
 }
+
+async function checkNotificationStatus(userId) {
+  try {
+    const bellImage = document.querySelector('.notification-bell');
+    bellImage.src = "img_svg/load.jpg";
+
+    const notificationsRef = collection(db, "notifications", userId, "logs");
+    const querySnapshot = await getDocs(notificationsRef);
+
+    let isUnread = false;
+
+    querySnapshot.forEach((doc) => {
+      const notification = doc.data();
+      if (notification.read === "no") {
+        isUnread = true;
+      }
+    });
+
+    bellImage.src = isUnread ? "img_svg/notificationwith.jpg" : "img_svg/notification.jpg";
+  } catch (error) {
+    console.error("Error checking notification status:", error);
+    const bellImage = document.querySelector('.notification-bell');
+    bellImage.src = "img_svg/notification.jpg";
+  }
+}
+
+// Listen for auth state changes
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    checkNotificationStatus(user.uid);
+  }
+});
+
+// Function to toggle the visibility of notifications when the bell is clicked
+function toggleNotifications() {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if they are not already loaded
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+}
+
+async function fetchNotifications() {
+  const user = auth.currentUser;
+  if (!user) {
+    console.error("No user is signed in.");
+    return;
+  }
+
+  const userId = user.uid;
+  const notificationsRef = collection(db, "notifications", userId, "logs");
+
+  try {
+    const querySnapshot = await getDocs(notificationsRef);
+
+    const notificationList = document.getElementById("notifications-list");
+    notificationList.innerHTML = "";
+
+    // 👉 Check if there are no notifications
+    if (querySnapshot.empty) {
+      notificationList.innerHTML = `<div class="notification empty">Empty notification</div>`;
+      return;
+    }
+
+    // Display each notification
+    querySnapshot.forEach(doc => {
+      const notification = doc.data();
+      const notificationElement = document.createElement("div");
+      notificationElement.classList.add("notification");
+
+      if (notification.read === "no") {
+        notificationElement.classList.add("unread");
+      } else {
+        notificationElement.classList.add("read");
+      }
+
+      notificationElement.innerHTML = `
+        <p>${notification.message}</p>
+        <span class="timestamp">${new Date(notification.timestamp.seconds * 1000).toLocaleString()}</span>
+      `;
+
+      notificationList.appendChild(notificationElement);
+    });
+
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+  }
+}
+
+window.toggleNotifications = function () {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if container is shown
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+};
+
+async function deleteAllNotifications() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = collection(db, "notifications", userId, "logs");
+
+  const snapshot = await getDocs(logsRef);
+  const batch = writeBatch(db);
+
+  snapshot.forEach(doc => {
+    batch.delete(doc.ref);
+  });
+
+  await batch.commit();
+  document.getElementById("notifications-list").innerHTML = "";
+  location.reload(); // Refresh the page to update bell image and UI
+}
+
+async function markAllAsRead() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = collection(db, "notifications", userId, "logs");
+
+  const snapshot = await getDocs(logsRef);
+  const batch = writeBatch(db);
+
+  snapshot.forEach(doc => {
+    batch.update(doc.ref, { read: "yes" });
+  });
+
+  await batch.commit();
+  fetchNotifications(); // Optional: update UI
+  location.reload();    // Refresh the page to update the bell image
+}
+
+window.markAllAsRead = markAllAsRead;
+window.deleteAllNotifications = deleteAllNotifications;

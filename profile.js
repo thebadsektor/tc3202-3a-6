@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, writeBatch, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Firebase Configuration
@@ -136,3 +136,143 @@ window.logoutUser = async function () {
   }
 };
 
+async function checkNotificationStatus(userId) {
+    try {
+      const bellImage = document.querySelector('.notification-bell');
+      bellImage.src = "img_svg/load.jpg";
+  
+      const notificationsRef = collection(db, "notifications", userId, "logs");
+      const querySnapshot = await getDocs(notificationsRef);
+  
+      let isUnread = false;
+  
+      querySnapshot.forEach((doc) => {
+        const notification = doc.data();
+        if (notification.read === "no") {
+          isUnread = true;
+        }
+      });
+  
+      bellImage.src = isUnread ? "img_svg/notificationwith.jpg" : "img_svg/notification.jpg";
+    } catch (error) {
+      console.error("Error checking notification status:", error);
+      const bellImage = document.querySelector('.notification-bell');
+      bellImage.src = "img_svg/notification.jpg";
+    }
+  }
+  
+  // Listen for auth state changes
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      checkNotificationStatus(user.uid);
+    }
+  });
+  
+// Function to toggle the visibility of notifications when the bell is clicked
+function toggleNotifications() {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if they are not already loaded
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+}
+
+async function fetchNotifications() {
+  const user = auth.currentUser;
+  if (!user) {
+    console.error("No user is signed in.");
+    return;
+  }
+
+  const userId = user.uid;
+  const notificationsRef = collection(db, "notifications", userId, "logs");
+
+  try {
+    const querySnapshot = await getDocs(notificationsRef);
+
+    const notificationList = document.getElementById("notifications-list");
+    notificationList.innerHTML = "";
+
+    // 👉 Check if there are no notifications
+    if (querySnapshot.empty) {
+      notificationList.innerHTML = `<div class="notification empty">Empty notification</div>`;
+      return;
+    }
+
+    // Display each notification
+    querySnapshot.forEach(doc => {
+      const notification = doc.data();
+      const notificationElement = document.createElement("div");
+      notificationElement.classList.add("notification");
+
+      if (notification.read === "no") {
+        notificationElement.classList.add("unread");
+      } else {
+        notificationElement.classList.add("read");
+      }
+
+      notificationElement.innerHTML = `
+        <p>${notification.message}</p>
+        <span class="timestamp">${new Date(notification.timestamp.seconds * 1000).toLocaleString()}</span>
+      `;
+
+      notificationList.appendChild(notificationElement);
+    });
+
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+  }
+}
+
+window.toggleNotifications = function () {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if container is shown
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+};
+
+async function deleteAllNotifications() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = collection(db, "notifications", userId, "logs");
+
+  const snapshot = await getDocs(logsRef);
+  const batch = writeBatch(db);
+
+  snapshot.forEach(doc => {
+    batch.delete(doc.ref);
+  });
+
+  await batch.commit();
+  document.getElementById("notifications-list").innerHTML = "";
+  location.reload(); // Refresh the page to update bell image and UI
+}
+
+async function markAllAsRead() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = collection(db, "notifications", userId, "logs");
+
+  const snapshot = await getDocs(logsRef);
+  const batch = writeBatch(db);
+
+  snapshot.forEach(doc => {
+    batch.update(doc.ref, { read: "yes" });
+  });
+
+  await batch.commit();
+  fetchNotifications(); // Optional: update UI
+  location.reload();    // Refresh the page to update the bell image
+}
+
+window.markAllAsRead = markAllAsRead;
+window.deleteAllNotifications = deleteAllNotifications;

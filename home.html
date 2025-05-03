@@ -21,6 +21,20 @@
                 <input type="text" placeholder="Search..." class="search-input">
             </div>
         </div>
+
+        <div class="nav-bell">
+            <img src="img_svg/notification.jpg" alt="Notifications" class="notification-bell" onclick="toggleNotifications()">
+            
+            <div id="notification-container" class="notification-container" style="display: none;">
+              <div id="notifications-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
+          
+              <div style="display: flex; justify-content: space-between; padding: 10px; border-top: 1px solid #ccc;">
+                <button onclick="deleteAllNotifications()" style="padding: 5px 10px;">Delete Notifications</button>
+                <button onclick="markAllAsRead()" style="padding: 5px 10px;">Read All</button>
+              </div>
+            </div>
+        </div>
+
     </nav>
 
     <div class="content-wrapper" id="dynamic-content">

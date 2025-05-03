@@ -318,3 +318,67 @@ input:disabled, select:disabled {
 input:disabled::placeholder, select:disabled {
   color: black; /* Ensure placeholder text color is also black */
 } 
+
+.nav-bell {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.notification-bell {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.notification-bell:hover {
+  transform: scale(1.1);
+}
+
+/* Style for the notification container */
+.notification-container {
+  position: absolute;
+  top: 60px; /* Adjust based on your layout */
+  right: 10px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto; /* Make it scrollable */
+  padding: 10px;
+  display: none; /* Initially hidden */
+}
+
+/* Style for individual notifications */
+.notification {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.notification.unread {
+  background-color: #f0f0f0; /* Light gray */
+  font-weight: bold;
+}
+
+.notification.read {
+  background-color: white;
+  font-weight: normal;
+}
+
+.notification .timestamp {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+  display: block;
+}
+
+.notification.empty {
+  text-align: center;
+  padding: 1rem;
+  color: #999;
+  font-style: italic;
+}

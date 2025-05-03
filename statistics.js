@@ -2046,3 +2046,158 @@ window.logoutUser = async function () {
         }
     }
   };
+
+// Function to check the read status of notifications and update the bell icon
+async function checkNotificationStatus(userId) {
+    try {
+        // Set loading image while fetching notifications
+        const bellImage = document.querySelector('.notification-bell');
+        bellImage.src = "img_svg/load.jpg"; // Set the loading image
+  
+        // Reference to the user's notification logs
+        const notificationsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+        
+        // Get all notifications for the user
+        const querySnapshot = await notificationsRef.get();
+  
+        let isUnread = false;
+  
+        // Loop through all notifications and check the read status
+        querySnapshot.forEach(doc => {
+            const notification = doc.data();
+            if (notification.read === "no") {
+                isUnread = true; // If there's any unread notification, set the flag to true
+            }
+        });
+  
+        // Update the bell image based on the unread status
+        if (isUnread) {
+            bellImage.src = "img_svg/notificationwith.jpg"; // Set image to notificationwith.jpg if there's an unread notification
+        } else {
+            bellImage.src = "img_svg/notification.jpg"; // Set image to notification.jpg if all are read
+        }
+  
+    } catch (error) {
+        console.error("Error checking notification status:", error);
+        const bellImage = document.querySelector('.notification-bell');
+        bellImage.src = "img_svg/notification.jpg"; // Fallback to the default image if there's an error
+    }
+  }
+  
+  // Listen for auth state changes to check the notification status for logged-in user
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        const userId = user.uid;
+        // Check notification status for the logged-in user
+        checkNotificationStatus(userId);
+    }
+  });
+  
+  // Function to toggle the visibility of notifications when the bell is clicked
+  function toggleNotifications() {
+    const notificationContainer = document.getElementById("notification-container");
+    notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+    
+    // Fetch and display notifications if they are not already loaded
+    if (notificationContainer.style.display === "block") {
+        fetchNotifications();
+    }
+  }
+  
+  async function fetchNotifications() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+      console.error("No user is signed in.");
+      return;
+    }
+  
+    const userId = user.uid;
+    const notificationsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+  
+    try {
+      const querySnapshot = await notificationsRef.get();
+  
+      const notificationList = document.getElementById("notifications-list");
+      notificationList.innerHTML = "";
+  
+      // 👉 Check if there are no notifications
+      if (querySnapshot.empty) {
+        notificationList.innerHTML = `<div class="notification empty">Empty notification</div>`;
+        return;
+      }
+  
+      // Display each notification
+      querySnapshot.forEach(doc => {
+        const notification = doc.data();
+        const notificationElement = document.createElement("div");
+        notificationElement.classList.add("notification");
+  
+        if (notification.read === "no") {
+          notificationElement.classList.add("unread");
+        } else {
+          notificationElement.classList.add("read");
+        }
+  
+        notificationElement.innerHTML = `
+          <p>${notification.message}</p>
+          <span class="timestamp">${new Date(notification.timestamp.seconds * 1000).toLocaleString()}</span>
+        `;
+  
+        notificationList.appendChild(notificationElement);
+      });
+  
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  }
+  
+  window.toggleNotifications = function () {
+    const notificationContainer = document.getElementById("notification-container");
+    notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+    
+    // Fetch and display notifications if container is shown
+    if (notificationContainer.style.display === "block") {
+        fetchNotifications();
+    }
+  };
+  
+  async function deleteAllNotifications() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+  
+    const userId = user.uid;
+    const logsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+  
+    const snapshot = await logsRef.get();
+    const batch = firebase.firestore().batch();
+  
+    snapshot.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+  
+    await batch.commit();
+    document.getElementById("notifications-list").innerHTML = "";
+    location.reload(); // Refresh the page to update bell image and UI
+  }
+  
+  async function markAllAsRead() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+  
+    const userId = user.uid;
+    const logsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+  
+    const snapshot = await logsRef.get();
+    const batch = firebase.firestore().batch();
+  
+    snapshot.forEach(doc => {
+      batch.update(doc.ref, { read: "yes" });
+    });
+  
+    await batch.commit();
+    fetchNotifications(); // Optional: update UI
+    location.reload();    // Refresh the page to update the bell image
+  }
+  
+  window.markAllAsRead = markAllAsRead;
+  window.deleteAllNotifications = deleteAllNotifications;

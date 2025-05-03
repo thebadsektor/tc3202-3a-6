@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function showRelatedProducts(currentBrand, currentProduct) {
+  currentBrand = normalizeInput(currentBrand);
+  currentProduct = normalizeInput(currentProduct);
+
   const relatedProductsContainer = document.querySelector(".related-products-list");
   relatedProductsContainer.innerHTML = ''; // Clear previous products
 
@@ -46,16 +49,16 @@ function showRelatedProducts(currentBrand, currentProduct) {
 
   // 3. Create 3 same-brand-different-product cards
   selectedSameBrandProducts.forEach(product => {
-      createProductCard(currentBrand, product);
+    createProductCard(currentBrand, product);
   });
 
   // 4. Create 2 different-brand-same-product cards
   selectedOtherBrands.forEach(brand => {
-      createProductCard(brand, currentProduct);
+    createProductCard(brand, currentProduct);
   });
 }
 
-// Helper to create and display a product card
+// Create and display a product card
 function createProductCard(brand, product) {
   const relatedProductsContainer = document.querySelector(".related-products-list");
 
@@ -63,14 +66,14 @@ function createProductCard(brand, product) {
   card.classList.add("related-product-card");
 
   const img = document.createElement("img");
-  img.src = `images/${brand}-${product}.jpg`;
-  img.alt = `${capitalize(brand)} ${capitalize(product.replace("_", " "))}`;
+  img.src = getImagePath(brand, product);
+  img.alt = `${formatName(brand)} ${formatName(product)}`;
   img.onerror = function () {
-      this.src = "images/default.png"; // fallback if not found
+    this.src = "images/default.png";
   };
 
   const title = document.createElement("p");
-  title.textContent = `${capitalize(brand)} ${capitalize(product.replace("_", " "))}`;
+  title.textContent = `${formatName(brand)} ${formatName(product)}`;
 
   const link = document.createElement("a");
   link.href = `clicked-product.html?brand=${brand}&product=${product}`;
@@ -81,17 +84,30 @@ function createProductCard(brand, product) {
   relatedProductsContainer.appendChild(card);
 }
 
-// Shuffle helper (randomizes an array)
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-  }
+// Format file path for the image
+function getImagePath(brand, product) {
+  return `images/${brand}-${product}.jpg`;
 }
 
-// Capitalize helper
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+// Normalize user-friendly input into consistent keys
+function normalizeInput(text) {
+  return text.trim().toLowerCase().replace(/ /g, '_');
+}
+
+// Convert internal format to readable name (for UI display)
+function formatName(text) {
+  return text
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+// In-place array shuffling
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 function updateProductDetails(brand, product) {
@@ -230,6 +246,113 @@ function updateProductDetails(brand, product) {
                 featuresList.appendChild(subFeatureItem);
             });
         });
+    } else if (brand === "Samsung" && product.toLowerCase().includes("laptop")) {
+      const description = `Samsung laptops, especially under the Galaxy Book series, are known for sleek designs, vivid AMOLED displays, and seamless integration with Samsung’s Galaxy ecosystem. 
+      These devices offer excellent portability, premium build quality, and features that cater to both professionals and casual users.
+      Samsung emphasizes long battery life, ultra-lightweight builds, and enhanced productivity with tools like S Pen support and Windows integration.`;
+  
+      const specifications = [
+          "• Operating System – Windows 11 Home or Pro",
+          "• Processor – Intel Core i5/i7/i9 (12th or 13th Gen), some AMD Ryzen variants",
+          "• Display – AMOLED or LED Full HD/QHD, touchscreen options available",
+          "• Graphics – Intel Iris Xe, NVIDIA GeForce MX or RTX (higher-end models)",
+          "• RAM – 8GB to 32GB LPDDR4X/DDR5",
+          "• Storage – 256GB to 1TB SSD (NVMe)",
+          "• Build – Aluminum or Magnesium chassis, ultra-slim profile",
+          "• Battery – Up to 20 hours on select models, fast charging via USB-C",
+          "• Ports – USB-C, Thunderbolt 4, USB-A, HDMI, microSD card reader",
+          "• Keyboard – Backlit keyboard, optional S Pen support",
+          "• Audio – AKG-tuned speakers, Dolby Atmos support",
+          "• Biometrics – Fingerprint sensor, Windows Hello face unlock",
+          "• Connectivity – Wi-Fi 6/6E, Bluetooth 5.1+, optional 5G/4G LTE",
+          "• Weight – Ranges from 0.9kg to 1.5kg (ultra-portable)"
+      ];
+  
+      const features = [
+          {
+              title: "Galaxy Ecosystem Integration",
+              subfeatures: [
+                  "--Samsung Multi Control for seamless interaction with Galaxy tablets/phones",
+                  "--Easy file and clipboard sharing across Galaxy devices",
+                  "--Samsung Notes sync, SmartThings control panel"
+              ]
+          },
+          {
+              title: "Display & Design",
+              subfeatures: [
+                  "--AMOLED displays with vibrant colors and sharp detail",
+                  "--Ultra-light and slim design, ideal for travel",
+                  "--Touchscreen with optional S Pen input (on select models)"
+              ]
+          },
+          {
+              title: "Performance & Productivity",
+              subfeatures: [
+                  "--Latest Intel or AMD processors for smooth multitasking",
+                  "--Large RAM and SSD options for speed and storage",
+                  "--Optimized for Windows 11 with enhanced Samsung software"
+              ]
+          },
+          {
+              title: "Security & Privacy",
+              subfeatures: [
+                  "--Fingerprint reader and facial recognition",
+                  "--Samsung Knox security built into hardware and software",
+                  "--Secure Boot and BIOS protection"
+              ]
+          },
+          {
+              title: "Battery & Charging",
+              subfeatures: [
+                  "--Long battery life (up to 20 hours)",
+                  "--Super-fast USB-C charging",
+                  "--Lightweight charger for portability"
+              ]
+          },
+          {
+              title: "Multimedia & Sound",
+              subfeatures: [
+                  "--High-fidelity AKG stereo speakers",
+                  "--Dolby Atmos for immersive sound",
+                  "--HD webcam with AI noise reduction mic (ideal for video calls)"
+              ]
+          }
+      ];
+  
+      // ✨ Add Description
+      const descriptionHTML = `<strong>✨ Description:</strong><br>${description.replace(/\n/g, "<br>")}`;
+      const descriptionItem = document.createElement('li');
+      descriptionItem.innerHTML = descriptionHTML;
+      detailsList.appendChild(descriptionItem);
+  
+      // 🔧 Add General Specifications
+      const specsTitle = document.createElement('li');
+      specsTitle.innerHTML = `<strong>🔧 General Specifications:</strong>`;
+      specsList.appendChild(specsTitle);
+  
+      specifications.forEach(spec => {
+          const specItem = document.createElement('li');
+          specItem.textContent = spec;
+          specsList.appendChild(specItem);
+      });
+  
+      // ⚙️ Add Features
+      const featuresTitle = document.createElement('li');
+      featuresTitle.innerHTML = `<strong>⚙️ Features:</strong>`;
+      featuresList.appendChild(featuresTitle);
+  
+      features.forEach(feature => {
+          const featureItem = document.createElement('li');
+          featureItem.innerHTML = `<strong>${feature.title}</strong>`;
+          featuresList.appendChild(featureItem);
+  
+          feature.subfeatures.forEach(sub => {
+              const subFeatureItem = document.createElement('li');
+              subFeatureItem.textContent = sub;
+              subFeatureItem.style.marginLeft = '20px'; // indent for subfeatures
+              featuresList.appendChild(subFeatureItem);
+          });
+      });
     }
 }
 
@@ -291,3 +414,112 @@ window.logoutUser = async function () {
       }
   }
 };
+
+// Function to toggle the visibility of notifications when the bell is clicked
+function toggleNotifications() {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if they are not already loaded
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+}
+
+async function fetchNotifications() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    console.error("No user is signed in.");
+    return;
+  }
+
+  const userId = user.uid;
+  const notificationsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+
+  try {
+    const querySnapshot = await notificationsRef.get();
+
+    const notificationList = document.getElementById("notifications-list");
+    notificationList.innerHTML = "";
+
+    // 👉 Check if there are no notifications
+    if (querySnapshot.empty) {
+      notificationList.innerHTML = `<div class="notification empty">Empty notification</div>`;
+      return;
+    }
+
+    // Display each notification
+    querySnapshot.forEach(doc => {
+      const notification = doc.data();
+      const notificationElement = document.createElement("div");
+      notificationElement.classList.add("notification");
+
+      if (notification.read === "no") {
+        notificationElement.classList.add("unread");
+      } else {
+        notificationElement.classList.add("read");
+      }
+
+      notificationElement.innerHTML = `
+        <p>${notification.message}</p>
+        <span class="timestamp">${new Date(notification.timestamp.seconds * 1000).toLocaleString()}</span>
+      `;
+
+      notificationList.appendChild(notificationElement);
+    });
+
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+  }
+}
+
+window.toggleNotifications = function () {
+  const notificationContainer = document.getElementById("notification-container");
+  notificationContainer.style.display = (notificationContainer.style.display === "none" || notificationContainer.style.display === "") ? "block" : "none";
+  
+  // Fetch and display notifications if container is shown
+  if (notificationContainer.style.display === "block") {
+      fetchNotifications();
+  }
+};
+
+async function deleteAllNotifications() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+
+  const snapshot = await logsRef.get();
+  const batch = firebase.firestore().batch();
+
+  snapshot.forEach(doc => {
+    batch.delete(doc.ref);
+  });
+
+  await batch.commit();
+  document.getElementById("notifications-list").innerHTML = "";
+  location.reload(); // Refresh the page to update bell image and UI
+}
+
+async function markAllAsRead() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const userId = user.uid;
+  const logsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
+
+  const snapshot = await logsRef.get();
+  const batch = firebase.firestore().batch();
+
+  snapshot.forEach(doc => {
+    batch.update(doc.ref, { read: "yes" });
+  });
+
+  await batch.commit();
+  fetchNotifications(); // Optional: update UI
+  location.reload();    // Refresh the page to update the bell image
+}
+
+window.markAllAsRead = markAllAsRead;
+window.deleteAllNotifications = deleteAllNotifications;

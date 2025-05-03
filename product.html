@@ -11,45 +11,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="product.css">
-    <style>
-      #confirm-modal {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          z-index: 1000;
-          justify-content: center;
-          align-items: center;
-      }
-
-      #modal-content {
-          background: white;
-          padding: 20px;
-          max-width: 500px;
-          max-height: 80vh;
-          overflow-y: auto;
-          border-radius: 12px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-          position: relative;
-      }
-
-      #modal-content button {
-          padding: 8px 16px;
-          border: none;
-          border-radius: 6px;
-          background: #007bff;
-          color: white;
-          cursor: pointer;
-      }
-
-      #modal-content button#edit-btn {
-          background: gray;
-      }
-
-      #modal-content button:hover {
-          opacity: 0.9;
-      }
-  </style>
 </head>
 <body>
     <nav>
@@ -60,6 +21,19 @@
                 <input type="text" placeholder="Search..." class="search-input">
             </div>
         </div>
+
+        <div class="nav-bell">
+          <img src="img_svg/notification.jpg" alt="Notifications" class="notification-bell" onclick="toggleNotifications()">
+          
+          <div id="notification-container" class="notification-container" style="display: none;">
+            <div id="notifications-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
+        
+            <div style="display: flex; justify-content: space-between; padding: 10px; border-top: 1px solid #ccc;">
+              <button onclick="deleteAllNotifications()" style="padding: 5px 10px;">Delete Notifications</button>
+              <button onclick="markAllAsRead()" style="padding: 5px 10px;">Read All</button>
+            </div>
+          </div>
+      </div>
     </nav>
 
     <div class="content-wrapper" id="dynamic-content">
@@ -152,13 +126,6 @@
         
               <button id="add-product-btn">Add Product to Cart</button>
             </div>
-        
-            <div id="confirm-modal">
-              <div id="modal-content">
-                <!-- JS will inject content here -->
-              </div>
-            </div>
-            
           </div>
         </div>
 
