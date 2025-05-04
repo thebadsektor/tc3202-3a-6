@@ -10,6 +10,7 @@ import {
   writeBatch,
   doc,
   getDoc,
+  query, orderBy,
   updateDoc,
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -44,6 +45,7 @@ if (!brand || !productId) {
 }
 
 onAuthStateChanged(auth, async (user) => {
+  showLoadingSpinner();
   if (!user) {
     alert("You must be signed in.");
     return;
@@ -83,6 +85,8 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById("specs").value = data.specs || "";
   document.getElementById("features").value = data.feature || "";
   document.getElementById("stock").value = data.stock || 1;
+
+  hideLoadingSpinner();
 
   document.getElementById("edit-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -207,18 +211,18 @@ async function saveProduct() {
 function hideLoadingSpinner() {
     Swal.close(); // Closes the loading alert before showing a new one
   }
-  
-  function showloginLoadingSpinner() {
+
+  function showLoadingSpinner() {
     Swal.fire({
-        title: "Deleting...",
-        text: "Please wait...",
+        title: "Loading...",
+        text: "Please Wait...",
         allowOutsideClick: false,
         showConfirmButton: false,
         willOpen: () => {
             Swal.showLoading();
         }
     });
-  }
+}
   
   function showsavingspinner() {
     Swal.fire({
@@ -320,9 +324,10 @@ async function fetchNotifications() {
 
   const userId = user.uid;
   const notificationsRef = collection(db, "notifications", userId, "logs");
+  const q = query(notificationsRef, orderBy("timestamp", "desc"));
 
   try {
-    const querySnapshot = await getDocs(notificationsRef);
+    const querySnapshot = await getDocs(q);
 
     const notificationList = document.getElementById("notifications-list");
     notificationList.innerHTML = "";

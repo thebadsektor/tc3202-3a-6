@@ -382,3 +382,33 @@ input:disabled::placeholder, select:disabled {
   color: #999;
   font-style: italic;
 }
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* spacing between stars and number */
+  margin: 5px 0;
+}
+
+.stars-outer {
+  position: relative;
+  display: inline-block;
+  font-family: FontAwesome, Arial, sans-serif;
+  color: #ccc;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #f8ce0b;
+  width: 0%;
+}
+
+.stars-outer::before,
+.stars-inner::before {
+  content: '★★★★★';
+  font-size: 1.2rem;
+}

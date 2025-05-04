@@ -234,6 +234,9 @@ def predict_top_trending():
             'predicted_stock': 'mean'
         }).sort_values(by='predicted_stock', ascending=False).head(25).reset_index()
 
+        # Divide predicted stock by 9 before rounding and calculating sales
+        top_products['predicted_stock'] = top_products['predicted_stock'] / 9
+
         # Round again to ensure clean output
         top_products['predicted_price'] = top_products['predicted_price'].apply(lambda x: format(x, '.2f'))
         top_products['predicted_stock'] = top_products['predicted_stock'].apply(lambda x: int(round(x)))

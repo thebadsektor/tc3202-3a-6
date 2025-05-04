@@ -202,9 +202,7 @@ button:hover::after {
 }
    
 
-body {
 
-}
 
 .form-container {
   display: flex;
@@ -349,4 +347,46 @@ textarea {
   padding: 1rem;
   color: #999;
   font-style: italic;
+}
+
+
+.rating-link {
+  font-size: 1.2em;
+  color: #f39c12;
+  text-decoration: none;
+}
+
+/* Outer container for the stars (empty stars) */
+.stars-outer {
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+  color: #ccc; /* Grey for unfilled stars */
+}
+
+/* Set up the stars for the outer container (empty stars) */
+.stars-outer::before {
+  content: "★★★★★"; /* Default 5 empty stars */
+}
+
+/* Inner container for filled stars */
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #f8ce0b; /* Gold for filled stars */
+}
+
+/* Set up the stars for the inner container (filled stars) */
+.stars-inner::before {
+  content: "★★★★★"; /* Default 5 empty stars */
+}
+
+/* Styling for the rating number */
+.rating-number {
+  margin-left: 6px;
+  font-size: 1em;
+  color: #333; /* Dark color for the number */
 }

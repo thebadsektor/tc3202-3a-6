@@ -2115,7 +2115,7 @@ async function checkNotificationStatus(userId) {
     const notificationsRef = firebase.firestore().collection("notifications").doc(userId).collection("logs");
   
     try {
-      const querySnapshot = await notificationsRef.get();
+      const querySnapshot = await notificationsRef.orderBy("timestamp", "desc").get();
   
       const notificationList = document.getElementById("notifications-list");
       notificationList.innerHTML = "";

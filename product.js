@@ -10,6 +10,9 @@ import {
   collection,
   getDocs,
   doc,
+  setDoc,
+  query, 
+  orderBy,
   writeBatch
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
@@ -39,31 +42,31 @@ function renderStars(rating) {
 }
 
 const predictedData = {
-  "Samsung Smartphones": { price: 29368.33, stock: 235 },
-  "Sony Smartphones": { price: 30567.06, stock: 233 },
-  "HP Laptops": { price: 34460.74, stock: 232 },
-  "Sony Tablets": { price: 30694.29, stock: 232 },
-  "Sony Smart Watches": { price: 24788.04, stock: 230 },
-  "Other Brands Smartphones": { price: 28637.24, stock: 230 },
-  "Apple Smartphones": { price: 48419.10, stock: 230 },
-  "HP Tablets": { price: 29060.67, stock: 230 },
-  "Samsung Headphones": { price: 18887.70, stock: 229 },
-  "Apple Laptops": { price: 52822.96, stock: 229 },
-  "Apple Tablets": { price: 47766.73, stock: 228 },
-  "Other Brands Smart Watches": { price: 26634.55, stock: 228 },
-  "Other Brands Headphones": { price: 26911.56, stock: 226 },
-  "Apple Smart Watches": { price: 30969.19, stock: 226 },
-  "Samsung Laptops": { price: 43594.67, stock: 225 },
-  "Other Brands Laptops": { price: 30463.09, stock: 225 },
-  "Samsung Smart Watches": { price: 25302.95, stock: 224 },
-  "Samsung Tablets": { price: 32463.03, stock: 224 },
-  "HP Headphones": { price: 15886.79, stock: 223 },
-  "Sony Headphones": { price: 20862.44, stock: 223 },
-  "Other Brands Tablets": { price: 28273.81, stock: 223 },
-  "Sony Laptops": { price: 36947.13, stock: 223 },
-  "Apple Headphones": { price: 25417.70, stock: 222 },
-  "HP Smartphones": { price: 22740.73, stock: 222 },
-  "HP Smart Watches": { price: 18022.98, stock: 219 }
+  "Samsung Smartphones": { price: 29399.00, stock: 152 },
+  "Sony Smartphones": { price: 30599.00, stock: 157 },
+  "HP Laptops": { price: 34499.00, stock: 89 },
+  "Sony Tablets": { price: 30699.00, stock: 126 },
+  "Sony Smart Watches": { price: 12999.00, stock: 109 },
+  "Other Brands Smartphones": { price: 19999.00, stock: 167 },
+  "Apple Smartphones": { price: 49999.00, stock: 176 },
+  "HP Tablets": { price: 29999.00, stock: 130 },
+  "Samsung Headphones": { price: 14799.00, stock: 146 },
+  "Apple Laptops": { price: 64999.00, stock: 115 },
+  "Apple Tablets": { price: 42990.00, stock: 117 },
+  "Other Brands Smart Watches": { price: 15999.00, stock: 106 },
+  "Other Brands Headphones": { price: 10999.00, stock: 150 },
+  "Apple Smart Watches": { price: 30990.00, stock: 103 },
+  "Samsung Laptops": { price: 56399.00, stock: 125 },
+  "Other Brands Laptops": { price: 41499.00, stock: 130 },
+  "Samsung Smart Watches": { price: 16599.00, stock: 117 },
+  "Samsung Tablets": { price: 324699.00, stock: 124 },
+  "HP Headphones": { price: 3999.00, stock: 128 },
+  "Sony Headphones": { price: 5499.00, stock: 127 },
+  "Other Brands Tablets": { price: 15399.00, stock: 112 },
+  "Sony Laptops": { price: 34799.00, stock: 119 },
+  "Apple Headphones": { price: 8490.00, stock: 145 },
+  "HP Smartphones": { price: 18899.00, stock: 148 },
+  "HP Smart Watches": { price: 1999.00, stock: 120 }
 };
 
 function getPrediction(brand, product) {
@@ -122,14 +125,66 @@ document.getElementById("show-suggested-photo-btn").addEventListener("click", ()
 window.addEventListener('DOMContentLoaded', () => {
   const brandSelect = document.getElementById("brand");
   const productSelect = document.getElementById("category");
-  const rating = parseFloat((Math.random() * 4 + 1).toFixed(1));
-  window.generatedRating = rating;
+  const ratingElement = document.getElementById("rating-number");
+  const starsElement = document.getElementById("rating-stars");
 
-  if (urlBrand) brandSelect.value = urlBrand;
-  if (urlProduct) productSelect.value = urlProduct;
+  const ratings = {
+    // Samsung Products
+    "Samsung_Smartphones": 4.3,
+    "Samsung_Laptops": 4.5,
+    "Samsung_Tablets": 4.2,
+    "Samsung_Headphones": 4.7,
+    "Samsung_Smart Watches": 4.6,
 
-  document.getElementById("rating-number").textContent = rating;
-  document.getElementById("rating-stars").textContent = renderStars(rating);
+    // Apple Products
+    "Apple_Smartphones": 4.8,
+    "Apple_Laptops": 4.6,
+    "Apple_Tablets": 4.5,
+    "Apple_Headphones": 4.7,
+    "Apple_Smart Watches": 4.5,
+
+    // HP Products
+    "HP_Smartphones": 4.2,
+    "HP_Laptops": 4.4,
+    "HP_Tablets": 4.1,
+    "HP_Headphones": 4.3,
+    "HP_Smart Watches": 4.2,
+
+    // Sony Products
+    "Sony_Smartphones": 4.4,
+    "Sony_Laptops": 4.3,
+    "Sony_Tablets": 4.2,
+    "Sony_Headphones": 4.5,
+    "Sony_Smart Watches": 4.3,
+
+    // Other Brands
+    "Other Brands_Smartphones": 4.0,
+    "Other Brands_Laptops": 4.1,
+    "Other Brands_Tablets": 3.9,
+    "Other Brands_Headphones": 4.2,
+    "Other Brands_Smart Watches": 4.0
+  };
+
+  const updateRating = () => {
+    const brand = brandSelect.value;
+    const product = productSelect.value;
+    const key = `${brand}_${product}`;
+
+    const rating = ratings[key] || 0;
+
+    window.generatedRating = rating;
+
+    ratingElement.textContent = rating.toFixed(1);  // Update the rating number
+    const percentage = (rating / 5) * 100;  // Convert to percentage
+    document.querySelector('.stars-inner').style.width = percentage + '%';  // Update stars
+
+  };
+
+  brandSelect.addEventListener("change", updateRating);
+  productSelect.addEventListener("change", updateRating);
+
+  // Initial call to set rating when page loads
+  updateRating();
 
   document.getElementById("predict-btn").addEventListener("click", () => {
     const brand = brandSelect.value;
@@ -377,9 +432,10 @@ async function fetchNotifications() {
 
   const userId = user.uid;
   const notificationsRef = collection(db, "notifications", userId, "logs");
+  const q = query(notificationsRef, orderBy("timestamp", "desc"));
 
   try {
-    const querySnapshot = await getDocs(notificationsRef);
+    const querySnapshot = await getDocs(q);
 
     const notificationList = document.getElementById("notifications-list");
     notificationList.innerHTML = "";

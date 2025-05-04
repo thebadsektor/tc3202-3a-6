@@ -10,6 +10,8 @@ import {
   collection,
   getDocs,
   doc,
+  query,
+  orderBy,
   updateDoc,
   deleteDoc,
   getDoc,
@@ -100,9 +102,13 @@ async function loadCartItems(userId) {
       <div class="details">
         <strong>${brand} - ${product}</strong>
         <span>Model Name : ${modelname}</span>
-        <div class="stars">${renderStars(parseFloat(rating))}</div>
+        <div class="rating-display">
+        <div class="stars-outer">
+          <div class="stars-inner" style="width: ${parseFloat(rating) / 5 * 100}%"></div>
+        </div>
+        <span class="rating-number">${parseFloat(rating).toFixed(1)}</span>
+        </div>
         ${priceSection}
-        <div>Model Name: ${modelname}</div>
         <div class="stock-control">
           <span>Stock : ${stock}</span>
         </div>
@@ -463,9 +469,10 @@ async function fetchNotifications() {
 
   const userId = user.uid;
   const notificationsRef = collection(db, "notifications", userId, "logs");
+  const q = query(notificationsRef, orderBy("timestamp", "desc")); 
 
   try {
-    const querySnapshot = await getDocs(notificationsRef);
+    const querySnapshot = await getDocs(q);
 
     const notificationList = document.getElementById("notifications-list");
     notificationList.innerHTML = "";

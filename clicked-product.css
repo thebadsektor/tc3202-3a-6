@@ -201,6 +201,41 @@ button:hover::after {
   margin-bottom: 20px;
 }
 
+.rating-link {
+  font-size: 1.2em;
+  color: #f39c12;
+  text-decoration: none;
+}
+
+.stars-outer {
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+  color: #ccc;
+}
+
+.stars-outer::before {
+  content: "★★★★★";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #f8ce0b;
+}
+
+.stars-inner::before {
+  content: "★★★★★";
+}
+
+.rating-number {
+  margin-left: 6px;
+}
+
+
 
 
 

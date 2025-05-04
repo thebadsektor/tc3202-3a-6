@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, writeBatch, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, writeBatch, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Firebase Configuration
@@ -188,9 +188,10 @@ async function fetchNotifications() {
 
   const userId = user.uid;
   const notificationsRef = collection(db, "notifications", userId, "logs");
+  const q = query(notificationsRef, orderBy("timestamp", "desc"));
 
   try {
-    const querySnapshot = await getDocs(notificationsRef);
+    const querySnapshot = await getDocs(q);
 
     const notificationList = document.getElementById("notifications-list");
     notificationList.innerHTML = "";
