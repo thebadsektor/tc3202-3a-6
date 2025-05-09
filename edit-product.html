@@ -15,11 +15,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search..." class="search-input">
-            </div>
+            <a href="#" class="logo"><img src="img_svg/welcome_logo.svg" alt="Logo"></a>
         </div>
 
         <div class="nav-bell">
@@ -44,7 +40,7 @@
             <button onclick="showSection('about')">About Us</button>
             <button onclick="showSection('contact')">Contact Us</button>
             <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='statistics.html'">Statistics</button>
             <button onclick="window.location.href='profile.html'">Profile</button>
             <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
@@ -85,12 +81,70 @@
         </div>
 
         <div id="contact" class="section" style="display: none;">
-            <h2>Contact Us</h2>
-            <p>Email: support@techforecast.com</p>
-            <p>Phone: +1 (555) 123-4567</p>
-            <p>Address: Sta. Cruz, Laguna
-            </p>
-        </div>
+            <h2>Get in Touch</h2>
+            
+            <div class="contact-info">
+              <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <div class="info">
+                  <span class="label">Email Us</span>
+                  <span class="value">support@casttronics.com</span>
+                </div>
+              </div>
+              
+              <div class="contact-card">
+                <i class="fas fa-phone-alt"></i>
+                <div class="info">
+                  <span class="label">Call Us</span>
+                  <span class="value">+6399-1234-5678</span>
+                </div>
+              </div>
+              
+              <div class="contact-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="info">
+                  <span class="label">Location</span>
+                  <span class="value">Sta. Cruz, Laguna</span>
+                </div>
+              </div>
+            </div>
+            
+            <h3>Send Us a Message</h3>
+            <form id="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">Your Email</label>
+                  <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+              </div>
+              
+              <button type="submit">
+                <i class="fas fa-paper-plane"></i> Send Message
+              </button>
+            </form>
+            
+            <div class="social-links">
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
     </div>
     </div>
 

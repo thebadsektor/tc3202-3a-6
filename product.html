@@ -4,7 +4,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - TechForecast</title>
+    <title>Add Products</title>
+    <link rel="icon" type="image/png" href="img_svg/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -15,11 +16,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search..." class="search-input">
-            </div>
+            <a href="#" class="logo"><img src="img_svg/welcome_logo.svg" alt="Logo"></a>
         </div>
 
         <div class="nav-bell">
@@ -43,25 +40,24 @@
             <button onclick="showSection('about')">About Us</button>
             <button onclick="showSection('contact')">Contact Us</button>
             <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='statistics.html'">Statistics</button>
             <button onclick="window.location.href='profile.html'">Profile</button>
             <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
         <div id="home" class="section">
           <div class="form-container">
-            <div style="text-align: center; margin-bottom: 1rem;">
-              <img id="product-image" src="img_svg/upload-photo.jpg" alt="Upload Product" width="200" style="border: 1px solid #ccc; border-radius: 8px;" />
-              <br />
+            
+            <!-- Upload Section -->
+            <div class="upload-section">
+              <img id="product-image" src="img_svg/upload-photo.jpg" alt="Upload Product" />
               <input type="file" id="image-upload" accept="image/*" style="display: none;" />
-              <button onclick="document.getElementById('image-upload').click()" style="margin-top: 10px; padding: 6px 12px; border: none; background-color: #007bff; color: white; border-radius: 6px; cursor: pointer;">
-                Upload Product Photo
-              </button>
-              <button id="show-suggested-photo-btn" style="margin-top: 10px; padding: 6px 12px; border: none; background-color: #007bff; color: white; border-radius: 6px; cursor: pointer;">
-                Show suggested pproduct photo
-              </button>
-            </div>            
+              <button onclick="document.getElementById('image-upload').click()">Upload Product Photo</button>
+              <button id="show-suggested-photo-btn">Show suggested product photo</button>
+            </div>
         
-            <div class="form-section">
+            <!-- Grid-Based Form Section -->
+            <div class="form-grid">
+              
               <label>Brand:
                 <select id="brand">
                   <option value="">Select Brand</option>
@@ -84,14 +80,14 @@
                 </select>
               </label>
         
-              <p>
+              <div class="rating-container">
                 <strong>Rating:</strong>
                 <span id="rating-stars" class="stars-outer">
                   <span class="stars-inner"></span>
                 </span>
                 (<span id="rating-number" class="rating-number"></span>)
-              </p>
-
+              </div>
+        
               <label>Model Name:
                 <textarea id="modelname" placeholder="Enter model name"></textarea>
               </label>
@@ -122,14 +118,16 @@
               <label>Stock:
                 <input type="number" id="stock" placeholder="Enter current stock level" />
               </label>
-              
+        
               <button id="predict-stock-btn">Predict Stock for Next Month</button>
               <div class="output" id="predicted-stock"></div>
         
               <button id="add-product-btn">Add Product to Cart</button>
             </div>
+        
           </div>
         </div>
+        
 
         <div id="about" class="section" style="display: none;">
             <div>
@@ -147,12 +145,70 @@
         </div>
 
         <div id="contact" class="section" style="display: none;">
-          <h2>Contact Us</h2>
-          <p>Email: support@techforecast.com</p>
-          <p>Phone: +1 (555) 123-4567</p>
-          <p>Address: Sta. Cruz, Laguna
-          </p>
-      </div>
+          <h2>Get in Touch</h2>
+          
+          <div class="contact-info">
+            <div class="contact-card">
+              <i class="fas fa-envelope"></i>
+              <div class="info">
+                <span class="label">Email Us</span>
+                <span class="value">support@casttronics.com</span>
+              </div>
+            </div>
+            
+            <div class="contact-card">
+              <i class="fas fa-phone-alt"></i>
+              <div class="info">
+                <span class="label">Call Us</span>
+                <span class="value">+6399-1234-5678</span>
+              </div>
+            </div>
+            
+            <div class="contact-card">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="info">
+                <span class="label">Location</span>
+                <span class="value">Sta. Cruz, Laguna</span>
+              </div>
+            </div>
+          </div>
+          
+          <h3>Send Us a Message</h3>
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+            </div>
+            
+            <button type="submit">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+          
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
     </div>
 
     <script>
@@ -162,7 +218,7 @@
             if (section) {
                 section.style.display = 'block';
             } else {
-                console.error(`Section with ID ${sectionId} not found`);
+              console.error(`Section with ID ${sectionId} not found`);
             }
         }
 
@@ -179,4 +235,3 @@
     <script type="module" src="product.js"></script>
 </body>
 </html>
-

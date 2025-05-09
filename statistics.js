@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 label: 'Total Transactions',
                 data: [],
                 borderColor: '#4361ee',
-                backgroundColor: '#4361ee',
+                borderRadius: 15,
+                backgroundColor: '#ab71eb',
                 fill: false
             }]
         },
@@ -42,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 label: 'Total Sales',
                 data: [],
                 borderColor: '#ff6363',
-                backgroundColor: '#ff6363',
+                backgroundColor: '#49b6ff',
+                borderRadius: 15,
                 fill: false
             }]
         },
@@ -59,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    sendGraphRequest();
 
     const showGraphBtn = document.getElementById('showGraphBtn');
     if (showGraphBtn) {

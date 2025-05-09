@@ -439,6 +439,9 @@ async function signupUser() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        const randomProfileIndex = Math.floor(Math.random() * 5) + 1;
+        const profileImage = `profile/profile${randomProfileIndex}.jpg`;
+
         await setDoc(doc(db, "users", user.uid), {
             firstName: firstName,
             middleName: middleName,
@@ -448,7 +451,7 @@ async function signupUser() {
             address: address,
             email: email,
             phone : phone,
-            profileImage: "img_svg/default-profile.jpg", 
+            profileImage: profileImage, 
             createdAt: new Date()
         });
 

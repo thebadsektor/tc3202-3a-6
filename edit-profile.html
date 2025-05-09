@@ -4,7 +4,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Castronics</title>
+    <title>Edit Profile - Castronics</title>
+    <link rel="icon" type="image/png" href="img_svg/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -15,20 +16,16 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search..." class="search-input">
-            </div>
+            <a href="#" class="logo"><img src="img_svg/welcome_logo.svg" alt="Logo"></a>
         </div>
 
         <div class="nav-bell">
             <img src="img_svg/notification.jpg" alt="Notifications" class="notification-bell" onclick="toggleNotifications()">
             
             <div id="notification-container" class="notification-container" style="display: none;">
-              <div id="notifications-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
-          
-              <div style="display: flex; justify-content: space-between; padding: 10px; border-top: 1px solid #ccc;">
+            <div id="notifications-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
+        
+            <div style="display: flex; justify-content: space-between; padding: 10px; border-top: 1px solid #ccc;">
                 <button onclick="deleteAllNotifications()" style="padding: 5px 10px;">Delete Notifications</button>
                 <button onclick="markAllAsRead()" style="padding: 5px 10px;">Read All</button>
               </div>
@@ -43,7 +40,7 @@
             <button onclick="showSection('about')">About Us</button>
             <button onclick="showSection('contact')">Contact Us</button>
             <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='statistics.html'">Statistics</button>
             <button onclick="window.location.href='profile.html'">Profile</button>
             <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
@@ -58,7 +55,7 @@
                 <section class="profile-section">
                     <img id="profile-img" src="" alt="Profile" class="profile-image">
                     <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                    <button type="button" onclick="document.getElementById('imageUpload').click()" class="upload-btn">Upload</button>
+                    <!--<button type="button" onclick="document.getElementById('imageUpload').click()" class="upload-btn">Upload</button> -->
                     <div class="profile-info">
                         <h1></h1>
                         <p></p>

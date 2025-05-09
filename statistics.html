@@ -4,7 +4,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - TechForecast</title>
+    <title> Statistics - CastTronics</title>
+    <link rel="icon" type="image/png" href="img_svg/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -15,11 +16,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="#" class="logo"><img src="img_svg/castronic_text2.svg" alt="Logo"></a>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search..." class="search-input">
-            </div>
+            <a href="#" class="logo"><img src="img_svg/welcome_logo.svg" alt="Logo"></a>
         </div>
 
         <div class="nav-bell">
@@ -43,7 +40,7 @@
             <button onclick="showSection('about')">About Us</button>
             <button onclick="showSection('contact')">Contact Us</button>
             <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
+            <button onclick="window.location.href='statistics.html'">Statistics</button>
             <button onclick="window.location.href='profile.html'">Profile</button>
             <button class="logout-btn" onclick="logoutUser()">Logout</button>
         </div>
@@ -101,27 +98,117 @@
         </div>
 
         <div id="about" class="section" style="display: none;">
-            <div>
-                <h2>About Us</h2>
-                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
+            <div class="deco-circle deco-circle-1"></div>
+            <div class="deco-circle deco-circle-2"></div>
             
-                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
-                    
-                    Our mission is simple: to transform future trends into today's opportunities.
-                    
-                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
-                    
-                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
+            <div class="about-wrapper">
+              <div class="about-header">
+                <h2>About Us</h2>
+                <span class="accent-icon"><i class="fas fa-microchip"></i></span>
+              </div>
+              
+              <div class="about-content">
+                <div class="about-text">
+                  <p>At <strong>CastTronic</strong>, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.</p>
+                  
+                  <p>We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you're uncertain about which gadget to stock next or looking to stay ahead of changing demand, <strong>CastTronic</strong> guides you every step of the way.</p>
+                  
+                  <div class="mission-box">
+                    <p>Our mission is simple: to transform future trends into today's opportunities.</p>
+                  </div>
+                  
+                  <p>With powerful analytics, personalized recommendations, and a user-friendly dashboard, <strong>castTronic</strong> offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.</p>
+                  
+                  <p>We're just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
+                  
+                  <a href="#contact" class="cta-button" onclick="showSection('contact')">Get in Touch</a>
+                </div>
+                
+                <div class="about-sidebar">
+                  <div class="about-card">
+                    <h3><i class="fas fa-lightbulb"></i> Our Vision</h3>
+                    <p>To create a world where every online seller can access the power of predictive analytics and AI to build successful, sustainable businesses.</p>
+                  </div>
+                  
+                  <div class="about-card">
+                    <h3><i class="fas fa-chart-line"></i> What We Offer</h3>
+                    <ul>
+                      <li>AI-powered trend forecasting</li>
+                      <li>Real-time market analysis</li>
+                      <li>Personalized product recommendations</li>
+                      <li>User-friendly analytics dashboard</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <div id="contact" class="section" style="display: none;">
-            <h2>Contact Us</h2>
-            <p>Email: support@techforecast.com</p>
-            <p>Phone: +1 (555) 123-4567</p>
-            <p>Address: Sta. Cruz, Laguna
-            </p>
-        </div>
+          <div id="contact" class="section" style="display: none;">
+            <h2>Get in Touch</h2>
+            
+            <div class="contact-info">
+              <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <div class="info">
+                  <span class="label">Email Us</span>
+                  <span class="value">support@casttronics.com</span>
+                </div>
+              </div>
+              
+              <div class="contact-card">
+                <i class="fas fa-phone-alt"></i>
+                <div class="info">
+                  <span class="label">Call Us</span>
+                  <span class="value">+6399-1234-5678</span>
+                </div>
+              </div>
+              
+              <div class="contact-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="info">
+                  <span class="label">Location</span>
+                  <span class="value">Sta. Cruz, Laguna</span>
+                </div>
+              </div>
+            </div>
+            
+            <h3>Send Us a Message</h3>
+            <form id="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Your Name</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email">Your Email</label>
+                  <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+              </div>
+              
+              <button type="submit">
+                <i class="fas fa-paper-plane"></i> Send Message
+              </button>
+            </form>
+            
+            <div class="social-links">
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
     </div>
 
     <script>

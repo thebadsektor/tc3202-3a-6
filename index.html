@@ -5,13 +5,23 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Auth WebApp</title>
+    <title>CastTronic - Authentication</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <!-- Logo -->
+    <div class="logo">
+        <img src="img_svg/castTronics_clear.svg" alt="CastTronic Logo">
+    </div>
+    
+    <!-- Login Container -->
     <div class="container" id="loginContainer" style="display: none;">
-        <h2>Login</h2>
+        <!-- Decorative dots -->
+        <div class="decorative-dots dots-top-right"></div>
+        <div class="decorative-dots dots-bottom-left"></div>
+        
+        <h2>Welcome Back</h2>
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="password" id="loginPassword" placeholder="Password">
         <button id="loginBtn">Login</button>
@@ -19,25 +29,37 @@
         <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
     </div>
 
+    <!-- Forgot Password Container -->
     <div class="container" id="forgotPasswordContainer" style="display: none;">
+        <!-- Decorative dots -->
+        <div class="decorative-dots dots-top-right"></div>
+        <div class="decorative-dots dots-bottom-left"></div>
+        
         <h2>Reset Password</h2>
         <input type="email" id="resetEmail" placeholder="Enter your email">
         <button id="resetBtn" onclick="resetPassword()">Send Reset Link</button>
         <p><a href="#" onclick="showLogin()">Back to Login</a></p>
     </div>
 
+    <!-- Signup Container -->
     <div class="container" id="signupContainer">
-        <h2>Signup</h2>
+        <!-- Decorative dots -->
+        <div class="decorative-dots dots-top-right"></div>
+        <div class="decorative-dots dots-bottom-left"></div>
+        
+        <h2>Create Account</h2>
         <input type="text" id="firstName" placeholder="First Name *">
         <input type="text" id="middleName" placeholder="Middle Name (Optional)">
         <input type="text" id="lastName" placeholder="Last Name *">
+        
         <!-- Gender Selection -->
-        <label>Gender:</label><br>
+        <label>Gender:</label>
         <div style="display: flex; gap: 20px; margin: 10px 0;">
             <label><input type="radio" id="male" name="gender" value="Male"> Male</label>
             <label><input type="radio" id="female" name="gender" value="Female"> Female</label>
             <label><input type="radio" id="preferNot" name="gender" value="Prefer not to say"> Prefer not to say</label>
         </div>
+        
         <input type="text" id="shopName" placeholder="Shop Name *">
         <input type="text" id="address" placeholder="Address *">
         <input type="email" id="email" placeholder="Email">
@@ -51,6 +73,11 @@
         <input type="password" id="confirmPassword" placeholder="Confirm Password *">
         <button id="signupBtn">Signup</button>
         <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 CastTronic. All rights reserved.</p>
     </div>
 
     <script type="module" src="script.js"></script>

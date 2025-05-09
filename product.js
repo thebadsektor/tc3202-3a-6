@@ -191,7 +191,19 @@ window.addEventListener('DOMContentLoaded', () => {
     const product = productSelect.value;
     const prediction = getPrediction(brand, product);
     if (prediction.price !== null) {
-      document.getElementById("price").value = prediction.price;
+        Swal.fire({
+          title: "Loading...",
+          text: "Predicting price, please wait...",
+          timer: 1000,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+              Swal.showLoading();
+          },
+      }).then(() => {
+          const formattedPrice = prediction.price.toFixed(2);
+          document.getElementById("price").value = formattedPrice;
+      });
     } else {
       Swal.fire({
         title: "Error Predicting Price",
@@ -209,7 +221,18 @@ window.addEventListener('DOMContentLoaded', () => {
     const product = productSelect.value;
     const prediction = getPrediction(brand, product);
     if (prediction.stock !== null) {
-      document.getElementById("stock").value = prediction.stock;
+      Swal.fire({
+        title: "Loading...",
+        text: "Checking stock, please wait...",
+        timer: 1000,  // 1 second delay
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+      }).then(() => {
+          document.getElementById("stock").value = prediction.stock;
+      });
     } else {
       Swal.fire({
         title: "Error Predicting Stocks",
