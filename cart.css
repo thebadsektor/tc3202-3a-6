@@ -135,6 +135,24 @@ nav::before {
   transform-origin: left;
 }
 
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 12px;
+    transition:  0.3s ease;
+}
+
 /* Navigation Buttons */
 button {
   background-color: transparent;
@@ -194,12 +212,13 @@ button:hover::after {
   left: 0;
 }
 
-/* Logout Button */
+/* Logout Button with enhanced animation and glow */
 .logout-btn {
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: var(--text-color) !important;
   border: none;
-  padding: 11px 20px;
+  display: flex;
+  padding: 15px 20px;
   border-radius: var(--border-radius);
   font-weight: 600;
   transition: var(--transition);
@@ -242,6 +261,7 @@ button:hover::after {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.7s ease;
+  font-size: 1.1rem;
 }
 
 .add-product:hover {
@@ -1402,4 +1422,10 @@ html, body {
   .contact-card {
     flex: 1 1 100%;
   }
+}
+
+.nav-right button.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #0056b3;
 }

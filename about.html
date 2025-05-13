@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="clicked-product.css">
+    <link rel="stylesheet" href="about.css">
 </head>
 <body>
     <nav>
@@ -36,7 +36,7 @@
 
     <div class="content-wrapper" id="dynamic-content">
         <div class="nav-right">
-            <button id="homebtn" class="nav-button" onclick="window.location.href='home1.html'">
+            <button class="nav-button" onclick="window.location.href='home1.html'">
               <img src="img_svg/home.png" alt="Home Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
               Home
             </button>
@@ -56,7 +56,7 @@
               <img src="img_svg/profile.png" alt="Profile Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
               Profile
             </button>
-            <button class="nav-button" onclick="window.location.href='about.html'">
+            <button id="about-btn" class="nav-button" onclick="window.location.href='about.html'">
               <img src="img_svg/about.png" alt="About Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
               About Us
             </button>
@@ -70,61 +70,57 @@
             </button>
         </div>
 
-        <div id="home" class="section">
-            <!-- Product Detail Page -->
-            <div class="product-detail-container">
-                <div class="product-main">
-                    <div class="product-image">
-                        <img id="main-product-image" src="" alt="Product Image">
-                    </div>
-                    <div class="product-info">
-                        <h1 id="product-title">Brand Name - Product Name</h1>
-                        <a href="#" id="product-rating" class="rating-link">Ratings</a>
-                        <ul class="product-details-list">
-                            <li>Description</li>
-                        </ul>
-                    </div>
+        <div id="about" class="section">
+            <div class="deco-circle deco-circle-1"></div>
+            <div class="deco-circle deco-circle-2"></div>
+            
+            <div class="about-wrapper">
+              <div class="about-header">
+                <h2>About Us</h2>
+                <span class="accent-icon"><i class="fas fa-microchip"></i></span>
+              </div>
+              
+              <div class="about-content">
+                <div class="about-text">
+                  <p>At <strong>CastTronic</strong>, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.</p>
+                  
+                  <p>We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you're uncertain about which gadget to stock next or looking to stay ahead of changing demand, <strong>CastTronic</strong> guides you every step of the way.</p>
+                  
+                  <div class="mission-box">
+                    <p>Our mission is simple: to transform future trends into today's opportunities.</p>
+                  </div>
+                  
+                  <p>With powerful analytics, personalized recommendations, and a user-friendly dashboard, <strong>castTronic</strong> offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.</p>
+                  
+                  <p>We're just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
                 </div>
-
-                <div class="product-main">
-                    <div class="product-info">
-                        <ul class="product-details-list" id="specs">
-                        </ul>
-                        <ul class="product-details-list" id="features-list">
-                        </ul>
-                    </div>
+                
+                <div class="about-sidebar">
+                  <div class="about-card">
+                    <h3><i class="fas fa-lightbulb"></i> Our Vision</h3>
+                    <p>To create a world where every online seller can access the power of predictive analytics and AI to build successful, sustainable businesses.</p>
+                  </div>
+                  
+                  <div class="about-card">
+                    <h3><i class="fas fa-chart-line"></i> What We Offer</h3>
+                    <ul>
+                      <li>AI-powered trend forecasting</li>
+                      <li>Real-time market analysis</li>
+                      <li>Personalized product recommendations</li>
+                      <li>User-friendly analytics dashboard</li>
+                    </ul>
+                  </div>
                 </div>
-
-                <!-- Related Products Section -->
-                <div class="related-products">
-                    <h2>Related Products</h2>
-                    <div class="related-products-list">
-                        <!-- Each related product -->
-                        <div class="related-product-card">
-                            <img alt="Related Product 1">
-                            <p>Related Product 1</p>
-                        </div>
-                        <div class="related-product-card">
-                            <img alt="Related Product 2">
-                            <p>Related Product 2</p>
-                        </div>
-                        <div class="related-product-card">
-                            <img alt="Related Product 3">
-                            <p>Related Product 3</p>
-                        </div>
-                        <div class="related-product-card">
-                            <img alt="Related Product 4">
-                            <p>Related Product 4</p>
-                        </div>
-                        <div class="related-product-card">
-                            <img alt="Related Product 5">
-                            <p>Related Product 5</p>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+          
+          <!-- Add this in your HTML's head section -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+          </div>
         </div>
     </div>
-    <script type="module" src="clicked-product.js"></script>
+
+    <script type="module" src="about.js"></script>
 </body>
 </html>

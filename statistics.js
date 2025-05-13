@@ -3,6 +3,15 @@ let transactionChart, salesChart;
 
 // Initial empty chart setup
 document.addEventListener('DOMContentLoaded', () => {
+
+    const path = window.location.pathname;
+    if (path.includes("statistics.html")) {
+        const statisticsbtn = document.getElementById("statisticsbtn");
+        if (statisticsbtn) {
+        statisticsbtn.classList.add("active");
+        }
+    }
+    
     const transactionCtx = document.getElementById('salesChart').getContext('2d');
     const salesCtx = document.getElementById('totalSalesChart').getContext('2d');
 
@@ -751,11 +760,36 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.x.ticks.font = { size: 18 };
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.font = { size: 18 };
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.font = { size: 18 };
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleFont = { size: 18 };
+                transactionChart.options.plugins.tooltip.bodyFont = { size: 16 };
                 transactionChart.update();
         
                 // Update Total Sales chart
                 salesChart.data.labels = labels;
                 salesChart.data.datasets[0].data = salesData;
+                salesChart.options.scales.x.ticks.color = '#ffffff';
+                salesChart.options.scales.x.ticks.font = { size: 18 };
+                salesChart.options.scales.y.ticks = {
+                color: '#ffffff',
+                font: { size: 18 },
+                callback: function(value) {
+                    if (value >= 1_000_000) return value / 1_000_000 + ' M';
+                    if (value >= 1_000) return value / 1_000 + ' K';
+                    return value;
+                }
+                };
+                salesChart.options.plugins.legend.labels.color = '#ffffff';
+                salesChart.options.plugins.legend.labels.font = { size: 18 };
+                salesChart.options.plugins.tooltip.titleFont = { size: 18 };
+                salesChart.options.plugins.tooltip.bodyFont = { size: 16 };
                 salesChart.update();
             } else if (selectedProduct == "Smartphones") {
                 for (const year in allallsmartphones) {
@@ -767,6 +801,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -783,6 +822,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -799,6 +843,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -815,6 +864,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -831,6 +885,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -859,6 +918,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -875,6 +939,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -891,6 +960,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -907,6 +981,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -923,6 +1002,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -939,6 +1023,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -957,6 +1046,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -973,6 +1067,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -989,6 +1088,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1005,6 +1109,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1021,6 +1130,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1037,6 +1151,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1055,6 +1174,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1071,6 +1195,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1087,6 +1216,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1103,6 +1237,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1119,6 +1258,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1135,6 +1279,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1153,6 +1302,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1169,6 +1323,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1185,6 +1344,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1201,6 +1365,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1217,6 +1386,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1233,6 +1407,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1251,6 +1430,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1267,6 +1451,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1283,6 +1472,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1299,6 +1493,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1315,6 +1514,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1331,6 +1535,11 @@ window.sendGraphRequest = async function () {
                 // Update Total Transactions chart
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
         
                 // Update Total Sales chart
@@ -1359,6 +1568,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1376,6 +1590,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1393,6 +1612,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1410,6 +1634,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1427,6 +1656,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1444,6 +1678,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1463,6 +1702,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1480,6 +1724,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1497,6 +1746,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1514,6 +1768,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1531,6 +1790,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1548,6 +1812,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1567,6 +1836,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1584,6 +1858,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1601,6 +1880,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1618,6 +1902,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1635,6 +1924,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1652,6 +1946,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1671,6 +1970,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1688,6 +1992,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1705,6 +2014,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1722,6 +2036,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1739,6 +2058,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1756,6 +2080,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1775,6 +2104,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1792,6 +2126,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1809,6 +2148,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1826,6 +2170,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1843,6 +2192,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1860,6 +2214,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1879,6 +2238,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1896,6 +2260,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1913,6 +2282,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1930,6 +2304,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1947,6 +2326,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;
@@ -1964,6 +2348,11 @@ window.sendGraphRequest = async function () {
                 
                 transactionChart.data.labels = labels;
                 transactionChart.data.datasets[0].data = transactionData;
+                transactionChart.options.scales.x.ticks.color = '#ffffff';
+                transactionChart.options.scales.y.ticks.color = '#ffffff';
+                transactionChart.options.plugins.legend.labels.color = '#ffffff';
+                transactionChart.options.plugins.tooltip.titleColor = '#ffffff';
+                transactionChart.options.plugins.tooltip.bodyColor = '#ffffff';
                 transactionChart.update();
 
                 salesChart.data.labels = labels;

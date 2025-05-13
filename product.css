@@ -80,6 +80,57 @@ body::before {
   -webkit-backdrop-filter: blur(12px);
 }
 
+.section {
+  /* Existing styles... */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.section::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+h2 {
+  text-align: left;
+  font-size: 2.5rem;
+  margin-top: 20px;
+  margin-left: 25px;
+  margin-bottom: 10px;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-size: 22px;
+  font-family: 'Roboto', sans-serif;
+}
+
+input[type="text"],
+input[type="number"]
+{
+  width: 100%;
+  padding: 0.75em 1em;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 0.5em;
+  background-color: var(--input);
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide number input spinner for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 
 /* Add subtle glow to section edges */
 .section::before {
@@ -254,6 +305,24 @@ button {
   box-shadow: inset 0 0 0 0 rgba(157, 78, 221, 0.1);
 }
 
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 12px;
+    transition:  0.3s ease;
+}
+
 button::before {
   content: '';
   position: absolute;
@@ -300,7 +369,8 @@ button:hover::after {
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: var(--text-color) !important;
   border: none;
-  padding: 11px 20px;
+  display: flex;
+  padding: 15px 20px;
   border-radius: var(--border-radius);
   font-weight: 600;
   transition: var(--transition);
@@ -506,10 +576,57 @@ button:hover::after {
   box-sizing: border-box;
 }
 
-.upload-section {
-  text-align: center;
-  margin-bottom: 2rem;
+.form-container::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
 }
+
+.form-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+select:focus,
+textarea:focus,
+input[type="text"]:focus {
+  border-color: #7f5af0; /* highlight color */
+  box-shadow: 0 0 5px rgba(127, 90, 240, 0.5);
+}
+
+/* Smaller height for single-line textareas */
+
+
+#description {
+  height: 10em; /* Approx height for 10 lines */
+  overflow-y: auto; /* Makes it scrollable when content overflows vertically */
+  resize: vertical; /* Optional: allows user to resize vertically */
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  text-align: justify;
+}
+
+#specs {
+  height: 10em; /* Approx height for 10 lines */
+  overflow-y: auto; /* Makes it scrollable when content overflows vertically */
+  resize: vertical; /* Optional: allows user to resize vertically */
+    font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  text-align: justify;
+}
+
+#feature {
+  height: 10em; /* Approx height for 10 lines */
+  overflow-y: auto; /* Makes it scrollable when content overflows vertically */
+  resize: vertical; /* Optional: allows user to resize vertically */
+    font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  text-align: justify;
+}
+
 
 .upload-section img {
   width: 200px;
@@ -518,7 +635,7 @@ button:hover::after {
 }
 
 .upload-section button {
-  margin-top: 10px;
+  margin-top: 15px;
   padding: 6px 12px;
   border: none;
   background: linear-gradient(to right, var(--primary-color), var(--accent-color));
@@ -528,11 +645,27 @@ button:hover::after {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 500px;
+  width: 350px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 17px;
+  height: 35px;
 }
 
+.upload-section {
+  text-align: center;
+}
+
+#product-image {
+  width: 300px;
+  height: 300px;
+  display: block;
+  margin: 0 auto 1em auto;
+  object-fit: contain;
+}
+
+
 .form-grid {
-  display: grid;
+  display: block;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
@@ -543,18 +676,58 @@ button:hover::after {
   flex-direction: row;
 }
 
-.predictButton,
-#predict-stock-btn,
-#add-product-btn {
-  grid-column: span 3;
-  padding: 10px;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+#predict-btn {
+  padding: 6px 12px;
   border: none;
+  background: rgb(39, 190, 240);
   color: white;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  height: 48px;
+  margin-top: 20px;
 }
+
+#predict-stock-btn {
+  padding: 6px 12px;
+  border: none;
+  background: rgb(39, 190, 240);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  height: 48px;
+  margin-top: 20px;
+}
+
+#add-product-btn{
+  margin-top: 15px;
+  padding: 6px 12px;
+  border: none;
+  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;  /* Aligns the button to the right */
+  margin-right: 0;    /* Removes any margin on the right */
+  width: 300px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  margin-bottom: 30px;
+  height: 50px;
+}
+
 
 .output {
   grid-column: span 2;
@@ -573,37 +746,20 @@ button:hover::after {
 select,
 input,
 textarea {
-  padding: 6px;
-  font-family: inherit;
-  font-size: 16px;
+  width: 100%;
+  padding: 0.75em 1em;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 0.5em;
   background-color: var(--input);
   color: var(--text-color);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  font-size: 14px;
-}
-
-textarea {
+  box-sizing: border-box;
   resize: vertical;
-  color: var(--text-color);
-  
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
 }
 
-#predict-btn
-{
-  background-color: #3767eb;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
 #predict-stock-btn
 {
-  
   color: white;
   border: none;
   padding: 10px;
@@ -630,45 +786,50 @@ textarea {
 }
 
 
-.rating-link {
-  font-size: 1.2em;
-  color: #f39c12;
-  text-decoration: none;
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 15px;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Outer container for the stars (empty stars) */
+.rating-label {
+  font-size: 22px;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+}
+
 .stars-outer {
   position: relative;
   display: inline-block;
-  font-size: 24px;
-  color: var(--text-color);; /* Grey for unfilled stars */
+  font-size: 1.5em;
+  color: var(--text-color, #555); /* fallback grey */
 }
 
-/* Set up the stars for the outer container (empty stars) */
 .stars-outer::before {
-  content: "★★★★★"; /* Default 5 empty stars */
+  content: "★★★★★";
+  letter-spacing: 1px;
 }
 
-/* Inner container for filled stars */
 .stars-inner {
   position: absolute;
   top: 0;
   left: 0;
   white-space: nowrap;
   overflow: hidden;
-  color: #f8ce0b; /* Gold for filled stars */
+  color: #f8ce0b;
+  width: 0%; /* JS sets this */
 }
 
-/* Set up the stars for the inner container (filled stars) */
 .stars-inner::before {
-  content: "★★★★★"; /* Default 5 empty stars */
+  content: "★★★★★";
+  letter-spacing: 1px;
 }
 
-/* Styling for the rating number */
 .rating-number {
-  margin-left: 6px;
-  font-size: 1em;
-  color: var(--text-color);; /* Dark color for the number */
+  font-size: 1.4em;
+  color: var(--text-color, #eee);
 }
 
 /* Contact Section Styling */
@@ -944,4 +1105,10 @@ textarea {
   .contact-card {
     flex: 1 1 100%;
   }
+}
+
+.nav-right button.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #0056b3;
 }

@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const path = window.location.pathname;
+    if (path.includes("clicked-product.html")) {
+        const homebtn = document.getElementById("homebtn");
+        if (homebtn) {
+        homebtn.classList.add("active");
+        }
+    }
+
     // Get URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const brand = urlParams.get('brand');

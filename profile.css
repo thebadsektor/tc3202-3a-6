@@ -226,6 +226,24 @@ nav::before {
   transform-origin: left;
 }
 
+.nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 12px;
+    transition:  0.3s ease;
+}
+
 /* Navigation Buttons with improved hover effects */
 button {
   background-color: transparent;
@@ -290,7 +308,8 @@ button:hover::after {
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
   color: var(--text-color) !important;
   border: none;
-  padding: 11px 20px;
+  display: flex;
+  padding: 15px 20px;
   border-radius: var(--border-radius);
   font-weight: 600;
   transition: var(--transition);
@@ -593,7 +612,7 @@ button:hover::after {
 }
 
 .welcome-text {
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: 600;
     color: (var(--text-color));
     letter-spacing: 0.5px;
@@ -613,8 +632,8 @@ button:hover::after {
 }
 
 .profile-image {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--primary-blue);
@@ -628,7 +647,7 @@ button:hover::after {
 }
 
 .profile-info h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 10px;
     color: var(--text-dark);
     font-weight: 600;
@@ -636,7 +655,8 @@ button:hover::after {
 
 .profile-info p {
     color: var(--text-gray);
-    font-size: 1rem;
+    font-size: 1.2rem;
+    padding-bottom: 10px;
 }
 
 .form-container {
@@ -659,7 +679,7 @@ button:hover::after {
 label {
     margin-bottom: 10px;
     color: var(--text-gray);
-    font-size: 0.9rem;
+    font-size: 1.15rem;
     font-weight: 500;
 }
 
@@ -714,7 +734,7 @@ input[type="email"]:focus {
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
     letter-spacing: 0.5px;
-    font-size: 0.95rem; /* Smaller font size */
+    font-size: 1.1rem; /* Smaller font size */
 }
 
 .save-changes-btn {
@@ -1444,3 +1464,181 @@ body {
       flex: 1 1 100%;
     }
   }
+
+.delete-container {
+  display: flex;
+  justify-content: flex-end; /* Push to right */
+  margin-top: 20px; /* Add space from content */
+  margin-right: 30px;
+}
+
+.delete-btn {
+  background-color: #e63946; /* Strong red */
+  color: white;
+  border: none;
+  padding: 11px 20px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  font-size: 1.2rem;
+  max-width: 250px;
+  height: 50px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(157, 78, 221, 0.3);
+  letter-spacing: 0.5px;
+  margin-left: auto;
+}
+
+.delete-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.7s ease;
+}
+
+.delete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(230, 57, 70, 0.4), 0 0 15px rgba(230, 57, 70, 0.2);
+}
+
+.delete-btn:hover::before {
+  left: 100%;
+}
+
+.delete-btn::after {
+  display: none;
+}
+
+/* Modal Background */
+#deleteModal {
+  display: none; /* Hidden by default, shown with JS */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content Box */
+#deleteModal .modal-content {
+  background-color: #1e1e2f;
+  margin: auto;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  position: relative;
+  animation: fadeInScale 0.3s ease;
+}
+
+/* Fade-in Animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Headline */
+#deleteModal .modal-content h2 {
+  margin-bottom: 35px;
+  font-size: 28px;
+  color: #e63946;
+  text-align: center;
+}
+
+/* Input Styles */
+#deleteModal input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 18px;
+  background-color: #2c2c3e;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+#deleteModal input:focus {
+  border-color: #e63946;
+}
+
+/* OTP Status and Timer */
+#otpStatus, #otpTimer {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Buttons */
+#deleteModal button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Send OTP & Verify button style can be slightly lighter if needed */
+#sendOtpBtn,
+#verifyOtpBtn {
+  background-color: #007bff; /* Bootstrap blue */
+}
+
+#verifyOtpBtn {
+  margin-bottom: 20px;
+}
+
+#sendOtpBtn:hover,
+#verifyOtpBtn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+#confirmDeleteBtn {
+  background-color: #e63946;
+}
+
+#confirmDeleteBtn:hover {
+  background-color: #c32636;
+  transform: translateY(-2px);
+}
+
+#cancelDeleteBtn {
+  background-color: #007bff;
+}
+
+#cancelDeleteBtn :hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.nav-right button.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #0056b3;
+}

@@ -23,7 +23,10 @@
         
         <h2>Welcome Back</h2>
         <input type="email" id="loginEmail" placeholder="Email">
-        <input type="password" id="loginPassword" placeholder="Password">
+        <div class="password-container">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <img src="img_svg/show.png" alt="Show Password" class="toggle-password" data-target="loginPassword">
+        </div>
         <button id="loginBtn">Login</button>
         <p>Don't have an account? <a href="#" onclick="showSignup()">Signup</a></p>
         <p><a href="#" onclick="showForgotPassword()">Forgot Password?</a></p>
@@ -69,8 +72,16 @@
         <button id="verifyOtpBtn" onclick="verifyOtp()">Verify Code</button>
         <p id="otpStatus"></p>
         <input type="tel" id="phone" placeholder="Phone Number *" pattern="[0-9]{10}" maxlength="11">
-        <input type="password" id="password" placeholder="Password">
-        <input type="password" id="confirmPassword" placeholder="Confirm Password *">
+        
+        <div class="password-container">
+            <input type="password" id="password" placeholder="Password">
+            <img src="img_svg/show.png" alt="Show Password" class="toggle-password" data-target="password">
+        </div>
+
+        <div class="password-container">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password *">
+            <img src="img_svg/show.png" alt="Show Password" class="toggle-password" data-target="confirmPassword">
+        </div>
         <button id="signupBtn">Signup</button>
         <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
     </div>

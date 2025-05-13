@@ -34,14 +34,38 @@
 
     <div class="content-wrapper" id="dynamic-content">
         <div class="nav-right">
-            <button onclick="window.location.href='home1.html'">Home</button>
-            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
-            <button onclick="showSection('about')">About Us</button>
-            <button onclick="showSection('contact')">Contact Us</button>
-            <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Sttatistics</button>
-            <button onclick="window.location.href='profile.html'">Profile</button>
-            <button class="logout-btn" onclick="logoutUser()">Logout</button>
+            <button class="nav-button" onclick="window.location.href='home1.html'">
+              <img src="img_svg/home.png" alt="Home Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Home
+            </button>
+            <button class="nav-button" onclick="window.location.href='dashboard.html'">
+              <img src="img_svg/dashboard.png" alt="Dashboard Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Dashboard
+            </button>
+            <button id="cartbtn" class="nav-button" onclick="window.location.href='cart.html'">
+              <img src="img_svg/cart.png" alt="Cart Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Cart
+            </button>
+            <button class="nav-button" onclick="window.location.href='statistics.html'">
+              <img src="img_svg/statistics.png" alt="Statistics Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Statistics
+            </button>
+            <button class="nav-button" onclick="window.location.href='profile.html'">
+              <img src="img_svg/profile.png" alt="Profile Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Profile
+            </button>
+            <button class="nav-button" onclick="window.location.href='about.html'">
+              <img src="img_svg/about.png" alt="About Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              About Us
+            </button>
+            <button class="nav-button" onclick="window.location.href='contact.html'">
+              <img src="img_svg/contact.png" alt="Contact Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Contact
+            </button>
+            <button class="logout-btn" onclick="logoutUser()">
+              <img src="img_svg/logout.png" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Logout
+            </button>
         </div>
         <div id="home" class="section">
           <h2>My Product</h2>
@@ -95,51 +119,7 @@
             </div>
   
         </div>
-
-        <div id="about" class="section" style="display: none;">
-            <div>
-                <h2>About Us</h2>
-                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
-            
-                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
-                    
-                    Our mission is simple: to transform future trends into today's opportunities.
-                    
-                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
-                    
-                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
-            </div>
-        </div>
-
-        <div id="contact" class="section" style="display: none;">
-            <h2>Contact Us</h2>
-            <p>Email: support@techforecast.com</p>
-            <p>Phone: +1 (555) 123-4567</p>
-            <p>Address: Sta. Cruz, Laguna
-            </p>
-        </div>
     </div>
-
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.display = 'block';
-            } else {
-                console.error(`Section with ID ${sectionId} not found`);
-            }
-        }
-
-        function loadpage(page) {
-            fetch(page) // Load the statistics HTML file
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('home').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading statistics:', error));
-        }
-    </script>
 
     <script type="module" src="cart.js"></script>
 </body>

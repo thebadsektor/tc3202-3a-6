@@ -413,3 +413,15 @@ async function markAllAsRead() {
 
 window.markAllAsRead = markAllAsRead;
 window.deleteAllNotifications = deleteAllNotifications;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const path = window.location.pathname;
+  if (path.includes("edit-product.html")) {
+    const editproductbtn = document.getElementById("editproductbtn");
+    if (editproductbtn) {
+      editproductbtn.classList.add("active");
+    }
+  }
+
+});

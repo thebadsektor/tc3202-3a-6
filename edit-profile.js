@@ -23,6 +23,15 @@ const imageInput = document.getElementById("imageUpload");
 const profileImg = document.getElementById("profile-img");
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    const path = window.location.pathname;
+    if (path.includes("edit-profile.html")) {
+        const editprofilebtn = document.getElementById("editprofilebtn");
+        if (editprofilebtn) {
+        editprofilebtn.classList.add("active");
+        }
+    }
+
     const firstNameInput = document.getElementById("firstName");
     const middleNameInput = document.getElementById("middleName");
     const lastNameInput = document.getElementById("lastName");
@@ -120,6 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+function markInvalid(input) {
+    input.style.border = "2px solid red";
+    input.addEventListener("input", () => {
+        input.style.border = "";
+    }, { once: true });
+}
+
     // ✅ Save changes to Firestore
     editProfileForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -151,6 +167,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, 
                 showConfirmButton: false
             });
+
+            if (!firstName) markInvalid(firstNameInput);
+            if (!lastName) markInvalid(lastNameInput);
+            if (!shopName) markInvalid(shopNameInput);
+            if (!address) markInvalid(addressInput);
+            if (!phone) markInvalid(phoneNumberInput);
+            if (!gender) document.querySelectorAll('input[name="gender"]').forEach(r => markInvalid(r.parentElement));
+
             return;
         }
 
@@ -165,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, // Auto-close after 3 seconds
                 showConfirmButton: false
             });
+            markInvalid(firstNameInput);
             return;
         }
         if (middleName && !nameRegex.test(middleName)) {
@@ -175,6 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, // Auto-close after 3 seconds
                 showConfirmButton: false
             });
+            markInvalid(middleNameInput);
             return;
         }
         if (!nameRegex.test(lastName) || lastName.length < 2) {
@@ -185,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, // Auto-close after 3 seconds
                 showConfirmButton: false
             });
+            markInvalid(lastNameInput);
             return;
         }
         if (!shopRegex.test(shopName)) {
@@ -195,10 +222,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, // Auto-close after 3 seconds
                 showConfirmButton: false
             });
+            markInvalid(shopNameInput);
             return;
         }
         if (phone.length !== 11 || !phone.startsWith("09")) {
-            Swal.fire({ title: "Invalid Phone", text: "Enter a valid 11-digit phone number.", icon: "warning", timer: 3000, showConfirmButton: false }); return;
+            Swal.fire({ title: "Invalid Phone", text: "Enter a valid 11-digit phone number.", icon: "warning", timer: 3000, showConfirmButton: false }); 
+            markInvalid(phoneNumberInput);
+            return;
         }
         if (!address) {
             Swal.fire({
@@ -208,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timer: 3000, // Auto-close after 3 seconds
                 showConfirmButton: false
             });
+            markInvalid(addressInput);
             return;
         }
 

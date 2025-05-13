@@ -59,7 +59,7 @@ const predictedData = {
   "Samsung Laptops": { price: 56399.00, stock: 125 },
   "Other Brands Laptops": { price: 41499.00, stock: 130 },
   "Samsung Smart Watches": { price: 16599.00, stock: 117 },
-  "Samsung Tablets": { price: 324699.00, stock: 124 },
+  "Samsung Tablets": { price: 32699.00, stock: 124 },
   "HP Headphones": { price: 3999.00, stock: 128 },
   "Sony Headphones": { price: 5499.00, stock: 127 },
   "Other Brands Tablets": { price: 15399.00, stock: 112 },
@@ -123,6 +123,15 @@ document.getElementById("show-suggested-photo-btn").addEventListener("click", ()
 
 
 window.addEventListener('DOMContentLoaded', () => {
+
+  const path = window.location.pathname;
+  if (path.includes("product.html")) {
+    const productbtn = document.getElementById("productbtn");
+    if (productbtn) {
+      productbtn.classList.add("active");
+    }
+  }
+
   const brandSelect = document.getElementById("brand");
   const productSelect = document.getElementById("category");
   const ratingElement = document.getElementById("rating-number");
@@ -187,6 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
   updateRating();
 
   document.getElementById("predict-btn").addEventListener("click", () => {
+    event.preventDefault();
     const brand = brandSelect.value;
     const product = productSelect.value;
     const prediction = getPrediction(brand, product);
@@ -217,6 +227,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById("predict-stock-btn").addEventListener("click", () => {
+    event.preventDefault();
     const brand = brandSelect.value;
     const product = productSelect.value;
     const prediction = getPrediction(brand, product);
@@ -254,6 +265,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const userId = user.uid;
 
     document.getElementById("add-product-btn").addEventListener("click", async () => {
+      event.preventDefault();
       const brand = brandSelect.value;
       const product = productSelect.value;
       const description = document.getElementById("description").value.trim();

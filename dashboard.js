@@ -23,14 +23,12 @@ firebase.auth().onAuthStateChanged((user) => {
         if (doc.exists) {
           const data = doc.data();
           const fullName = `${data.firstName} ${data.lastName}`;
-          userNameEl.textContent = fullName;
         } else {
           userNameEl.textContent = "User data not found";
         }
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
-        userNameEl.textContent = "Error loading name";
       });
 
   } else {
@@ -39,6 +37,14 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+
+  const path = window.location.pathname;
+  if (path.includes("dashboard.html")) {
+    const dashboardBtn = document.getElementById("dashboardBtn");
+    if (dashboardBtn) {
+      dashboardBtn.classList.add("active");
+    }
+  }
     // Fetch product summary from backend
     fetch("http://127.0.0.1:5000/product-summary")
         .then(response => response.json())
@@ -156,10 +162,57 @@ document.addEventListener("DOMContentLoaded", () => {
         options: {
           responsive: true,
           scales: {
-            y: { beginAtZero: true }
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#ffffff', // White Y-axis labels
+                font: {
+                  size: 16
+                },
+                callback: function(value) {
+                  if (value >= 1_000_000) {
+                    return (value / 1_000_000) + 'M';
+                  } else if (value >= 1_000) {
+                    return (value / 1_000) + 'K';
+                  }
+                  return value;
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)' // Optional: light grid lines
+              }
+            },
+            x: {
+              ticks: {
+                color: '#ffffff', // White X-axis labels
+                font: {
+                  size:16 
+                }
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)' // Optional: light grid lines
+              }
+            }
           },
           plugins: {
-            legend: { display: true }
+            legend: {
+              labels: {
+                color: '#ffffff', // White legend text
+                font: {
+                  size: 16
+                }
+              }
+            },
+            tooltip: {
+              bodyColor: '#ffffff',
+              titleColor: '#ffffff',
+              titleFont: {
+                size: 16
+              },
+              bodyFont: {
+                size: 16
+              }
+            }
           }
         }
       });
@@ -215,16 +268,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
   const topRatedProducts = [
-      { product: "Apple Laptop", rating: 4.9 },
       { product: "Apple Smartphone", rating: 4.8 },
-      { product: "Sony Headphone", rating: 4.8 },
-      { product: "Samsung Smartphone", rating: 4.7 },
-      { product: "Apple Tablets", rating: 4.7 },
+      { product: "Apple Headphone", rating: 4.7 },
+      { product: "Samsung Headphone", rating: 4.7 },
       { product: "Samsung Smartwatch", rating: 4.6 },
-      { product: "HP Laptop", rating: 4.5 },
-      { product: "Samsung Headphone", rating: 4.5 },
-      { product: "Sony Smartphone", rating: 4.4 },
-      { product: "HP Tablet", rating: 4.3 }
+      { product: "Apple Laptop", rating: 4.6 },
+      { product: "Samsung Laptop", rating: 4.5 },
+      { product: "Apple Tablet", rating: 4.5 },
+      { product: "Apple Smartwatch", rating: 4.5 },
+      { product: "Sony Headphone", rating: 4.5 },
+      { product: "HP Laptop", rating: 4.4 }
   ];
 
   const tableBody = document.getElementById("top-rated-body");
@@ -435,65 +488,10 @@ async function markAllAsRead() {
 window.markAllAsRead = markAllAsRead;
 window.deleteAllNotifications = deleteAllNotifications;
 
-document.getElementById("contact-form").addEventListener("submit", function (e) {
-  e.preventDefault();
+function markInvalid(input) {
+  input.style.border = "2px solid red";
 
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const subject = document.getElementById("subject").value.trim();
-  const message = document.getElementById("message").value.trim();
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // Common SweetAlert options
-  const swalOptions = {
-    toast: true,
-    position: 'top', // This centers it at the top
-    timer: 1500,
-    timerProgressBar: true,
-    showConfirmButton: false,
-    background: '#1e2133',
-    color: '#fff',
-    customClass: {
-      popup: 'swal2-toast-custom'
-    }
-  };
-
-  if (name === "") {
-    Swal.fire({ ...swalOptions, icon: 'error', title: 'Name is required!' });
-    return;
-  }
-
-  if (email === "") {
-    Swal.fire({ ...swalOptions, icon: 'error', title: 'Email is required!' });
-    return;
-  }
-
-  if (!emailRegex.test(email)) {
-    Swal.fire({ ...swalOptions, icon: 'error', title: 'Invalid email format!' });
-    return;
-  }
-
-  if (subject === "") {
-    Swal.fire({ ...swalOptions, icon: 'error', title: 'Subject is required!' });
-    return;
-  }
-
-  if (message === "") {
-    Swal.fire({ ...swalOptions, icon: 'error', title: 'Message cannot be empty!' });
-    return;
-  }
-
-  // All fields valid
-  Swal.fire({
-    ...swalOptions,
-    icon: 'success',
-    title: 'Message sent!'
-  }).then(() => {
-  // Redirect after the toast disappears
-  window.location.href = 'home.html';
-});
-
-  // Optional: reset form
-  
-});
+  input.addEventListener("input", () => {
+    input.style.border = ""; 
+  }, { once: true }); 
+}

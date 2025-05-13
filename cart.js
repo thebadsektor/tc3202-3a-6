@@ -140,6 +140,16 @@ function handleEditProduct(event) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+
+  const path = window.location.pathname;
+  if (path.includes("cart.html")) {
+    const cartbtn = document.getElementById("cartbtn");
+    if (cartbtn) {
+      cartbtn.classList.add("active");
+    }
+  }
+
+
   document.getElementById("save-btn").addEventListener("click", saveProduct);
   document.getElementById("exit-btn").addEventListener("click", closeEditModal);
 });

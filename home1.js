@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const path = window.location.pathname;
+    if (path.includes("home1.html")) {
+        const homebtn = document.getElementById("home1btn");
+        if (homebtn) {
+        homebtn.classList.add("active");
+        }
+    }
+
     const trendingContainer = document.querySelector(".trending-products");
 
     showLoadingSpinner();

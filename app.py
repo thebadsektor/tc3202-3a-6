@@ -78,6 +78,29 @@ def send_otp():
     except Exception as e:
         logging.error(f"Error sending OTP: {e}")
         return jsonify({"error": f"Failed to send email. {str(e)}"}), 500
+    
+@app.route("/send-otp2", methods=["POST"])
+def send_otp2():
+    data = request.json
+    email = data.get("email")
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    otp = str(random.randint(100000, 999999))
+    otp_storage[email] = {"otp": otp, "timestamp": time.time()}
+
+    msg = Message("Your OTP Code", sender=app.config["MAIL_USERNAME"], recipients=[email])
+    msg.body = f"Your OTP code is: {otp}\nThis OTP is valid for 5 minutes."
+
+    try:
+        mail.send(msg)
+        logging.info(f"OTP sent to {email}")
+        return jsonify({"message": "OTP sent successfully!"})
+    except Exception as e:
+        logging.error(f"Error sending OTP: {e}")
+        return jsonify({"error": f"Failed to send email. {str(e)}"}), 500
+    
 
 # ✅ Verify OTP Endpoint
 @app.route("/verify-otp", methods=["POST"])

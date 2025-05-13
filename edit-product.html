@@ -35,19 +35,44 @@
 
     <div class="content-wrapper" id="dynamic-content">
         <div class="nav-right">
-            <button onclick="window.location.href='home1.html'">Home</button>
-            <button onclick="window.location.href='dashboard.html'">Dashboard</button>
-            <button onclick="showSection('about')">About Us</button>
-            <button onclick="showSection('contact')">Contact Us</button>
-            <button onclick="window.location.href='cart.html'">My Cart</button>
-            <button onclick="window.location.href='statistics.html'">Statistics</button>
-            <button onclick="window.location.href='profile.html'">Profile</button>
-            <button class="logout-btn" onclick="logoutUser()">Logout</button>
+            <button class="nav-button" onclick="window.location.href='home1.html'">
+              <img src="img_svg/home.png" alt="Home Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Home
+            </button>
+            <button class="nav-button" onclick="window.location.href='dashboard.html'">
+              <img src="img_svg/dashboard.png" alt="Dashboard Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Dashboard
+            </button>
+            <button id="editproductbtn" class="nav-button" onclick="window.location.href='cart.html'">
+              <img src="img_svg/cart.png" alt="Cart Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Cart
+            </button>
+            <button class="nav-button" onclick="window.location.href='statistics.html'">
+              <img src="img_svg/statistics.png" alt="Statistics Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Statistics
+            </button>
+            <button class="nav-button" onclick="window.location.href='profile.html'">
+              <img src="img_svg/profile.png" alt="Profile Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Profile
+            </button>
+            <button class="nav-button" onclick="window.location.href='about.html'">
+              <img src="img_svg/about.png" alt="About Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              About Us
+            </button>
+            <button class="nav-button" onclick="window.location.href='contact.html'">
+              <img src="img_svg/contact.png" alt="Contact Icon" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Contact
+            </button>
+            <button class="logout-btn" onclick="logoutUser()">
+              <img src="img_svg/logout.png" style="width:16px; height:16px; vertical-align:middle; margin-right:6px;">
+              Logout
+            </button>
         </div>
 
         <div id="home" class="section">
           <div class="container">
             <h2>Edit Product</h2>
+            
             <img id="modal-product-image" alt="Product Image" class="product-image" />
         
             <form id="edit-form">
@@ -55,119 +80,19 @@
               <label>Category: <input type="text" id="category" readonly /></label>
               <label>Model Name: <input type="text" id="modelname" /></label>
               <label>Description: <textarea id="description"></textarea></label>
-              <label>Price: <input id="price" /></label>
+              <label>Price: <input type="number" id="price" step="0.01"/></label>
               <label>Discount (%): <input type="number" id="discount" /></label>
               <label>Specs: <textarea id="specs"></textarea></label>
               <label>Features: <textarea id="features"></textarea></label>
               <label>Stock: <input type="number" id="stock" /></label>
-              <button id ="save-changes" type="submit">Save Changes</button>
+              <div class="button-container">
+                <button id="cancel-changes" type="button" onclick="window.location.href='cart.html'">Cancel</button>
+                <button id="save-changes" type="submit">Save Changes</button>
+              </div>
             </form>
           </div>
         </div>
-
-        <div id="about" class="section" style="display: none;">
-            <div>
-                <h2>About Us</h2>
-                <p>At castTronic, we believe that making smart business decisions should be straightforward. Founded in 2025, our team of tech enthusiasts set out to create an advanced AI-powered forecasting platform that empowers online sellers to make confident, data-driven choices—especially when it comes to selecting products to sell.
-            
-                    We assist new and growing e-commerce entrepreneurs in navigating the digital marketplace by providing real-time product recommendations based on user-defined preferences and market trends. Whether you’re uncertain about which gadget to stock next or looking to stay ahead of changing demand, castTronic guides you every step of the way.
-                    
-                    Our mission is simple: to transform future trends into today's opportunities.
-                    
-                    With powerful analytics, personalized recommendations, and a user-friendly dashboard, castTronic offers a smarter way to sell laptops, tablets, smartphones, smartwatches, headphones, and more—before they even become trends.
-                    
-                    We’re just getting started. Join us on our journey to revolutionize how online sellers choose, stock, and succeed.</p>
-            </div>
-        </div>
-
-        <div id="contact" class="section" style="display: none;">
-            <h2>Get in Touch</h2>
-            
-            <div class="contact-info">
-              <div class="contact-card">
-                <i class="fas fa-envelope"></i>
-                <div class="info">
-                  <span class="label">Email Us</span>
-                  <span class="value">support@casttronics.com</span>
-                </div>
-              </div>
-              
-              <div class="contact-card">
-                <i class="fas fa-phone-alt"></i>
-                <div class="info">
-                  <span class="label">Call Us</span>
-                  <span class="value">+6399-1234-5678</span>
-                </div>
-              </div>
-              
-              <div class="contact-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <div class="info">
-                  <span class="label">Location</span>
-                  <span class="value">Sta. Cruz, Laguna</span>
-                </div>
-              </div>
-            </div>
-            
-            <h3>Send Us a Message</h3>
-            <form id="contact-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="name">Your Name</label>
-                  <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                </div>
-                
-                <div class="form-group">
-                  <label for="email">Your Email</label>
-                  <input type="email" id="email" name="email" placeholder="Enter your email address" required>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label for="subject">Subject</label>
-                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="message">Your Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
-              </div>
-              
-              <button type="submit">
-                <i class="fas fa-paper-plane"></i> Send Message
-              </button>
-            </form>
-            
-            <div class="social-links">
-              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
     </div>
-    </div>
-
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.style.display = 'block';
-            } else {
-                console.error(`Section with ID ${sectionId} not found`);
-            }
-        }
-
-        function loadpage(page) {
-            fetch(page) // Load the statistics HTML file
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('home').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading statistics:', error));
-        }
-    </script>
 
   <script type="module" src="edit-product.js"></script>
 </body>
